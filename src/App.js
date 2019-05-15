@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStroopwafel } from '@fortawesome/free-solid-svg-icons'
+import { Container } from 'react-bootstrap'
+
 import './App.css';
 
+
+library.add(faStroopwafel)
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>React + Electron = <span role="img" aria-label="love">😍</span></h2>
-        </div>
-        <p className="App-intro">
-          <b> Release 0.2.7 </b>
-        </p>
-      </div>
+      <Container>
+        
+      </Container>
     );
   }
 }
