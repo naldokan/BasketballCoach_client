@@ -15,10 +15,13 @@ require("update-electron-app")({
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 900,
-    height: 680
+    height: 680,
+    webPreferences: {
+      // devTools: false,
+    }
   });
 
-  // mainWindow.setMenuBarVisibility(false);
+  mainWindow.setMenuBarVisibility(false);
   mainWindow.loadURL(
     isDev
       ? "http://localhost:3000"
