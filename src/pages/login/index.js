@@ -18,7 +18,7 @@ class Login extends Component {
   render() {
     return (
       <Row className='login'>
-        <Col xs='8' sm='6' md='5' lg='4'>
+        <Col xs='8' sm='6' md='5' lg='4' xl='3'>
           <Form>
             <FontAwesomeIcon
               icon={faBasketballBall}
@@ -41,13 +41,15 @@ class Login extends Component {
                 Sign in
               </Button>
             </FormGroup>
-            <p className="text-alert">Haven't account?&nbsp;
+            <p className="text-alert">
+              <nobr>Haven't account?</nobr>
+              &nbsp;
               <a 
                 onClick={this.handleSignupClick}
-                class="text-info"
+                className="text-info"
                 style={{cursor: 'pointer'}}
               >
-                Now sign up!
+                <nobr>Now sign up!</nobr>
               </a>
             </p>
           </Form>

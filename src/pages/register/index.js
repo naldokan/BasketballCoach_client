@@ -6,8 +6,6 @@ import { Row, Col, Form, FormGroup, Input, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBasketballBall } from '@fortawesome/free-solid-svg-icons'
 
-import './styles.scss';
-
 
 class Register extends Component {
 
@@ -16,7 +14,7 @@ class Register extends Component {
   render() {
     return (
       <Row className='register'>
-        <Col xs='8' sm='6' md='5' lg='4'>
+        <Col xs='8' sm='6' md='5' lg='4' xl='3'>
           <Form>
             <FontAwesomeIcon
               icon={faBasketballBall}
@@ -39,10 +37,10 @@ class Register extends Component {
             </FormGroup>
             <a
               onClick={this.handleGobackClick}
-              class="text-info"
+              className="text-info"
               style={{cursor: 'pointer'}}
             >
-              Cancel and go back
+              <nobr>Cancel and go back</nobr>
             </a>
           </Form>
         </Col>

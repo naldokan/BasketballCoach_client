@@ -1,9 +1,13 @@
-.nav-pills {
-  .active {
-    border-radius: 0
-  }
+.home-container {
+  margin: 0 -15px;
 
-  .nav-link {
-    cursor: pointer;
+  .nav-pills {
+    .active {
+      border-radius: 0;
+    }
+
+    .nav-link {
+      cursor: pointer;
+    }
   }
 }

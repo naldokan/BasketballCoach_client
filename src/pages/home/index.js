@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
 import { compose } from 'redux'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBasketballBall } from '@fortawesome/free-solid-svg-icons'
 
 import cx from 'classnames'
 import {
@@ -14,19 +12,23 @@ import {
   NavLink
 } from 'reactstrap';
 
+import Dashboard from '../dashboard';
+import Game from '../game';
+import GameProgress from '../game/progress';
+import GameSummary from '../game/summary';
+import GameDetail from '../game/detail';
+import Statistics from '../statistics';
+import History from '../history';
+import Leaderboard from '../leaderboard';
+
 import './styles.scss';
 
-const navs = [{
-    link: '/dashboard', label: 'Dashboard'
-  }, {
-    link: '/game', label: 'Game'
-  }, {
-    link: '/statistics', label: 'Statistics'
-  }, {
-    link: '/history', label: 'History'
-  }, {
-    link: '/leaderboard', label: 'Leaderboard'
-  }
+const navs = [
+  { link: '/leaderboard', label: 'Leaderboard' },
+  { link: '/statistics', label: 'Statistics' },
+  { link: '/dashboard', label: 'Dashboard' },
+  { link: '/history', label: 'History' },
+  { link: '/game', label: 'Game' },
 ]
 
 class Home extends Component {
@@ -50,30 +52,26 @@ class Home extends Component {
 
   render() {
 
-    // const child = this.props.view === 'dashboard' ? <Dashboard/>
-    //   : this.props.view === 'game' ? <Game/>
-    //   : this.props.view === 'game/progress' ? <GameProgress/>
-    //   : this.props.view === 'game/summary' ? <GameSummary/>
-    //   : this.props.view === 'game/Detail' ? <GameDetail/>
-    //   : this.props.view === 'statistics' ? <Statistics/>
-    //   : this.props.view === 'history' ? <History/>
-    //   : <Leaderboard/> 
+    const child = this.props.view === 'dashboard' ? <Dashboard/>
+      : this.props.view === 'game' ? <Game/>
+      : this.props.view === 'game/progress' ? <GameProgress/>
+      : this.props.view === 'game/summary' ? <GameSummary/>
+      : this.props.view === 'game/detail' ? <GameDetail/>
+      : this.props.view === 'statistics' ? <Statistics/>
+      : this.props.view === 'history' ? <History/>
+      : <Leaderboard/> 
 
     return (
-      <>
+      <div className="home-container">
         <Navbar color="secondary" light expand="md" className="py-md-0">
           <NavbarBrand>
-            <FontAwesomeIcon
-              icon={faBasketballBall}
-              size='1x'
-              color='white'
-            />
           </NavbarBrand>
           <NavbarToggler onClick={this.handleToggleClick} />
           <Collapse isOpen={this.state.navbarExpand} navbar>
             <Nav className="ml-auto nav-pills" navbar>
               {navs.map(({ link, label }) => (
                 <NavLink
+                  key={link}
                   onClick={this.handleNavigatorClick(link)}
                   className={cx('py-md-3', 'px-3', 'px-md-4', 'text-white', link === '/' + this.props.view.split('/')[0] ? 'active' : undefined)} 
                 >
@@ -89,8 +87,8 @@ class Home extends Component {
             </Nav>
           </Collapse>
         </Navbar>
-        {/* {child} */}
-      </>
+        {child}
+      </div>
     );
   }
 }

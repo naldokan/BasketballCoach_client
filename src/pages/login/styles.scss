@@ -1,12 +1,11 @@
 // @import "node_modules/bootstrap/scss/_variables";
 
-.login {
+.login, .register {
   display: flex;
   justify-content: center;
   align-content: center;
   text-align: center;
   height: 100vh;
-  margin: 0 15px;
   
   input, button {
     border-radius: 100em;
