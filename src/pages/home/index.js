@@ -24,11 +24,11 @@ import Leaderboard from '../leaderboard';
 import './styles.scss';
 
 const navs = [
-  { link: '/leaderboard', label: 'Leaderboard' },
-  { link: '/statistics', label: 'Statistics' },
   { link: '/dashboard', label: 'Dashboard' },
-  { link: '/history', label: 'History' },
   { link: '/game', label: 'Game' },
+  { link: '/statistics', label: 'Statistics' },
+  { link: '/history', label: 'History' },
+  { link: '/leaderboard', label: 'Leaderboard' },
 ]
 
 class Home extends Component {
@@ -38,6 +38,10 @@ class Home extends Component {
     this.state = {
       navbarExpand: false
     }
+  }
+
+  componentDidMount() {
+    document.body.classList.remove('login')
   }
 
   handleToggleClick = () => this.setState({ navbarExpand: !this.state.navbarExpand})
@@ -63,7 +67,7 @@ class Home extends Component {
 
     return (
       <div className="home-container">
-        <Navbar color="secondary" light expand="md" className="py-md-0">
+        <Navbar color="white" light expand="md" className="py-md-0 fixed-top">
           <NavbarBrand>
           </NavbarBrand>
           <NavbarToggler onClick={this.handleToggleClick} />
@@ -73,21 +77,24 @@ class Home extends Component {
                 <NavLink
                   key={link}
                   onClick={this.handleNavigatorClick(link)}
-                  className={cx('py-md-3', 'px-3', 'px-md-4', 'text-white', link === '/' + this.props.view.split('/')[0] ? 'active' : undefined)} 
+                  className={cx('py-md-3', 'px-3', 'px-md-4',
+                    link === '/' + this.props.view.split('/')[0] ? 'active' : undefined)} 
                 >
                   {label}
                 </NavLink>
               ))}
               <NavLink
                 onClick={this.handleSignoutClick}
-                className={cx('py-md-3', 'px-3', 'px-md-4', 'text-white')} 
+                className={cx('py-md-3', 'px-3', 'px-md-4')} 
               >
                 Sign out
               </NavLink>
             </Nav>
           </Collapse>
         </Navbar>
-        {child}
+        <div className="home-body">
+          {child}
+        </div>
       </div>
     );
   }

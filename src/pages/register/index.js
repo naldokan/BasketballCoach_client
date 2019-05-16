@@ -9,11 +9,15 @@ import { faBasketballBall } from '@fortawesome/free-solid-svg-icons'
 
 class Register extends Component {
 
+  componentDidMount() {
+    document.body.classList.add('login')
+  }
+  
   handleGobackClick = () => this.props.history.push('/login')
 
   render() {
     return (
-      <Row className='register'>
+      <Row className='register-form'>
         <Col xs='8' sm='6' md='5' lg='4' xl='3'>
           <Form>
             <FontAwesomeIcon
@@ -22,7 +26,7 @@ class Register extends Component {
               color='lightgray'
               className="mb-5"
             />
-            <h4 className="text-secondary mb-5">Register your account</h4>
+            <h4 className="text-white-50 mb-5">Register your account</h4>
             <FormGroup>
               <Input type="email" name="email" placeholder="Email"/>
             </FormGroup>

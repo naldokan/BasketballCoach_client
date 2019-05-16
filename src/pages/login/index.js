@@ -11,13 +11,17 @@ import './styles.scss';
 
 class Login extends Component {
 
+  componentDidMount() {
+    document.body.classList.add('login')
+  }
+
   handleSignupClick = () => this.props.history.push('/register')
 
   handleSigninClick = () => this.props.history.push('/dashboard')
 
   render() {
     return (
-      <Row className='login'>
+      <Row className='login-form'>
         <Col xs='8' sm='6' md='5' lg='4' xl='3'>
           <Form>
             <FontAwesomeIcon
@@ -41,7 +45,7 @@ class Login extends Component {
                 Sign in
               </Button>
             </FormGroup>
-            <p className="text-alert">
+            <p className="text-alert text-white-50">
               <nobr>Haven't account?</nobr>
               &nbsp;
               <a 
