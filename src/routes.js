@@ -15,7 +15,7 @@ export default ({ history }) => (
   <Router history={history}>
     <App>
       <Route path='/dashboard' render={view('dashboard')} />
-      <Route path='/game' render={view('game')} />
+      <Route path='/game' exact render={view('game')} />
       <Route path='/game/progress' render={view('game/progress')} />
       <Route path='/game/summary' render={view('game/summary')} />
       <Route path='/game/detail' render={view('game/detail')} />

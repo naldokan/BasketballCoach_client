@@ -1,5 +1,11 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
+
 body {
   background-color: #f3faff;
+  transition: background-color 0.5s ease;
 
   &.login {
     background-color: #1b4877;
@@ -23,6 +29,10 @@ body {
       margin: 0 0.3em;
       font-weight: 500;
 
+      @include media-breakpoint-only(xs) {
+        border-radius: 2em;
+      }
+
       &:hover {
         background-color: #e5f3fe;
       }
@@ -36,12 +46,13 @@ body {
 
   .home-body {
     margin: 100px 40px 0;
-  }
-}
 
-.fancy-box {
-  padding: 25px;
-  margin: 25px;
-  background: white;
-  box-shadow: 0px 0px 13px 0px rgba(82, 63, 105, 0.1);
+    &.home-body-vertical-middle {
+      height: 100vh;
+      margin-top: 0;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+    }
+  }
 }

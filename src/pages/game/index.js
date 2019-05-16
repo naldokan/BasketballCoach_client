@@ -13,21 +13,36 @@ import {
 } from 'reactstrap';
 
 import './styles.scss';
+import { Row, Col, Button } from 'reactstrap'; 
 
+import './styles.scss';
 
 class Game extends Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {
-    }
-  }
+  
+  handleThrowMode = () => this.props.history.push('/game/progress')
 
   render() {
     return (
-      <>
-        Dashboard
-      </>
+      <div className="w-100">
+        <p className='headline'>Why not try?</p>
+        <Row className='justify-content-center'>
+          <Col className='col-12 col-sm-4 col-md-3'>
+            <Button
+              color="primary"
+              className="game-mode-button btn-block"
+              onClick={this.handleThrowMode}
+            >
+              Free Throw
+            </Button>
+          </Col>
+          <Col className='col-1'></Col>
+          <Col className='col-12 col-sm-4 col-md-3'>
+            <Button
+              color="success"
+              className="game-mode-button btn-block">Drills</Button>
+          </Col>
+        </Row>
+      </div>
     );
   }
 }

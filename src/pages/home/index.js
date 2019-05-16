@@ -31,6 +31,8 @@ const navs = [
   { link: '/leaderboard', label: 'Leaderboard' },
 ]
 
+const verticalCenterViews = ['game']
+
 class Home extends Component {
 
   constructor(props) {
@@ -50,10 +52,6 @@ class Home extends Component {
 
   handleSignoutClick = () => this.props.history.push('/login')
 
-  check = link => {
-
-  }
-
   render() {
 
     const child = this.props.view === 'dashboard' ? <Dashboard/>
@@ -63,8 +61,9 @@ class Home extends Component {
       : this.props.view === 'game/detail' ? <GameDetail/>
       : this.props.view === 'statistics' ? <Statistics/>
       : this.props.view === 'history' ? <History/>
-      : <Leaderboard/> 
-
+      : <Leaderboard/>
+    const verticalCenterView = verticalCenterViews.includes(this.props.view)
+    
     return (
       <div className="home-container">
         <Navbar color="white" light expand="md" className="py-md-0 fixed-top">
@@ -92,7 +91,7 @@ class Home extends Component {
             </Nav>
           </Collapse>
         </Navbar>
-        <div className="home-body">
+        <div className={ cx('home-body', { 'home-body-vertical-middle': verticalCenterView }) }>
           {child}
         </div>
       </div>
