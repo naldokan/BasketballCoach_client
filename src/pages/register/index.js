@@ -8,10 +8,6 @@ import { faBasketballBall } from '@fortawesome/free-solid-svg-icons'
 
 
 class Register extends Component {
-
-  componentDidMount() {
-    document.body.classList.add('login')
-  }
   
   handleGobackClick = () => this.props.history.push('/login')
 

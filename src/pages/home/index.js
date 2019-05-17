@@ -21,6 +21,8 @@ import Statistics from '../statistics';
 import History from '../history';
 import Leaderboard from '../leaderboard';
 
+import { remote } from '../../electron';
+
 import './styles.scss';
 
 const navs = [
@@ -42,15 +44,11 @@ class Home extends Component {
     }
   }
 
-  componentDidMount() {
-    document.body.classList.remove('login')
-  }
-
   handleToggleClick = () => this.setState({ navbarExpand: !this.state.navbarExpand})
 
   handleNavigatorClick = link => () => this.props.history.push(link)
 
-  handleSignoutClick = () => this.props.history.push('/login')
+  handleSignoutClick = () => this.props.history.push('/')
 
   render() {
 
@@ -66,10 +64,10 @@ class Home extends Component {
     
     return (
       <div className="home-container">
-        <Navbar color="white" light expand="md" className="py-md-0 fixed-top">
+        <Navbar color="white" light expand="md" className="py-md-0">
           <NavbarBrand>
           </NavbarBrand>
-          <NavbarToggler onClick={this.handleToggleClick} />
+          <NavbarToggler className='navbar-toggler' onClick={this.handleToggleClick} />
           <Collapse isOpen={this.state.navbarExpand} navbar>
             <Nav className="ml-auto nav-pills" navbar>
               {navs.map(({ link, label }) => (

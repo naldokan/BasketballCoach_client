@@ -1,17 +1,15 @@
-// @import "node_modules/bootstrap/scss/_variables";
-
 .login-form, .register-form {
   display: flex;
   justify-content: center;
   align-content: center;
   text-align: center;
   height: 100vh;
-  
-  input, button {
-    border-radius: 100em;
-  }
 
   button {
     width: 8em;
   }
+}
+
+input, button {
+  border-radius: 100em !important;
 }

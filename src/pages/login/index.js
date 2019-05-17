@@ -11,10 +11,6 @@ import './styles.scss';
 
 class Login extends Component {
 
-  componentDidMount() {
-    document.body.classList.add('login')
-  }
-
   handleSignupClick = () => this.props.history.push('/register')
 
   handleSigninClick = () => this.props.history.push('/dashboard')

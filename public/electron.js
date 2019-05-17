@@ -5,6 +5,7 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const isDev = require("electron-is-dev");
 
+const { minimumSize } = require("../src/electron");
 let mainWindow;
 
 require("update-electron-app")({
@@ -14,12 +15,15 @@ require("update-electron-app")({
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 900,
-    height: 680,
-    minWidth: 400,
-    minHeight: 700,
+    width: minimumSize.width,
+    height: minimumSize.height,
+    minWidth: minimumSize.width,
+    minHeight: minimumSize.height,
+    maximizable: false,
+    resizable: false,
     webPreferences: {
       // devTools: false,
+      nodeIntegration: true
     }
   });
 
