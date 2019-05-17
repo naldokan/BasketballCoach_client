@@ -5,7 +5,7 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const isDev = require("electron-is-dev");
 
-const { minimumSize } = require("../src/electron");
+const { minimumSize } = require("../src/my-electron");
 let mainWindow;
 
 require("update-electron-app")({

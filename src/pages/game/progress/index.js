@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { withRouter, Prompt } from "react-router";
 import { compose } from 'redux'
 
-import cx from 'classnames'
 import { Row, Col, Button } from 'reactstrap';
+import cx from 'classnames'
 
-import { electron } from '../../../electron'
+import FancyBox from 'components/fancybox';
+import FactTile from 'components/facttile';
+import { electron } from 'my-electron'
 
 import './styles.scss';
 
@@ -90,6 +92,18 @@ class GameProgress extends Component {
           when={this.state.progress !== progressStatus.INIT}
           message={this.handleNavigateAway}
         />
+        <Row className='justify-content-center'>
+          <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
+            <FancyBox>
+              <FactTile score='83' caption='Accuracy' size='1'/>
+            </FancyBox>
+          </Col>
+          <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
+            <FancyBox>
+              <FactTile score='03:45' caption='Elapsed time' size='1'/>
+            </FancyBox>
+          </Col>
+        </Row>
         <Row>
           <Col className='game-control-button'>
             <Button color="primary" onClick={this.handleStartClick}>

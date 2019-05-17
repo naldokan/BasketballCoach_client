@@ -12,16 +12,14 @@ import {
   NavLink
 } from 'reactstrap';
 
-import Dashboard from '../dashboard';
-import Game from '../game';
-import GameProgress from '../game/progress';
-import GameSummary from '../game/summary';
-import GameDetail from '../game/detail';
-import Statistics from '../statistics';
-import History from '../history';
-import Leaderboard from '../leaderboard';
-
-import { remote } from '../../electron';
+import Dashboard from 'pages/dashboard';
+import Game from 'pages/game';
+import GameProgress from 'pages/game/progress';
+import GameSummary from 'pages/game/summary';
+import GameDetail from 'pages/game/detail';
+import Statistics from 'pages/statistics';
+import Leaderboard from 'pages/leaderboard';
+import History from 'pages/history';
 
 import './styles.scss';
 

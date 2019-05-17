@@ -3,9 +3,9 @@ import { withRouter } from "react-router";
 import { compose } from 'redux'
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, Tooltip, XAxis } from 'recharts';
 
-import FancyBox from '../../components/fancybox';
-import FactTile from '../../components/facttile';
-import playground from '../../playground.png';
+import FancyBox from 'components/fancybox';
+import FactTile from 'components/facttile';
+import playground from 'playground.png';
 
 import cx from 'classnames'
 import {
@@ -46,7 +46,7 @@ class Dashboard extends Component {
           </Col>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
-              <FactTile score='100' caption='Recent accuraccy' size='1'/>
+              <FactTile score='100' caption='Recent accuracy' size='1'/>
             </FancyBox>
           </Col>
         </Row>
