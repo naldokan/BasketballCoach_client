@@ -11,6 +11,7 @@ import { electron, minimumSize, normalSize } from './electron';
 class Routes extends Component {
  
   componentDidMount() {
+    this.lastPath = '/login'
     document.body.classList.add('login')
     this.unlisten = this.props.history.listen(this.handleRouteChange)
   }
@@ -30,10 +31,12 @@ class Routes extends Component {
       window.setResizable(false)
       document.body.classList.add('login')
     } else {
+      window.setResizable(true)
+      if (this.lastPath === '/login' || this.lastPath === '/register') {
+        window.setSize(normalSize.width, normalSize.height)
+      }
       window.setMaximizable(true)
       window.setMinimumSize(minimumSize.width, minimumSize.height)
-      window.setSize(normalSize.width, normalSize.height)
-      window.setResizable(true)
       document.body.classList.remove('login')
     }
     this.lastPath = location.pathname

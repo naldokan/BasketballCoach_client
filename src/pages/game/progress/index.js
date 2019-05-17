@@ -20,9 +20,16 @@ class GameProgress extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      progress: progressStatus.INIT,
-      allowNavigateAway: false
+      progress: progressStatus.INIT
     }
+  }
+
+  componentDidMount() {
+    window.onbeforeunload = this.handleCloseWindow
+  }
+
+  componentWillUnmount() {
+    window.onbeforeunload = undefined
   }
 
   handleStartClick = () => {
@@ -39,16 +46,27 @@ class GameProgress extends Component {
   handleStopClick = () =>
     this.state.progress === progressStatus.INIT
       ? this.props.history.push('/game')
-      : this.stopProgress()
-
-  stopProgress = () => {
-    this.setState({ progress: progressStatus.INIT})
-  }
-
-  // also should work on window closed
+      : this.disconnectGame() && this.setState({ progress: progressStatus.INIT})
 
   handleNavigateAway = location => {
     // remote.app.getVersion()
+    this.confirmStopGame(
+      () => this.setState({ 'progress': progressStatus.INIT },
+        () => this.props.history.push(location.pathname)
+      )
+    )
+    return false
+  }
+
+  handleCloseWindow = e => {
+    if (this.state.progress !== progressStatus.INIT) {
+      const { remote } = electron
+      e.returnValue = false
+      this.confirmStopGame(() => this.setState({ 'progress': progressStatus.INIT }, remote.app.quit))
+    }
+  }
+
+  confirmStopGame = onYes => {
     const { remote } = electron
     remote.dialog.showMessageBox(
       remote.getCurrentWindow(), {
@@ -57,19 +75,21 @@ class GameProgress extends Component {
         type: 'warning',
         message: 'You are in progress now. Really stop this game?',
       },
-      response => response === 0 && this.setState({ allowNavigateAway: true })
+      response => response === 0 && this.disconnectGame() && onYes()
     )
-    return false
+  }
+
+  disconnectGame = () => {
+    return true
   }
   
   render() {
     return (
       <>
-        { !this.state.allowNavigateAway &&
-          <Prompt
-            when={this.state.progress != progressStatus.INIT}
-            message={this.handleNavigateAway}
-          />}
+        <Prompt
+          when={this.state.progress !== progressStatus.INIT}
+          message={this.handleNavigateAway}
+        />
         <Row>
           <Col className='game-control-button'>
             <Button color="primary" onClick={this.handleStartClick}>
