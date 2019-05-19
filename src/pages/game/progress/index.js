@@ -2,22 +2,21 @@ import React, { Component } from 'react';
 import { withRouter, Prompt } from "react-router";
 import { compose } from 'redux'
 
+import cx from 'classnames'
 import { Row, Col, Button } from 'reactstrap';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { faPlay, faStop, faPause, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { CircularProgressbar } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
 
-import FactTile from 'components/facttile';
 import { electron } from 'my-electron'
 
 import playground from 'playground.png';
+import 'react-circular-progressbar/dist/styles.css';
 import './styles.scss';
 
 const progressStatus = {
   INIT: 0,
   PROGRESS: 1,
-  PAUSED: 2
+  PAUSED: 2,
+  COMPLETE: 3
 }
 
 class GameProgress extends Component {
@@ -52,6 +51,8 @@ class GameProgress extends Component {
     this.state.progress === progressStatus.INIT
       ? this.props.history.push('/game')
       : this.disconnectGame() && this.setState({ progress: progressStatus.INIT})
+
+  handleDetailClick = () => this.props.history.push('/game/detail')
 
   handleNavigateAway = location => {
     // remote.app.getVersion()
@@ -96,6 +97,7 @@ class GameProgress extends Component {
           message={this.handleNavigateAway}
         />
         <Row className='d-flex align-items-center game-progress-container'>
+          { this.state.progress !== progressStatus.INIT &&
           <Col className='game-detail col-md-5 col-12 order-2 order-md-1 mb-5 mb-md-0'>
             <Row>
               <Col className='overall col-12 col-sm-6 col-md-12 mb-4'>
@@ -139,8 +141,14 @@ class GameProgress extends Component {
                 </Row>
               </Col>
             </Row>
-          </Col>
-          <Col className='game-control-pane text-center col-md-3 offset-md-0 col-12 col-sm-6 offset-sm-3 order-1 order-md-2'>
+          </Col> }
+          <Col className={cx(
+              'game-control-pane',
+              'text-center',
+              'order-1 order-md-2',
+              'col-12 col-sm-6 offset-sm-3',
+              this.state.progress === progressStatus.INIT ? 'col-md-4 offset-md-4'
+                : 'col-md-3 offset-md-0' )}>
             <Row>
               <Col>
                 <CircularProgressbar
@@ -157,6 +165,7 @@ class GameProgress extends Component {
                     : this.state.progress === progressStatus.PROGRESS ? 'Pause'
                     : 'Resume' }
                 </Button>
+                <Button onClick={this.handleDetailClick}>detail</Button>
               </Col>
               <Col className='col-sm-12 col-xl-8 offset-xl-2'>
                 <Button color="primary" className='game-control-button' onClick={this.handleStopClick}>
@@ -165,9 +174,10 @@ class GameProgress extends Component {
               </Col>
             </Row>
           </Col>
+          { this.state.progress !== progressStatus.INIT &&
           <Col className='col-md-3 col-12 col-sm-8 offset-md-1 offset-sm-2 order-3'>
             <img className='w-100' src={playground} />
-          </Col>
+          </Col> }
         </Row>
       </>
     );

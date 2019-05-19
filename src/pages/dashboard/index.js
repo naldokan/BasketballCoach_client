@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
 import { compose } from 'redux'
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, Tooltip, XAxis } from 'recharts';
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  CartesianGrid,
+  Tooltip,
+  XAxis
+} from 'recharts';
 
 import FancyBox from 'components/fancybox';
 import FactTile from 'components/facttile';
