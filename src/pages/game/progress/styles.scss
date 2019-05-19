@@ -1,5 +1,57 @@
-.game-control-button {
-  button {
-    width: 8em;
+@import "../../variables";
+
+.CircularProgressbar-text {
+  font-size: 4em !important;
+  font-weight: lighter;
+  transform: translate(0, 5%);
+}
+
+.game-progress-container {
+  @include media-breakpoint-only(xl) {
+    font-size: 1.8em;
+  }
+  @include media-breakpoint-only(lg) {
+    font-size: 1.5em;
+  }
+  @include media-breakpoint-only(md) {
+    font-size: 1.2em;
+  }
+  @include media-breakpoint-only(sm) {
+    font-size: 1.2em;
+  }
+
+  .game-control-pane {
+    svg {
+      margin-bottom: 1em;
+    }
+
+    .game-control-button {
+      font-size: 1em;
+      width: 100%;
+      padding: 1em;
+      margin-bottom: 1em;
+    }
+  
+    .CircularProgressbar-text {
+      font-size: 2em !important;
+    }
+  }
+
+  .game-detail {
+    .overall, .last-try {
+      .row {
+        align-items: center;
+  
+        .col:first-child {
+          margin-top: 2%;
+          color: gray;
+          text-align: right;
+        }
+  
+        .col:last-child {
+          font-size: 2em;
+        }
+      }
+    }
   }
 }

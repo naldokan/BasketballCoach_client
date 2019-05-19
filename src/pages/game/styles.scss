@@ -1,4 +1,30 @@
-.game-mode-button {
-  padding: 2em;
-  margin-bottom: 2em;
+@import "../variables";
+
+.game-lobby {
+  @include media-breakpoint-only(xl) {
+    font-size: 3em;
+  }
+  @include media-breakpoint-only(lg) {
+    font-size: 2.5em;
+  }
+  @include media-breakpoint-only(md) {
+    font-size: 2em;
+  }
+  @include media-breakpoint-only(sm) {
+    font-size: 1.5em;
+  }
+  @include media-breakpoint-only(xs) {
+    font-size: 1.3em;
+  }
+
+  .game-mode-button {
+    padding: 1em;
+    font-size: 1em;
+    margin-bottom: 1em;
+  }
+
+  .caption {
+    text-align: center;
+    font-size: 2em;
+  }
 }

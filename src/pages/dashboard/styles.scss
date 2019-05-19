@@ -1,10 +1,17 @@
-@import "node_modules/bootstrap/scss/functions";
-@import "node_modules/bootstrap/scss/variables";
-@import "node_modules/bootstrap/scss/mixins";
+@import "../variables";
 
 
 .headline {
   font-size: 1.5em;
   text-align: center;
   margin: $spacer * 3 0;
+}
+
+.dashboard-overall {
+  justify-content: center;
+  margin: -$spacer * 2;
+  padding: $spacer * 3 0 $spacer * 4;
+  background-image:
+    linear-gradient(to right, $background-color, #c4dbefff 40%, #c4dbefff 60%, $background-color),
+    linear-gradient(#c4dbef, $background-color);
 }

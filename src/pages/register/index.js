@@ -33,6 +33,9 @@ class Register extends Component {
               <Input type="password" placeholder="Password"/>
             </FormGroup>
             <FormGroup>
+              <Input type="password" placeholder="Confirm password"/>
+            </FormGroup>
+            <FormGroup>
               <Button color="primary" type="button">Sign up</Button>
             </FormGroup>
             <a

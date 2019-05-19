@@ -33,7 +33,7 @@ class Dashboard extends Component {
 
     return (
       <>
-        <Row className='justify-content-center'>
+        <Row className='dashboard-overall'>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
               <FactTile score='100' caption='Total game plays' size='1'/>
