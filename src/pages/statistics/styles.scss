@@ -1,0 +1,28 @@
+@import "../variables";
+
+
+.statistics-filter {
+  @include media-breakpoint-up(lg) {
+    position: fixed;
+    padding: 2em;
+    top: 5em;
+    padding: 1em;
+
+    &:first-child {
+      left: 0;
+    }
+
+    &:last-child {
+      right: 20px;
+    }
+  }
+  
+  @include media-breakpoint-up(lg) {
+    .row { font-size: 1.5em; }
+  }
+  
+  button {
+    font-size: 1em;
+    padding: 0.5em;
+  }  
+}

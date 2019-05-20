@@ -101,7 +101,7 @@ class GameDetail extends Component {
           ))}
           </Col>
         </Row>
-      </> 
+      </>
     );
   }
 }
