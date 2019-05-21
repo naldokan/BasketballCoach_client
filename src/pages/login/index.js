@@ -37,7 +37,7 @@ class Login extends Component {
         onSuccess: (data, status) => this.props.history.push('/dashboard'),
         onFailed: (data, status) => this.showErrorText(
           status === 422 ? 'Invalid credential'
-            : data.errors && data.errors.email && data.errors.email || 'Unknown error'
+            : (data.errors && data.errors.email && data.errors.email) || 'Unknown error'
         )
       })
     }

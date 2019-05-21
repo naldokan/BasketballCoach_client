@@ -60,8 +60,7 @@ class Register extends Component {
         password: this.password,
         onSuccess: (data, status) => this.props.history.push('/dashboard'),
         onFailed: (data, status) => this.showErrorText(
-          data.errors && data.errors.email && data.errors.email
-          || 'Unknown error'
+          (data.errors && data.errors.email && data.errors.email) || 'Unknown error'
         )
       })
     }
