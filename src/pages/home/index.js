@@ -70,7 +70,7 @@ class Home extends Component {
     
     return (
       <div className="home-container">
-        <Loader loader={this.props.loader} />
+        <Loader loading={this.props.loading} />
         <Navbar color="white" light expand="md" className="py-md-0">
           <NavbarBrand>
           </NavbarBrand>
