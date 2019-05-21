@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
 import { compose } from 'redux'
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
 import cx from 'classnames'
 import {
@@ -21,7 +23,10 @@ import Statistics from 'pages/statistics';
 import Leaderboard from 'pages/leaderboard';
 import History from 'pages/history';
 
+import Loader from 'components/loader'
+import { loadingSelector } from 'redux/modules/api/selectors'
 import './styles.scss';
+
 
 const navs = [
   { link: '/dashboard', label: 'Dashboard' },
@@ -62,6 +67,7 @@ class Home extends Component {
     
     return (
       <div className="home-container">
+        <Loader loader={this.props.loader} />
         <Navbar color="white" light expand="md" className="py-md-0">
           <NavbarBrand>
           </NavbarBrand>
@@ -95,6 +101,11 @@ class Home extends Component {
   }
 }
 
+const selector = createStructuredSelector({
+  loading: loadingSelector
+});
+
 export default compose(
+  connect(selector),
   withRouter
 )(Home);

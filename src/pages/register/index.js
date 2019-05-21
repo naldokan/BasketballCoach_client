@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
+import { connect } from 'react-redux';
 import { compose } from 'redux'
+import { createStructuredSelector } from 'reselect';
 
 import { Row, Col, Form, FormGroup, Input, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBasketballBall } from '@fortawesome/free-solid-svg-icons'
+
+import Loader from 'components/loader'
+import { loadingSelector } from 'redux/modules/api/selectors'
+import { register } from 'redux/modules/auth/actions'
+
 
 
 class Register extends Component {
@@ -37,25 +44,42 @@ class Register extends Component {
 
   handleRegisterClick = () => {
     if (this.email.length === 0) {
-      this.setState({ errorText: 'Email is empty' }, this.autoEraseError)
+      this.showErrorText('Email is empty')
     } else if (this.name.length === 0) {
-      this.setState({ errorText: 'Name is empty' }, this.autoEraseError)
+      this.showErrorText('Name is empty')
     } else if (this.password.length === 0) {
-      this.setState({ errorText: 'Password is empty' }, this.autoEraseError)
+      this.showErrorText('Password is empty')
+    } else if (this.password.length < 8) {
+      this.showErrorText('Password should be more than 8 letters')
     } else if (this.password !== this.passwordConfirm) {
-      this.setState({ errorText: 'Password doesn\'t match' }, this.autoEraseError)
+      this.showErrorText('Password doesn\'t match')
     } else {
-      this.props.history.push('/dashboard')
+      this.props.register({
+        name: this.name,
+        email: this.email,
+        password: this.password,
+        onSuccess: (data, status) => this.props.history.push('/dashboard'),
+        onFailed: (data, status) => this.showErrorText(
+          data.errors && data.errors.email && data.errors.email
+          || 'Unknown error'
+        )
+      })
     }
   }
 
-  autoEraseError = () => setTimeout(() => this.setState({ errorText: null }), 2000)
+  showErrorText = errorText => this.setState({ errorText }, this.autoEraseError)
+
+  autoEraseError = () => setTimeout(() => this.setState({ errorText: null }), 3000)
 
   handleGobackClick = () => this.props.history.push('/login')
 
   render() {
     return (
       <Row className='register-form'>
+        <Loader
+          loading={this.props.loading}
+          bottom
+        />
         <Col xs='8' sm='6' md='5' lg='4' xl='3'>
           <Form>
             <FontAwesomeIcon
@@ -120,6 +144,15 @@ class Register extends Component {
   }
 }
 
+const selector = createStructuredSelector({
+  loading: loadingSelector
+});
+
+const actions = {
+  register
+}
+
 export default compose(
+  connect(selector, actions),
   withRouter
 )(Register);

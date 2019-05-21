@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
+import { connect } from 'react-redux';
 import { compose } from 'redux'
+import { createStructuredSelector } from 'reselect';
 
 import { Row, Col, Form, FormGroup, Input, Button } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBasketballBall } from '@fortawesome/free-solid-svg-icons'
+
+import Loader from 'components/loader'
+import { loadingSelector } from 'redux/modules/api/selectors'
+import { tryAuth } from 'redux/modules/auth/actions'
 
 import './styles.scss';
 
@@ -21,15 +27,25 @@ class Login extends Component {
 
   handleSigninClick = () => {
     if (this.email.length === 0) {
-      this.setState({ errorText: 'Email is empty' }, this.autoEraseError)
+      this.showErrorText('Email is empty')
     } else if (this.password.length === 0) {
-      this.setState({ errorText: 'Password is empty' }, this.autoEraseError)
+      this.showErrorText('Password is empty')
     } else {
-      this.props.history.push('/dashboard')
+      this.props.tryAuth({
+        email: this.email,
+        password: this.password,
+        onSuccess: (data, status) => this.props.history.push('/dashboard'),
+        onFailed: (data, status) => this.showErrorText(
+          status === 422 ? 'Invalid credential'
+            : data.errors && data.errors.email && data.errors.email || 'Unknown error'
+        )
+      })
     }
   }
 
-  autoEraseError = () => setTimeout(() => this.setState({ errorText: null }), 2000)
+  showErrorText = errorText => this.setState({ errorText }, this.autoEraseError)
+
+  autoEraseError = () => setTimeout(() => this.setState({ errorText: null }), 3000)
 
   handleEmailChange = e => {
     this.email = e.target.value
@@ -44,6 +60,10 @@ class Login extends Component {
   render() {
     return (
       <Row className='login-form'>
+        <Loader
+          loading={this.props.loading}
+          bottom
+        />
         <Col xs='8' sm='6' md='5' lg='4' xl='3'>
           <Form>
             <FontAwesomeIcon
@@ -99,6 +119,15 @@ class Login extends Component {
   }
 }
 
+const selector = createStructuredSelector({
+  loading: loadingSelector
+});
+
+const actions = {
+  tryAuth
+}
+
 export default compose(
+  connect(selector, actions),
   withRouter
 )(Login);

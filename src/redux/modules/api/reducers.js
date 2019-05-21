@@ -3,6 +3,9 @@ import { types } from './actions'
 
 
 export default handleActions({
-  [types.SET_AUTH]:
-    token => token
-}, null)
+  [types.THROW_REQUEST]:
+    state => true,
+
+  [types.FINISH_REQUEST]:
+    state => false
+}, false)

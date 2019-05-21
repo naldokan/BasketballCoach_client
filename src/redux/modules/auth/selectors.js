@@ -1,1 +1,1 @@
-export const authSelector = ({ auth }) => auth
+export const tokenSelector = ({ auth }) => auth
