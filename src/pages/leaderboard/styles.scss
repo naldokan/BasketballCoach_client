@@ -1,0 +1,29 @@
+@import "../variables";
+
+.leaderboard-select {
+  @include media-breakpoint-only(xl) {
+    font-size: 2em;
+  }
+  @include media-breakpoint-only(lg) {
+    font-size: 1.75em;
+  }
+  @include media-breakpoint-only(md) {
+    font-size: 1.5em;
+  }
+  @include media-breakpoint-only(sm) {
+    font-size: 1.25em;
+  }
+  @include media-breakpoint-only(xs) {
+    font-size: 1em;
+  }
+
+  .row {
+    justify-content: center;
+    margin: 1rem 0;
+
+    button {
+      font-size: 1em;
+      padding: 0.5em;
+    }
+  }
+}
