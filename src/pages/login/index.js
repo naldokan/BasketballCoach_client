@@ -10,10 +10,36 @@ import './styles.scss';
 
 
 class Login extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { errorText: null }
 
+    this.email = this.password = ''
+  }
+  
   handleSignupClick = () => this.props.history.push('/register')
 
-  handleSigninClick = () => this.props.history.push('/dashboard')
+  handleSigninClick = () => {
+    if (this.email.length === 0) {
+      this.setState({ errorText: 'Email is empty' }, this.autoEraseError)
+    } else if (this.password.length === 0) {
+      this.setState({ errorText: 'Password is empty' }, this.autoEraseError)
+    } else {
+      this.props.history.push('/dashboard')
+    }
+  }
+
+  autoEraseError = () => setTimeout(() => this.setState({ errorText: null }), 2000)
+
+  handleEmailChange = e => {
+    this.email = e.target.value
+    e.which === 13 && this.handleSigninClick()
+  }
+
+  handlePasswordChange = e => {
+    this.password = e.target.value
+    e.which === 13 && this.handleSigninClick()
+  }
 
   render() {
     return (
@@ -27,10 +53,21 @@ class Login extends Component {
               className="mb-5"
             />
             <FormGroup>
-              <Input type="email" name="email" placeholder="Email"/>
+              <Input
+                type="email"
+                name="email"
+                placeholder="Email"
+                required
+                onKeyUp={this.handleEmailChange}
+              />
             </FormGroup>
             <FormGroup>
-              <Input type="password" placeholder="Password"/>
+              <Input
+                type="password"
+                placeholder="Password"
+                onKeyUp={this.handlePasswordChange}
+                required
+              />
             </FormGroup>
             <FormGroup>
               <Button
@@ -41,6 +78,9 @@ class Login extends Component {
                 Sign in
               </Button>
             </FormGroup>
+            <p className='text-warning'>
+              &nbsp;{ this.state.errorText }&nbsp;
+            </p>
             <p className="text-alert text-white-50">
               <nobr>Haven't account?</nobr>
               &nbsp;
