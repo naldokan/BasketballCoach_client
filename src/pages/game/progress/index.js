@@ -37,22 +37,30 @@ class GameProgress extends Component {
   }
 
   handleStartClick = () => {
+    return this.props.history.push('/game/detail')
     switch (this.state.progress) {
       case progressStatus.INIT:
         return this.setState({ progress: progressStatus.PROGRESS })
       case progressStatus.PROGRESS:
         return this.setState({ progress: progressStatus.PAUSED})
-      default:
+      case progressStatus.PAUSED:
         return this.setState({ progress: progressStatus.PROGRESS})
+      default: // Complete
+        return this.props.history.push('/game/detail')
     }
   }
 
-  handleStopClick = () =>
-    this.state.progress === progressStatus.INIT
-      ? this.props.history.push('/game')
-      : this.disconnectGame() && this.setState({ progress: progressStatus.INIT})
-
-  handleDetailClick = () => this.props.history.push('/game/detail')
+  handleStopClick = () => {
+    switch (this.state.progress) {
+      case progressStatus.INIT:
+        return this.props.history.push('/game')
+      case progressStatus.PAUSED:
+      case progressStatus.PROGRESS:
+        this.disconnectGame() && this.setState({ progress: progressStatus.INIT})
+      default: // Complete
+        this.setState({ progress: progressStatus.INIT })
+    }
+  }
 
   handleNavigateAway = location => {
     // remote.app.getVersion()
@@ -163,13 +171,14 @@ class GameProgress extends Component {
                 <Button color="primary" className='game-control-button' onClick={this.handleStartClick}>
                   { this.state.progress === progressStatus.INIT ? 'Start'
                     : this.state.progress === progressStatus.PROGRESS ? 'Pause'
-                    : 'Resume' }
+                    : this.state.progress === progressStatus.PAUSED ? 'Resume' : 'Detailed view' }
                 </Button>
-                <Button onClick={this.handleDetailClick}>detail</Button>
+                <Button onClick={this.handleStartClick}>detail</Button>
               </Col>
               <Col className='col-sm-12 col-xl-8 offset-xl-2'>
                 <Button color="primary" className='game-control-button' onClick={this.handleStopClick}>
-                  { this.state.progress === progressStatus.INIT ? 'Go Back' : 'Stop' }
+                  { this.state.progress === progressStatus.INIT ? 'Go Back'
+                    : this.state.progress === progressStatus.COMPLETE ? 'Retry' :'Stop' }
                 </Button>
               </Col>
             </Row>
