@@ -23,10 +23,14 @@ const throwRequest = function* ({ payload }) {
   try {
     const response = yield call(request, method, url, params, token)
     const { status, data } = response
-    yield call(onSuccess, data, status)
+    if (onSuccess) {
+      yield call(onSuccess, data, status)
+    }
   } catch (error) {
     const { status, data } = error.response
-    yield call(onFailed, data, status)
+    if (onFailed) {
+      yield call(onFailed, data, status)
+    }
   }
 
   yield put(actions.finishRequest())

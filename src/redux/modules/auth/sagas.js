@@ -37,7 +37,21 @@ const register = function* ({ payload }) {
   }))
 }
 
+const signout = function* ({ payload }) {
+  const { onSuccess } = payload
+
+  yield put(throwRequest({
+    method: 'post',
+    url: '/logout',
+    onSuccess: function* (data, status) {
+      yield put(actions.setAuth(null))
+      yield call(onSuccess, data, status)
+    }
+  }))
+}
+
 export default function* rootSaga() {
   yield takeLatest(actions.types.TRY_AUTH, tryAuth)
+  yield takeLatest(actions.types.SIGN_OUT, signout)
   yield takeLatest(actions.types.REGISTER, register)
 }

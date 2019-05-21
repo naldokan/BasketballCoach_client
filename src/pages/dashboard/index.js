@@ -31,6 +31,10 @@ class Dashboard extends Component {
     }
   }
 
+  componentDidMount() {
+    console.log('mount')
+  }
+
   render() {
     const data = [
       {uv: 400, pv: 2400, amt: 2400},
@@ -197,6 +201,8 @@ class Dashboard extends Component {
     );
   }
 }
+
+
 
 export default compose(
   withRouter

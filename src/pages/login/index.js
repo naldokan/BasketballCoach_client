@@ -34,7 +34,7 @@ class Login extends Component {
       this.props.tryAuth({
         email: this.email,
         password: this.password,
-        onSuccess: (data, status) => this.props.history.push('/dashboard'),
+        onSuccess: () => this.props.history.push('/dashboard'),
         onFailed: (data, status) => this.showErrorText(
           status === 422 ? 'Invalid credential'
             : (data.errors && data.errors.email && data.errors.email) || 'Unknown error'
@@ -119,7 +119,7 @@ class Login extends Component {
   }
 }
 
-const selector = createStructuredSelector({
+const selectors = createStructuredSelector({
   loading: loadingSelector
 });
 
@@ -128,6 +128,6 @@ const actions = {
 }
 
 export default compose(
-  connect(selector, actions),
+  connect(selectors, actions),
   withRouter
 )(Login);

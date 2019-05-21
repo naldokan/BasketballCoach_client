@@ -25,6 +25,7 @@ import History from 'pages/history';
 
 import Loader from 'components/loader'
 import { loadingSelector } from 'redux/modules/api/selectors'
+import { signout } from 'redux/modules/auth/actions'
 import './styles.scss';
 
 
@@ -51,7 +52,9 @@ class Home extends Component {
 
   handleNavigatorClick = link => () => this.props.history.push(link)
 
-  handleSignoutClick = () => this.props.history.push('/')
+  handleSignoutClick = () => this.props.signout({
+    onSuccess: () => this.props.history.push('/login'),
+  })
 
   render() {
 
@@ -101,11 +104,15 @@ class Home extends Component {
   }
 }
 
-const selector = createStructuredSelector({
+const selectors = createStructuredSelector({
   loading: loadingSelector
 });
 
+const actions = {
+  signout
+}
+
 export default compose(
-  connect(selector),
+  connect(selectors, actions),
   withRouter
 )(Home);

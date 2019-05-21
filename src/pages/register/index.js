@@ -58,8 +58,8 @@ class Register extends Component {
         name: this.name,
         email: this.email,
         password: this.password,
-        onSuccess: (data, status) => this.props.history.push('/dashboard'),
-        onFailed: (data, status) => this.showErrorText(
+        onSuccess: () => this.props.history.push('/dashboard'),
+        onFailed: data => this.showErrorText(
           (data.errors && data.errors.email && data.errors.email) || 'Unknown error'
         )
       })
@@ -143,7 +143,7 @@ class Register extends Component {
   }
 }
 
-const selector = createStructuredSelector({
+const selectors = createStructuredSelector({
   loading: loadingSelector
 });
 
@@ -152,6 +152,6 @@ const actions = {
 }
 
 export default compose(
-  connect(selector, actions),
+  connect(selectors, actions),
   withRouter
 )(Register);
