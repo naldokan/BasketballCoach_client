@@ -1,0 +1,9 @@
+.line-chart-box {
+  &.hide-x-tick {
+    .xAxis {
+      text {
+        display: none;
+      }
+    }
+  }
+}

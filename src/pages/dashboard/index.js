@@ -1,200 +1,119 @@
 import React, { Component } from 'react';
-import { withRouter } from "react-router";
+import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
 import { compose } from 'redux'
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  CartesianGrid,
-  Tooltip,
-  XAxis
-} from 'recharts';
 
+import { Row, Col } from 'reactstrap';
 import FancyBox from 'components/fancybox';
 import FactTile from 'components/facttile';
+import { LineChart, GoalMap } from 'components/chart';
+import fp from 'lodash/fp';
+import { throwRequest } from 'redux/modules/api/actions'
+import { Round } from 'utils'
 import playground from 'playground.png';
-
-import cx from 'classnames'
-import {
-  Row,
-  Col,
-} from 'reactstrap';
-
 import './styles.scss';
+
+
+const graphInfo = {
+  left: [
+    { caption: 'Release Angle', source: 'release_angle' },
+    { caption: 'Release Time', source: 'release_time' }
+  ],
+  right: [
+    { caption: 'Elbow Angle', source: 'elbow_angle' },
+    { caption: 'Leg Angle', source: 'leg_angle' }
+  ]
+}
 
 
 class Dashboard extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-    }
+    this.state = {}
   }
 
   componentDidMount() {
-    console.log('mount')
+    this.props.throwRequest({
+      url: '/dashboard',
+      onSuccess: data => this.setState({
+        totalGamePlays: data.total_game_plays,
+        overallAccuracy: Round(data.overall_accuracy * 100),
+        recentAccuracy: Round(data.recent_accuracy * 100),
+        history: data.history,
+        positions: data.positions
+      })
+    })
+  }
+
+  getGraphData = (caption, source) => {
+    const { history } = this.state
+
+    return history && history.map(value => ({
+      name: value['created_at'], [caption]: value[source]
+    }))
   }
 
   render() {
-    const data = [
-      {uv: 400, pv: 2400, amt: 2400},
-      {uv: 300, pv: 2100, amt: 2000},
-      {uv: 500, pv: 2100, amt: 2000}
-    ]
+    const { totalGamePlays, overallAccuracy, recentAccuracy, history, positions } = this.state
 
     return (
       <>
         <Row className='dashboard-overall'>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
-              <FactTile score='100' caption='Total game plays' size='1'/>
+              <FactTile score={totalGamePlays} caption='Total game plays' size='1'/>
             </FancyBox>
           </Col>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
-              <FactTile score='60%' caption='Overall accuracy' size='1'/>
+              <FactTile score={overallAccuracy && overallAccuracy + '%'} caption='Overall accuracy' size='1'/>
             </FancyBox>
           </Col>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
-              <FactTile score='100' caption='Recent accuracy' size='1'/>
+              <FactTile score={recentAccuracy && recentAccuracy + '%'} caption='Recent accuracy' size='1'/>
             </FancyBox>
           </Col>
         </Row>
         <p className='headline'>Performance of recent 10 performances</p>
         <Row>
           <Col className='col-12 col-lg-4 px-5 order-2 order-lg-1'>
-            <Row>
-              <Col className='col-12 d-flex justify-content-between'>
-                <p>Release time</p>
-                <p>123</p>
-              </Col>
-              <Col className='col-12'>
-                <ResponsiveContainer height={100} width='100%'>
-                  <LineChart
-                    width={400}
-                    height={150}
-                    data={data}
-                    margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-                  >
-                    <XAxis dataKey="name" />
-                    <Tooltip />
-                    <CartesianGrid stroke="#f5f5f5" />
-                    <Line type="monotone" dataKey="uv" stroke="#ff7300" yAxisId={0} />
-                  </LineChart>
-                </ResponsiveContainer> 
-              </Col>
-            </Row>
-            <Row>
-              <Col className='col-12 d-flex justify-content-between'>
-                <p>Release time</p>
-                <p>123</p>
-              </Col>
-              <Col className='col-12'>
-                <ResponsiveContainer height={100} width='100%'>
-                  <LineChart
-                    width={400}
-                    height={150}
-                    data={data}
-                    margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-                  >
-                    <XAxis dataKey="name" />
-                    <Tooltip />
-                    <CartesianGrid stroke="#f5f5f5" />
-                    <Line type="monotone" dataKey="uv" stroke="#ff7300" yAxisId={0} />
-                  </LineChart>
-                </ResponsiveContainer> 
-              </Col>
-            </Row>
-            <Row>
-              <Col className='col-12 d-flex justify-content-between'>
-                <p>Release time</p>
-                <p>123</p>
-              </Col>
-              <Col className='col-12'>
-                <ResponsiveContainer height={100} width='100%'>
-                  <LineChart
-                    width={400}
-                    height={150}
-                    data={data}
-                    margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-                  >
-                    <XAxis dataKey="name" />
-                    <Tooltip />
-                    <CartesianGrid stroke="#f5f5f5" />
-                    <Line type="monotone" dataKey="uv" stroke="#ff7300" yAxisId={0} />
-                  </LineChart>
-                </ResponsiveContainer> 
-              </Col>
-            </Row>
+            { graphInfo.left.map(({ caption, source }, key) => (
+              <Row key={key} className='mb-4'>
+                <Col className='col-12 d-flex justify-content-between'>
+                  <p>{ caption }</p>
+                  <p>{ history && Round(fp.meanBy(source)(history))}</p>
+                </Col>
+                <Col className='col-12'>
+                  <LineChart data={this.getGraphData(caption, source)} dataKey={caption} showXTick={false}/>
+                </Col>
+              </Row>
+            ))}
           </Col>
           <Col className='col-12 col-lg-4 px-5 order-1 order-lg-2'>
             <img className='w-100 img-thumbnail rounded mb-5' src={playground} />
+            {/* <GoalMap
+              success={this.state.positions &&
+                this.state.positions.filter(goal => goal.success)
+                  .map(({ x, y }) => ({x, y, z: 1}))}
+              fail={this.state.positions &&
+                this.state.positions.filter(goal => !goal.success)
+                  .map(({ x, y }) => ({x, y, z: 1}))} */}
+            />
           </Col>
           <Col className='col-12 col-lg-4 px-5 order-3 order-lg-3'>
-            <Row>
-              <Col className='col-12 d-flex justify-content-between'>
-                <p>Release time</p>
-                <p>123</p>
-              </Col>
-              <Col className='col-12'>
-                <ResponsiveContainer height={100} width='100%'>
-                  <LineChart
-                    width={400}
-                    height={150}
-                    data={data}
-                    margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-                  >
-                    <XAxis dataKey="name" />
-                    <Tooltip />
-                    <CartesianGrid stroke="#f5f5f5" />
-                    <Line type="monotone" dataKey="uv" stroke="#ff7300" yAxisId={0} />
-                  </LineChart>
-                </ResponsiveContainer> 
-              </Col>
-            </Row>
-            <Row>
-              <Col className='col-12 d-flex justify-content-between'>
-                <p>Release time</p>
-                <p>123</p>
-              </Col>
-              <Col className='col-12'>
-                <ResponsiveContainer height={100} width='100%'>
-                  <LineChart
-                    width={400}
-                    height={150}
-                    data={data}
-                    margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-                  >
-                    <XAxis dataKey="name" />
-                    <Tooltip />
-                    <CartesianGrid stroke="#f5f5f5" />
-                    <Line type="monotone" dataKey="uv" stroke="#ff7300" yAxisId={0} />
-                  </LineChart>
-                </ResponsiveContainer> 
-              </Col>
-            </Row>
-            <Row>
-              <Col className='col-12 d-flex justify-content-between'>
-                <p>Release time</p>
-                <p>123</p>
-              </Col>
-              <Col className='col-12'>
-                <ResponsiveContainer height={100} width='100%'>
-                  <LineChart
-                    width={400}
-                    height={150}
-                    data={data}
-                    margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-                  >
-                    <XAxis dataKey="name" />
-                    <Tooltip />
-                    <CartesianGrid stroke="#f5f5f5" />
-                    <Line type="monotone" dataKey="uv" stroke="#ff7300" yAxisId={0} />
-                  </LineChart>
-                </ResponsiveContainer> 
-              </Col>
-            </Row>
+            { graphInfo.right.map(({ caption, source }, key) => (
+              <Row key={key} className='mb-4'>
+                <Col className='col-12 d-flex justify-content-between'>
+                  <p>{ caption }</p>
+                  <p>{ history && Round(fp.meanBy(source)(history))}</p>
+                </Col>
+                <Col className='col-12'>
+                  <LineChart data={this.getGraphData(caption, source)} dataKey={caption} showXTick={false}/>
+                </Col>
+              </Row>
+              ))}
           </Col>
         </Row>
       </>
@@ -202,8 +121,11 @@ class Dashboard extends Component {
   }
 }
 
-
+const actions = {
+  throwRequest
+}
 
 export default compose(
+  connect(undefined, actions),
   withRouter
 )(Dashboard);
