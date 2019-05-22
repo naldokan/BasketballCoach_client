@@ -26,6 +26,7 @@ class History extends Component {
         <Row className='history-pane'>
           <Col className='col-12 col-md-6 mb-5'>
             <Calendar
+              className='fancy-box'
               calendarType="US"
               onChange={this.onDateChange}
               value={this.state.date}
