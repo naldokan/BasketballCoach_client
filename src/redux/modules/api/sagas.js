@@ -1,6 +1,7 @@
 import { takeLatest, put, call, select } from 'redux-saga/effects'
 import axios from 'axios'
 import * as actions from './actions'
+import { setAuth } from '../auth/actions'
 import { tokenSelector } from '../auth/selectors'
 
 const headers = {
@@ -27,9 +28,15 @@ const throwRequest = function* ({ payload }) {
       yield call(onSuccess, data, status)
     }
   } catch (error) {
-    const { status, data } = error.response
     if (onFailed) {
-      yield call(onFailed, data, status)
+      const { response } = error
+      if (response) {
+        const data = response.data && response.data
+        const status = response.status && response.status
+        yield call(onFailed, data, status)
+      }
+    } else {
+      yield put(setAuth(null))
     }
   }
 

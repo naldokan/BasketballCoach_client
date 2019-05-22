@@ -4,6 +4,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
+import { Redirect } from 'react-router-dom';
 import cx from 'classnames'
 import {
   Collapse,
@@ -25,6 +26,7 @@ import History from 'pages/history';
 
 import Loader from 'components/loader'
 import { loadingSelector } from 'redux/modules/api/selectors'
+import { tokenSelector } from 'redux/modules/auth/selectors'
 import { signout } from 'redux/modules/auth/actions'
 import './styles.scss';
 
@@ -68,6 +70,10 @@ class Home extends Component {
       : <Leaderboard/>
     const verticalCenterView = verticalCenterViews.includes(this.props.view)
     
+    if (!this.props.token) {
+      return <Redirect to='/login' />
+    }
+
     return (
       <div className="home-container">
         <Loader loading={this.props.loading} />
@@ -105,7 +111,8 @@ class Home extends Component {
 }
 
 const selectors = createStructuredSelector({
-  loading: loadingSelector
+  loading: loadingSelector,
+  token: tokenSelector
 });
 
 const actions = {

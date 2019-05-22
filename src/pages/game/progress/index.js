@@ -37,7 +37,7 @@ class GameProgress extends Component {
   }
 
   handleStartClick = () => {
-    return this.props.history.push('/game/detail')
+    // return this.props.history.push('/game/detail')
     switch (this.state.progress) {
       case progressStatus.INIT:
         return this.setState({ progress: progressStatus.PROGRESS })
@@ -167,13 +167,13 @@ class GameProgress extends Component {
               </Col>
             </Row>
             <Row>
+              <Col className="col-12">Free Throw</Col>
               <Col className='col-sm-12 col-xl-8 offset-xl-2'>
                 <Button color="primary" className='game-control-button' onClick={this.handleStartClick}>
                   { this.state.progress === progressStatus.INIT ? 'Start'
                     : this.state.progress === progressStatus.PROGRESS ? 'Pause'
                     : this.state.progress === progressStatus.PAUSED ? 'Resume' : 'Detailed view' }
                 </Button>
-                <Button onClick={this.handleStartClick}>detail</Button>
               </Col>
               <Col className='col-sm-12 col-xl-8 offset-xl-2'>
                 <Button color="primary" className='game-control-button' onClick={this.handleStopClick}>
