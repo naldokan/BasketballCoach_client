@@ -61,17 +61,17 @@ class Dashboard extends Component {
         <Row className='dashboard-overall'>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
-              <FactTile score={totalGamePlays} caption='Total game plays' size='1'/>
+              <FactTile score={totalGamePlays === undefined ? undefined : totalGamePlays} caption='Total game plays' size='1'/>
             </FancyBox>
           </Col>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
-              <FactTile score={overallAccuracy && overallAccuracy + '%'} caption='Overall accuracy' size='1'/>
+              <FactTile score={overallAccuracy === undefined ? undefined : overallAccuracy + '%'} caption='Overall accuracy' size='1'/>
             </FancyBox>
           </Col>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
-              <FactTile score={recentAccuracy && recentAccuracy + '%'} caption='Recent accuracy' size='1'/>
+              <FactTile score={overallAccuracy === undefined ? undefined : recentAccuracy + '%'} caption='Recent accuracy' size='1'/>
             </FancyBox>
           </Col>
         </Row>
@@ -82,7 +82,7 @@ class Dashboard extends Component {
               <Row key={key} className='mb-4'>
                 <Col className='col-12 d-flex justify-content-between'>
                   <p>{ caption }</p>
-                  <p>{ history && Round(fp.meanBy(source)(history))}</p>
+                  <p>{ history && history.length > 0 && Round(fp.meanBy(source)(history))}</p>
                 </Col>
                 <Col className='col-12'>
                   <LineChart data={this.getGraphData(caption, source)} dataKey={caption} />
@@ -106,7 +106,7 @@ class Dashboard extends Component {
               <Row key={key} className='mb-4'>
                 <Col className='col-12 d-flex justify-content-between'>
                   <p>{ caption }</p>
-                  <p>{ history && Round(fp.meanBy(source)(history))}</p>
+                  <p>{ history && history.length > 0 && Round(fp.meanBy(source)(history))}</p>
                 </Col>
                 <Col className='col-12'>
                   <LineChart data={this.getGraphData(caption, source)} dataKey={caption} />

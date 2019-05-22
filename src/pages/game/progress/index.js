@@ -36,7 +36,7 @@ class GameProgress extends Component {
     window.onbeforeunload = undefined
   }
 
-  handleStartClick = () => {
+  handleStartClick = () => {return;
     // return this.props.history.push('/game/detail')
     switch (this.state.progress) {
       case progressStatus.INIT:
@@ -50,7 +50,7 @@ class GameProgress extends Component {
     }
   }
 
-  handleStopClick = () => {
+  handleStopClick = () => {return;
     switch (this.state.progress) {
       case progressStatus.INIT:
         return this.props.history.push('/game')
@@ -167,7 +167,6 @@ class GameProgress extends Component {
               </Col>
             </Row>
             <Row>
-              <Col className="col-12">Free Throw</Col>
               <Col className='col-sm-12 col-xl-8 offset-xl-2'>
                 <Button color="primary" className='game-control-button' onClick={this.handleStartClick}>
                   { this.state.progress === progressStatus.INIT ? 'Start'
