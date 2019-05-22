@@ -30,7 +30,7 @@ class Dashboard extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = { }
   }
 
   componentDidMount() {
@@ -48,7 +48,6 @@ class Dashboard extends Component {
 
   getGraphData = (caption, source) => {
     const { history } = this.state
-
     return history && history.map(value => ({
       name: value['created_at'], [caption]: value[source]
     }))
@@ -86,7 +85,7 @@ class Dashboard extends Component {
                   <p>{ history && Round(fp.meanBy(source)(history))}</p>
                 </Col>
                 <Col className='col-12'>
-                  <LineChart data={this.getGraphData(caption, source)} dataKey={caption} showXTick={false}/>
+                  <LineChart data={this.getGraphData(caption, source)} dataKey={caption} />
                 </Col>
               </Row>
             ))}
@@ -99,8 +98,8 @@ class Dashboard extends Component {
                   .map(({ x, y }) => ({x, y, z: 1}))}
               fail={this.state.positions &&
                 this.state.positions.filter(goal => !goal.success)
-                  .map(({ x, y }) => ({x, y, z: 1}))} */}
-            />
+                  .map(({ x, y }) => ({x, y, z: 1}))} 
+            /> */}
           </Col>
           <Col className='col-12 col-lg-4 px-5 order-3 order-lg-3'>
             { graphInfo.right.map(({ caption, source }, key) => (
@@ -110,7 +109,7 @@ class Dashboard extends Component {
                   <p>{ history && Round(fp.meanBy(source)(history))}</p>
                 </Col>
                 <Col className='col-12'>
-                  <LineChart data={this.getGraphData(caption, source)} dataKey={caption} showXTick={false}/>
+                  <LineChart data={this.getGraphData(caption, source)} dataKey={caption} />
                 </Col>
               </Row>
               ))}

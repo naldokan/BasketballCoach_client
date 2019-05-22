@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router";
+import { connect } from 'react-redux';
 import { compose } from 'redux'
 
 import { Row, Col, Button } from 'reactstrap';
 import cx from 'classnames'
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  CartesianGrid,
-  Tooltip,
-  XAxis
-} from 'recharts';
+import fp from 'lodash/fp'
+
+import { LineChart } from 'components/chart';
+
+import { throwRequest } from 'redux/modules/api/actions'
+import { Round } from 'utils'
 
 import playground from 'playground.png';
 import './styles.scss';
@@ -22,7 +21,7 @@ const recentTries = [
   { text: 'Recent 20 tries', value: 20},
   { text: 'Recent 50 tries', value: 50},
   { text: 'Recent 100 tries', value: 100},
-  { text: 'All', value: 10}
+  { text: 'All', value: 0}
 ]
 
 const recentDays = [
@@ -33,26 +32,54 @@ const recentDays = [
   { text: 'Recent year', value: 365}
 ]
 
+const graphInfo = [
+  { caption: 'Release Angle', source: 'release_angle' },
+  { caption: 'Release Time', source: 'release_time' },
+  { caption: 'Elbow Angle', source: 'elbow_angle' },
+  { caption: 'Leg Angle', source: 'leg_angle' }
+]
+
+const recentMode = { DAYS: 'days', TRIES: 'tries'}
+
 class Statistics extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
+      mode: recentMode.DAYS,
+      period: 7
     }
   }
 
-  handleRecentTries = value => () => {}
+  componentDidMount() {
+    this.requestStatistics()
+  }
 
-  handleRecentDays = value => () => {}
+  requestStatistics = () => this.props.throwRequest({
+    url: '/statistics',
+    params: {
+      mode: this.state.mode,
+      period: this.state.period
+    },
+    onSuccess: ({ history, positions }) => this.setState({ history, positions })
+  })
+
+  getGraphData = (caption, source) => {
+    const { history } = this.state
+    return history && history.map(value => ({
+      name: value['created_at'], [caption]: value[source]
+    }))
+  }
+
+  handleRecentTries = value => () =>
+    this.setState({ mode: recentMode.TRIES, period: value }, this.requestStatistics )
+
+  handleRecentDays = value => () =>
+    this.setState({ mode: 'days', period: value }, this.requestStatistics )
 
   render() {
-    const dummy = new Array(10).fill(0).map((val, key) => key)
-    const data = [
-      {uv: 400, pv: 2400, amt: 2400},
-      {uv: 300, pv: 2100, amt: 2000},  
-      {uv: 500, pv: 2100, amt: 2000}
-    ]
-    
+    const { history } = this.state
+
     return (
       <Row className='statistics-page'>
         <Col className={cx(
@@ -80,7 +107,16 @@ class Statistics extends Component {
               {recentTries.map(({ value, text }, key) => (
                 <Row key={key} className='my-2 my-lg-4'>
                   <Col>
-                    <Button color="primary btn-block" onClick={this.handleRecentTries(value)}>{text}</Button>
+                    <Button
+                      className='btn-block'
+                      onClick={this.handleRecentTries(value)}
+                      color={
+                        this.state.mode === recentMode.TRIES &&
+                        value === this.state.period ? 'success' : 'primary'
+                      }
+                    >
+                      {text}
+                    </Button>
                   </Col>
                 </Row>
               ))}
@@ -90,33 +126,33 @@ class Statistics extends Component {
               'col-md-4',
               'col-lg-3 offset-lg-0',
               'col-xl-2')
-            }>              {recentDays.map(({ value, text }, key) => (
+            }>
+              {recentDays.map(({ value, text }, key) => (
                 <Row key={key} className='my-2 my-lg-4'>
                   <Col>
-                    <Button color="primary btn-block" onClick={this.handleRecentDays(value)}>{text}</Button>
+                    <Button
+                      className='btn-block'
+                      onClick={this.handleRecentDays(value)}
+                      color={
+                        this.state.mode === recentMode.DAYS &&
+                        value === this.state.period ? 'success' : 'primary'
+                      }
+                    >
+                      {text}
+                    </Button>
                   </Col>
                 </Row>
               ))}
             </Col>
           </Row>
-          {dummy.map((val, key) => (
-            <Row key={key}>
-              <Col className='col-12'>
-                <ResponsiveContainer height={100} width='100%'>
-                  <LineChart
-                    width={400}
-                    height={150}
-                    data={data}
-                    margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-                  >
-                    <XAxis dataKey="name" />
-                    <Tooltip />
-                    <CartesianGrid stroke="#f5f5f5" />
-                    <Line type="monotone" dataKey="uv" stroke="#ff7300" yAxisId={0} />
-                  </LineChart>
-                </ResponsiveContainer>
+          {graphInfo.map(({ caption, source }) => (
+            <Row key={source}>
+              <Col className='col-12 d-flex justify-content-between'>
+                <p>{ caption }</p>
+                <p>{ history && history.length > 0 && Round(fp.meanBy(source)(history))}</p>
               </Col>
               <Col className='col-12'>
+                <LineChart data={this.getGraphData(caption, source)} dataKey={caption}/>
               </Col>
             </Row>
           ))}
@@ -126,6 +162,11 @@ class Statistics extends Component {
   }
 }
 
+const actions = {
+  throwRequest
+}
+
 export default compose(
+  connect(undefined, actions),
   withRouter
 )(Statistics);
