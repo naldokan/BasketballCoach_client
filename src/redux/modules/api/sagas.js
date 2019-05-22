@@ -18,7 +18,7 @@ const request = (method, url, params, token) => {
 
 const throwRequest = function* ({ payload }) {
   const { method, url, params, onSuccess, onFailed } = payload
-  const token = 'Ec95uHtNPmR47MmeFz1gAIe2UhxVywb84KdyuKkGz4PK87dcf2moRcYSECG6' // yield select(tokenSelector)
+  const token = yield select(tokenSelector)
 
   try {
     const response = yield call(request, method, url, params, token)
