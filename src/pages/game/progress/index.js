@@ -36,7 +36,7 @@ class GameProgress extends Component {
     window.onbeforeunload = undefined
   }
 
-  handleStartClick = () => {return;
+  handleStartClick = () => {
     // return this.props.history.push('/game/detail')
     switch (this.state.progress) {
       case progressStatus.INIT:
@@ -50,7 +50,7 @@ class GameProgress extends Component {
     }
   }
 
-  handleStopClick = () => {return;
+  handleStopClick = () => {
     switch (this.state.progress) {
       case progressStatus.INIT:
         return this.props.history.push('/game')

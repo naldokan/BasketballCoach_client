@@ -1,0 +1,71 @@
+import { eventChannel, END } from 'redux-saga'
+import { select } from 'redux-saga/effects'
+import { tokenSelector } from '../auth/selectors'
+import * as actions from './actions'
+
+
+export const connect = function () {
+  return new WebSocket(process.env.REACT_APP_SOCKET_URL)
+}
+
+export const createChannel = function (socket) {
+  return eventChannel(emit => {
+    socket.onopen = e => {
+    }
+
+    socket.onclose = e => {
+    }
+
+    socket.onerror = e => {
+      emit(actions.socketError(e.reason))
+    }
+
+    socket.onmessage = e => {
+      const msg = JSON.parse(e.data)
+      switch (msg['type']) {
+        case 'STATUS':
+          msg['status'] === 'ALREADY_OCCUPIED' &&
+          emit(actions.waitForFreeGame())
+          break;
+
+        case 'LAST_SHOT':
+          emit(actions.updateLastShot(msg['data']))
+          break;
+
+        case 'ELAPSED_TIME':
+          emit(actions.updateTime(msg['time']))
+          break;
+
+        case 'FINISH':
+        default:
+          emit(actions.finishGame())
+          break;
+      }
+    }
+
+    const unsubscribe = () => {
+      socket.close()
+    }
+
+    return unsubscribe
+  })
+}
+
+export const sendMessage = function* ({ type, payload }, socket) {
+  const { types } = actions
+  const cmds = {
+    [types.START_GAME]:   types.START_GAME,
+    [types.PAUSE_GAME]:   types.PAUSE_GAME,
+    [types.RESUME_GAME]:  types.RESUME_GAME,
+    [types.STOP_GAME]:    types.STOP_GAME,
+    [types.FINISH_GAME]:  types.FINISH_GAME,
+  }
+  const msg = { cmd: cmds[type] }
+
+  if (type === types.START_GAME) {
+    msg.mode = payload.mode
+    msg.token = yield select(tokenSelector)
+  }
+
+  yield call(socket, send, JSON.stringify(msg))
+}
