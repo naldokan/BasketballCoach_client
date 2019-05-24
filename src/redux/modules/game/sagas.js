@@ -21,6 +21,7 @@ const connect = function* ({ payload }) {
   
   const channel = yield call(websocket.createChannel, socket)
 
+  yield takeLatest(types.CHECK_GAME, websocket.sendMessage, socket)
   yield takeLatest(types.START_GAME, websocket.sendMessage, socket)
   yield takeLatest(types.PAUSE_GAME, websocket.sendMessage, socket)
   yield takeLatest(types.RESUME_GAME, websocket.sendMessage, socket)

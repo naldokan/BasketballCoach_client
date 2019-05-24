@@ -3,6 +3,7 @@ import { createAction } from 'redux-actions'
 const CONNECT_GAME = 'CONNECT_GAME'
 const DISCONNECT_GAME = 'DISCONNECT_GAME'
 const SHOW_GAME_STATUS = 'SHOW_GAME_STATUS'
+const CHECK_GAME = 'CHECK_GAME'
 
 const START_GAME = 'START_GAME'
 const FINISH_GAME = 'FINISH_GAME'
@@ -20,6 +21,7 @@ export const types = {
   CONNECT_GAME,
   DISCONNECT_GAME,
   SHOW_GAME_STATUS,
+  CHECK_GAME,
   CONTROL_SUCCESS,
   START_GAME,
   FINISH_GAME,
@@ -35,6 +37,7 @@ export const types = {
 export const connectGame = createAction(CONNECT_GAME)
 export const disconnectGame = createAction(DISCONNECT_GAME)
 export const showGameStatus = createAction(SHOW_GAME_STATUS)
+export const checkGame = createAction(CHECK_GAME)
 export const startGame = createAction(START_GAME)
 export const pauseGame = createAction(PAUSE_GAME)
 export const resumeGame = createAction(RESUME_GAME)

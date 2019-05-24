@@ -3,7 +3,10 @@ import { select, call } from 'redux-saga/effects'
 import { tokenSelector } from '../auth/selectors'
 import * as actions from './actions'
 
-
+const gameAvailability = {
+  FREE: 1,
+  OCCUPIED: 0
+}
 export const connect = function () {
   return new WebSocket(process.env.REACT_APP_SOCKET_URL)
 }
@@ -23,15 +26,20 @@ export const createChannel = function (socket) {
     socket.onmessage = e => {
       const msg = JSON.parse(e.data)
       switch (msg['type']) {
-        case 'STATUS':
-          if (msg['status'] === 'ALREADY_OCCUPIED') {
-            emit(actions.showGameStatus({ status: false, user: msg['user' ]}))
-          } else if (socket.afterStartRequest) {
-            emit(actions.controlSuccess())
+        case 'GAME_AVAILABILITY':
+          if (msg['value'] === gameAvailability.OCCUPIED) {
+            emit(actions.showGameStatus({ status: false, user: 'Another user' /* msg['user' ] */ }))
           } else {
             emit(actions.showGameStatus({ status: true }))
           }
           break;
+        
+        case 'START_GAME_RESULT':
+          if (msg['value'] === gameAvailability.OCCUPIED) {
+            emit(actions.showGameStatus({ status: false, user: 'Another user' }))
+          } else {
+            emit(actions.controlSuccess())
+          }
 
         case 'LAST_SHOT':
           emit(actions.updateLastShot(msg['data']))
@@ -41,11 +49,13 @@ export const createChannel = function (socket) {
           emit(actions.updateTime(msg['time']))
           break;
 
-        case 'CONTROL_SUCCESS':
+        case 'START_GAME_RESULT':
+        case 'PAUSE_GAME_RESULT':
+        case 'RESUME_GAME_RESULT':
           emit(actions.controlSuccess())
           break;
 
-        case 'FINISH':
+        case 'STOP_GAME_RESULT':
         default:
           emit(actions.finishGame())
           break;
@@ -63,18 +73,18 @@ export const createChannel = function (socket) {
 export const sendMessage = function* ({ type, payload }, socket) {
   const { types } = actions
   const cmds = {
+    [types.CHECK_GAME]:   'CHECK_AVAILABILITY',
     [types.START_GAME]:   types.START_GAME,
     [types.PAUSE_GAME]:   types.PAUSE_GAME,
     [types.RESUME_GAME]:  types.RESUME_GAME,
     [types.STOP_GAME]:    types.STOP_GAME, // response type: STATUS
-    [types.FINISH_GAME]:  types.FINISH_GAME,
+    [types.FINISH_GAME]:  'STOP_GAME',
   }
   const msg = { cmd: cmds[type] }
 
   if (type === types.START_GAME) {
-    msg.mode = payload.mode
-    msg.token = yield select(tokenSelector)
-    socket.afterStartRequest = true
+    msg.gameMode = payload.mode
+    msg.userToken = yield select(tokenSelector)
   }
 
   yield call(socket, 'send', JSON.stringify(msg))

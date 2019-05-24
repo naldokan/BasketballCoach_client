@@ -11,6 +11,7 @@ import fp from 'lodash/fp'
 import {
   connectGame,
   disconnectGame,
+  checkGame,
   startGame,
   pauseGame,
   resumeGame,
@@ -41,7 +42,8 @@ class GameProgress extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      progress: progressStatus.INIT,
+      progress: progressStatus.GOING,
+      time: 0,
       shots: [],
     }
   }
@@ -91,6 +93,7 @@ class GameProgress extends Component {
     this.props.finishRequest()
     switch (this.state.progress) {
       case progressStatus.FREE:
+        this.setState({ time: 0 })
         this.elapsedTimer = setInterval(this.countElapsedTime, 100)
         return this.setState({ progress: progressStatus.GOING })
 
@@ -131,8 +134,10 @@ class GameProgress extends Component {
     this.props.throwRequest()
     switch (this.state.progress) {
       case progressStatus.FREE:
-      case progressStatus.OCCUPIED:
         return this.props.startGame()
+
+      case progressStatus.OCCUPIED:
+        return this.props.checkGame()
 
       case progressStatus.GOING:
         clearInterval(this.elapsedTimer)    
@@ -187,9 +192,10 @@ class GameProgress extends Component {
       case progressStatus.PAUSED:
       case progressStatus.COMPLETE:
       case progressStatus.REVIEW:
-        this.setState({ time: 0 })
         this.props.throwRequest()
-        return this.props.stopGame()
+        return this.props.checkGame()
+
+      default:
     }
   }
 
@@ -270,6 +276,14 @@ class GameProgress extends Component {
   capitalizeFirstLetter =  name =>
     name && name.length > 0 ? name.charAt(0).toUpperCase() + name.slice(1) : undefined
 
+  formatNumber = (num, length) => {
+      let r = "" + num;
+      while (r.length < length) {
+          r = "0" + r;
+      }
+      return r;
+  }
+
   render() {
     const { shots } = this.state
     const lastShot =
@@ -291,9 +305,9 @@ class GameProgress extends Component {
     const accuracy = total > 0 ? Round(goals * 100 / total) : 0
 
     const { time } = this.state
-    const min = Math.round(time / 1000 / 60)
-    const sec = Math.round(time / 1000) % 60
-    const ms = Math.round(time % 1000)
+    const min = this.formatNumber(Math.round(time / 1000 / 60), 2)
+    const sec = this.formatNumber(Math.round(time / 1000) % 60, 2)
+    const ms = this.formatNumber(Math.round(time % 1000), 2)
 
     const circularColor = accuracy >= 90 ? '#188e28'
       : accuracy >=75 ? '#e0ab26'
@@ -327,13 +341,13 @@ class GameProgress extends Component {
                 </Row>
                 <Row>
                   <Col>Elapsed Time</Col>
-                  <Col>{ min }&nbsp;:&nbsp;{ sec }&nbsp;{ ms }</Col>
+                  <Col>{ min }:{ sec }&nbsp;{ ms }</Col>
                 </Row>
               </Col>
               <Col className='last-try col-12 col-sm-6 col-md-12'>
                 <Row>
+                  <Col>Release Angle</Col>
                   <Col>{ lastShot.releaseAngle }</Col>
-                  <Col>3</Col>
                 </Row>
                 <Row>
                   <Col>Release Time</Col>
@@ -396,9 +410,12 @@ class GameProgress extends Component {
                 'col-8 offset-2',
                 { 'col-md-6 offset-md-3 col-xl-4 offset-xl-4': this.state.progress === progressStatus.OCCUPIED }
               )}>
-                <Button color="primary" className='game-control-button' onClick={this.handleStopClick}>
-                  { this.getStopButtonText() }
-                </Button>
+                { this.state.progress !== progressStatus.GOING &&
+                  this.state.progress !== progressStatus.PAUSED && (
+                  <Button color="primary" className='game-control-button' onClick={this.handleStopClick}>
+                    { this.getStopButtonText() }
+                  </Button>
+                )}
               </Col>
               { (this.state.progress === progressStatus.GOING ||
                 this.state.progress === progressStatus.PAUSED) &&
@@ -423,6 +440,7 @@ class GameProgress extends Component {
 const actions = {
   connectGame,
   disconnectGame,
+  checkGame,
   startGame,
   pauseGame,
   resumeGame,
