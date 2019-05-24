@@ -226,9 +226,7 @@ class GameProgress extends Component {
       return false
     }
 
-    this.confirmStopGame(
-      this.safeNavigate(pathname)
-    )
+    this.confirmStopGame(this.safeNavigate(pathname))
     return false
   }
 
