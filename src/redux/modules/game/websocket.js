@@ -3,10 +3,17 @@ import { select, call } from 'redux-saga/effects'
 import { tokenSelector } from '../auth/selectors'
 import * as actions from './actions'
 
+
 const gameAvailability = {
   FREE: 1,
   OCCUPIED: 0
 }
+
+const gameMode = {
+  FREE_THROW: 0,
+  DRILLS: 1
+}
+
 export const connect = function () {
   return new WebSocket(process.env.REACT_APP_SOCKET_URL)
 }
@@ -83,7 +90,7 @@ export const sendMessage = function* ({ type, payload }, socket) {
   const msg = { cmd: cmds[type] }
 
   if (type === types.START_GAME) {
-    msg.gameMode = payload.mode
+    msg.gameMode = gameMode[payload]
     msg.userToken = yield select(tokenSelector)
   }
 

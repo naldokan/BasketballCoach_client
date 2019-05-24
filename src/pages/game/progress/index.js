@@ -42,7 +42,7 @@ class GameProgress extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      progress: progressStatus.GOING,
+      progress: progressStatus.INIT,
       time: 0,
       shots: [],
     }
@@ -134,7 +134,7 @@ class GameProgress extends Component {
     this.props.throwRequest()
     switch (this.state.progress) {
       case progressStatus.FREE:
-        return this.props.startGame()
+        return this.props.startGame('FREE_THROW')
 
       case progressStatus.OCCUPIED:
         return this.props.checkGame()
