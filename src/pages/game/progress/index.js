@@ -6,6 +6,7 @@ import { compose } from 'redux'
 import cx from 'classnames'
 import { Row, Col, Button } from 'reactstrap';
 import { CircularProgressbar } from 'react-circular-progressbar';
+import fp from 'lodash/fp'
 
 import {
   connectGame,
@@ -16,7 +17,7 @@ import {
   stopGame,
   finishGame 
 } from 'redux/modules/game/actions'
-import { throwRequest, finishRequest } from 'redux/moduels/api/actions'
+import { throwRequest, finishRequest } from 'redux/modules/api/actions'
 import { electron } from 'my-electron'
 import { Round } from 'utils'
 
@@ -241,12 +242,19 @@ class GameProgress extends Component {
 
   render() {
     const { shots } = this.state
-    const lastShot = shots.length > 0 ? shots[shots.length - 1] : {
-      releaseAngle: 0,
-      releaseTime: 0,
-      elbowAngle: 0,
-      legAngle: 0
-    }
+    const lastShot =
+      this.state.progress === progressStatus.REVIEW ? {
+        releaseAngle: fp.meanBy('releaseAngle')(shots),
+        releaseTime: fp.meanBy('releaseTime')(shots),
+        elbowAngle: fp.meanBy('elbowAngle')(shots),
+        legAngle: fp.meanBy('legAngle')(shots),
+      } : shots.length > 0 ? shots[shots.length - 1]
+        : {
+        releaseAngle: 0,
+        releaseTime: 0,
+        elbowAngle: 0,
+        legAngle: 0
+      }
     const total = shots.length
     const goals = shots.filter(val => val.success).length
     const fails = total - goals

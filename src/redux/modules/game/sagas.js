@@ -1,4 +1,4 @@
-import { take, call } from 'redux-saga/effects'
+import { take, call, takeLatest } from 'redux-saga/effects'
 import * as websocket from './websocket'
 import { types } from './actions'
 

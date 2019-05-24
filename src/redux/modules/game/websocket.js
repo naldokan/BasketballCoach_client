@@ -1,5 +1,5 @@
 import { eventChannel, END } from 'redux-saga'
-import { select } from 'redux-saga/effects'
+import { select, call } from 'redux-saga/effects'
 import { tokenSelector } from '../auth/selectors'
 import * as actions from './actions'
 
@@ -77,5 +77,5 @@ export const sendMessage = function* ({ type, payload }, socket) {
     socket.afterStartRequest = true
   }
 
-  yield call(socket, send, JSON.stringify(msg))
+  yield call(socket, 'send', JSON.stringify(msg))
 }
