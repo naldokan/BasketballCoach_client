@@ -257,7 +257,13 @@ class GameProgress extends Component {
         type: 'warning',
         message: 'You are in progress now. Really stop this game?',
       },
-      response => response === 0 && clearInterval(this.elapsedTimer) && this.props.disconnectGame() && onYes()
+      response => {
+        if (response === 0) {
+          clearInterval(this.elapsedTimer)
+          this.props.disconnectGame()
+          onYes()
+        }
+      }
     )
   }
 
