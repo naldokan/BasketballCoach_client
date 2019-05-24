@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux'
 import { Router, Route, Redirect } from 'react-router-dom';
+
+import { disconnectGame } from 'redux/modules/game/actions'
 
 import App from './App';
 import Home from 'pages/home';
@@ -23,6 +27,11 @@ class Routes extends Component {
   handleRouteChange = (location, a) => {
     const window = electron.remote.getCurrentWindow()
     
+    if (this.lastPath.substring(5) === '/game/' &&
+        location.pathname.substring(5) !== '/game/') {
+          this.props.disconnectGame()
+    }
+
     if (location.pathname === '/login' || location.pathname === '/register') {
       if (this.lastPath !== '/login' && this.lastPath != '/register') {
         window.setSize(minimumSize.width, minimumSize.height)
@@ -67,4 +76,10 @@ class Routes extends Component {
   }
 }
 
-export default Routes
+const actions = {
+  disconnectGame
+}
+
+export default compose(
+  connect(undefined, actions)
+)(Routes)

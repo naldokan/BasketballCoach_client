@@ -3,22 +3,24 @@ import * as websocket from './websocket'
 import { types } from './actions'
 
 
-const quitGame = function* (action, channel) {
+const disconnectGame = function* (action, channel) {
   channel.close()
 }
 
 export default function* rootSaga() {
-  const connect = yield take(types.CONNECT_SOCKET)
+  const connect = yield take(types.CONNECT_GAME)
 
   const {
-    waitForFreeGame,
+    showGameStatus,
     updateLastShot,
     updateTime,
+    controlSuccess,
     finishGame,
     socketError
   } = connect.payload
 
   const socket = yield call(websocket.connect)
+  
   const channel = yield call(websocket.createChannel, socket)
 
   yield takeLatest(types.START_GAME, websocket.sendMessage, socket)
@@ -26,32 +28,36 @@ export default function* rootSaga() {
   yield takeLatest(types.RESUME_GAME, websocket.sendMessage, socket)
   yield takeLatest(types.STOP_GAME, websocket.sendMessage, socket)
   yield takeLatest(types.FINISH_GAME, websocket.sendMessage, socket)
-  yield takeLatest(types.QUIT_GAME, quitGame, channel)
+  yield takeLatest(types.DISCONNECT_GAME, disconnectGame, channel)
   
   while (true) {
     try {
       const { type, payload } = yield take(channel)
 
       switch (type) {
-        case types.WAIT_FOR_FREE_GAME:
-          waitForFreeGame()
-          break;
+        case types.SHOW_GAME_STATUS:
+          yield call(showGameStatus)
+          break
+
+        case types.CONTROL_SUCCESS:
+          yield call(controlSuccess)
+          break
 
         case types.UPDATE_LAST_SHOT:
-          updateLastShot(payload)
-          break;
+          yield call(updateLastShot, payload)
+          break
 
         case types.UPDATE_TIME:
-          updateTime(payload)
-          break;
+          yield call(updateTime, payload)
+          break
 
         case types.FINISH_GAME:
-          finishGame()
-          break;
+          yield call(finishGame)
+          break
 
         case types.SOCKET_ERROR:
         default:
-          socketError(payload)
+          yield call(socketError, payload)
           channel.close()
       }
     } catch(err) {

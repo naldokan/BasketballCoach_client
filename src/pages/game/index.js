@@ -18,6 +18,7 @@ class Game extends Component {
   handleThrowMode = () => this.props.history.push('/game/progress')
 
   componentDidMount() {
+    return
     this.props.throwRequest({
       url: '/game/check',
       onSuccess: ({ status, user }) => {

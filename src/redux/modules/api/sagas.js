@@ -18,29 +18,32 @@ const request = (method, url, params, token) => {
 }
 
 const throwRequest = function* ({ payload }) {
-  const { method, url, params, onSuccess, onFailed } = payload
-  const token = yield select(tokenSelector)
+  // if payload is undefined, throwRequest action simply set loading status
+  if (payload) {
+    const { method, url, params, onSuccess, onFailed } = payload
+    const token = yield select(tokenSelector)
 
-  try {
-    const response = yield call(request, method, url, params, token)
-    const { status, data } = response
-    if (onSuccess) {
-      yield call(onSuccess, data, status)
-    }
-  } catch (error) {
-    if (onFailed) {
-      const { response } = error
-      if (response) {
-        const data = response.data && response.data
-        const status = response.status && response.status
-        yield call(onFailed, data, status)
+    try {
+      const response = yield call(request, method, url, params, token)
+      const { status, data } = response
+      if (onSuccess) {
+        yield call(onSuccess, data, status)
       }
-    } else {
-      yield put(setAuth(null))
+    } catch (error) {
+      if (onFailed) {
+        const { response } = error
+        if (response) {
+          const data = response.data && response.data
+          const status = response.status && response.status
+          yield call(onFailed, data, status)
+        }
+      } else {
+        yield put(setAuth(null))
+      }
     }
-  }
 
-  yield put(actions.finishRequest())
+    yield put(actions.finishRequest())
+  }
 }
 
 export default function* rootSaga() {
