@@ -49,7 +49,6 @@ class GameProgress extends Component {
   componentDidMount() {
     window.onbeforeunload = this.handleCloseWindow
     this.props.throwRequest()
-    console.log('a')
     this.props.connectGame({
       showGameStatus:   this.showGameStatus,
       updateLastShot:   this.updateLastShot,
@@ -212,16 +211,25 @@ class GameProgress extends Component {
     }
   }
 
-  handleNavigateAway = location => {
+  handleNavigateAway = ({ pathname }) => {
     // remote.app.getVersion()
+    if (this.state.progress === progressStatus.OCCUPIED) {
+      clearInterval(this.countDownTimer)
+      const navigate = this.safeNavigate(pathname)
+      navigate()
+      return false
+    }
+
     this.confirmStopGame(
-      () => this.setState(
-        { 'progress': progressStatus.INIT },
-        () => this.props.history.push(location.pathname)
-      )
+      this.safeNavigate(pathname)
     )
     return false
   }
+
+  safeNavigate = path => () => this.setState(
+    { 'progress': progressStatus.INIT },
+    () => this.props.history.push(path)
+  )
 
   handleCloseWindow = e => {
     switch (this.state.progress) {
@@ -289,7 +297,8 @@ class GameProgress extends Component {
     return (
       <>
         <Prompt
-          when={this.state.progress === progressStatus.GOING ||
+          when={this.state.progress === progressStatus.OCCUPIED ||
+            this.state.progress === progressStatus.GOING ||
             this.state.progress === progressStatus.PAUSED}
           message={this.handleNavigateAway}
         />
