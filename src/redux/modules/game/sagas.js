@@ -35,7 +35,7 @@ const connect = function* ({ payload }) {
 
       switch (type) {
         case types.SHOW_GAME_STATUS:
-          yield call(showGameStatus)
+          yield call(showGameStatus, payload)
           break
 
         case types.CONTROL_SUCCESS:

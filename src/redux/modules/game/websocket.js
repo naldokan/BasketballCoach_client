@@ -5,8 +5,8 @@ import * as actions from './actions'
 
 
 const gameAvailability = {
-  FREE: 1,
-  OCCUPIED: 0
+  FREE: true,
+  OCCUPIED: false
 }
 
 const gameMode = {
@@ -21,13 +21,16 @@ export const connect = function () {
 export const createChannel = function (socket) {
   return eventChannel(emit => {
     socket.onopen = e => {
+      socket.connected = true
     }
 
     socket.onclose = e => {
     }
 
     socket.onerror = e => {
-      emit(actions.socketError(e))
+      const msg = socket.connected ? 'Sorry, Network connection lost.'
+        : 'Sorry, Can\'t connect to the server. Please make sure your server is up.'
+      emit(actions.socketError(msg))
     }
 
     socket.onmessage = e => {
@@ -39,7 +42,7 @@ export const createChannel = function (socket) {
           } else {
             emit(actions.showGameStatus({ status: true }))
           }
-          break;
+          break
         
         case 'START_GAME_RESULT':
           if (msg['value'] === gameAvailability.OCCUPIED) {
@@ -47,37 +50,51 @@ export const createChannel = function (socket) {
           } else {
             emit(actions.controlSuccess())
           }
+          break;
 
         case 'LAST_SHOT':
-          emit(actions.updateLastShot(msg['data']))
-          break;
+          const shot = {
+            releaseAngle: msg.value['release_angle'],
+            releaseTime: msg.value['release_time'],
+            legAngle: msg.value['leg_angle'],
+            elbowAngle: msg.value['elbow_angle'],
+            success: msg.value['goal'],
+            x: msg.value['posX'],
+            y: msg.value['posY']
+          }
+          emit(actions.updateLastShot(shot))
+          break
 
         case 'ELAPSED_TIME':
-          emit(actions.updateTime(msg['time']))
-          break;
+          emit(actions.updateTime(msg['value'] * 1000))
+          break
 
         case 'START_GAME_RESULT':
         case 'PAUSE_GAME_RESULT':
         case 'RESUME_GAME_RESULT':
           emit(actions.controlSuccess())
-          break;
+          break
 
         case 'STOP_GAME_RESULT':
         default:
           emit(actions.finishGame())
-          break;
+          break
       }
     }
 
     const unsubscribe = () => {
-      socket.close()
+      socket.close(1000)
     }
 
     return unsubscribe
   })
 }
 
-export const sendMessage = function* ({ type, payload }, socket) {
+export const send = function (socket, data) {
+  return socket.send(data)
+}
+
+export const sendMessage = function* (socket, { type, payload }) {
   const { types } = actions
   const cmds = {
     [types.CHECK_GAME]:   'CHECK_AVAILABILITY',
@@ -87,12 +104,12 @@ export const sendMessage = function* ({ type, payload }, socket) {
     [types.STOP_GAME]:    types.STOP_GAME, // response type: STATUS
     [types.FINISH_GAME]:  'STOP_GAME',
   }
-  const msg = { cmd: cmds[type] }
+  const msg = { action: cmds[type] }
 
   if (type === types.START_GAME) {
     msg.gameMode = gameMode[payload]
     msg.userToken = yield select(tokenSelector)
   }
 
-  yield call(socket, 'send', JSON.stringify(msg))
+  yield call(send, socket, JSON.stringify(msg))
 }

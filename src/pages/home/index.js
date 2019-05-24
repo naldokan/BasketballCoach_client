@@ -16,9 +16,8 @@ import {
 } from 'reactstrap';
 
 import Dashboard from 'pages/dashboard';
-import Game from 'pages/game';
+import Game from 'pages/game/mode';
 import GameProgress from 'pages/game/progress';
-import GameDetail from 'pages/game/detail';
 import Statistics from 'pages/statistics';
 import Leaderboard from 'pages/leaderboard';
 import History from 'pages/history';
@@ -62,7 +61,6 @@ class Home extends Component {
     const child = this.props.view === 'dashboard' ? <Dashboard/>
       : this.props.view === 'game' ? <Game/>
       : this.props.view === 'game/progress' ? <GameProgress/>
-      : this.props.view === 'game/detail' ? <GameDetail/>
       : this.props.view === 'statistics' ? <Statistics/>
       : this.props.view === 'history' ? <History/>
       : <Leaderboard/>

@@ -26,11 +26,6 @@ class Routes extends Component {
 
   handleRouteChange = (location, a) => {
     const window = electron.remote.getCurrentWindow()
-    
-    if (this.lastPath.substring(5) === '/game/' &&
-        location.pathname.substring(5) !== '/game/') {
-          this.props.disconnectGame()
-    }
 
     if (location.pathname === '/login' || location.pathname === '/register') {
       if (this.lastPath !== '/login' && this.lastPath != '/register') {
@@ -62,8 +57,6 @@ class Routes extends Component {
           <Route path='/dashboard' render={this.view('dashboard')} />
           <Route path='/game' exact render={this.view('game')} />
           <Route path='/game/progress' render={this.view('game/progress')} />
-          <Route path='/game/summary' render={this.view('game/summary')} />
-          <Route path='/game/detail' render={this.view('game/detail')} />
           <Route path='/statistics' render={this.view('statistics')} />
           <Route path='/history' render={this.view('history')} />
           <Route path='/leaderboard' render={this.view('leaderboard')} />
