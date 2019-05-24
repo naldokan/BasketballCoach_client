@@ -3,7 +3,7 @@ import * as websocket from './websocket'
 import { types } from './actions'
 
 
-const disconnectGame = function* (action, channel) {
+const disconnectGame = function* (channel, action) {
   channel.close()
 }
 

@@ -38,7 +38,7 @@ const progressStatus = {
   REVIEW_DETAIL: 7
 }
 
-const elapsedTimeInterval = 100
+const elapsedTimeInterval = 10
 
 class GameProgress extends Component {
 
@@ -46,7 +46,8 @@ class GameProgress extends Component {
     super(props)
     this.state = {
       progress: progressStatus.INIT,
-      time: 0,
+      totalElapsedTime: 0,
+      currentElapsedTime: 0,
       shots: [],
     }
   }
@@ -71,10 +72,22 @@ class GameProgress extends Component {
   showGameStatus = ({ status, user }) => {
     this.props.finishRequest()
     if (status) {
-      this.setState({ progress: progressStatus.FREE })
+      this.setState({
+        progress: progressStatus.FREE,
+        currentElapsedTime: 0,
+        totalElapsedTime: 0,
+        shots: []
+      })
     } else {
-      this.setState({ progress: progressStatus.OCCUPIED, countDown: 30, user },
-        () => this.countDownTimer = setInterval(this.countDown, 1000))
+      this.setState({
+        progress: progressStatus.OCCUPIED,
+        currentElapsedTime: 0,
+        totalElapsedTime: 0,
+        countDown: 30,
+        shots: [],
+        user
+      },
+      () => this.countDownTimer = setInterval(this.countDown, 1000))
     }
   }
 
@@ -86,17 +99,19 @@ class GameProgress extends Component {
     }
   }
 
-  countElapsedTime = () => this.setState({ time: this.state.time + elapsedTimeInterval })
+  countElapsedTime = () => this.setState({
+    totalElapsedTime: this.state.totalElapsedTime + elapsedTimeInterval,
+    currentElapsedTime: this.state.currentElapsedTime + elapsedTimeInterval
+  })
 
-  updateLastShot = data => this.setState({ shots: this.state.shots.concat(data) })
+  updateLastShot = data => this.setState({ shots: this.state.shots.concat(data), currentElapsedTime: 0 })
 
-  updateTime = data => this.setState({ time: Round(data) })
+  updateTime = data => this.setState({ totalElapsedTime: Round(data) })
 
   controlSuccess = () => {
     this.props.finishRequest()
     switch (this.state.progress) {
       case progressStatus.FREE:
-        this.setState({ time: 0 })
         this.elapsedTimer = setInterval(this.countElapsedTime, elapsedTimeInterval)
         return this.setState({ progress: progressStatus.GOING })
 
@@ -236,11 +251,8 @@ class GameProgress extends Component {
 
       case progressStatus.GOING:
       case progressStatus.PAUSED:
-        this.confirmStopGame(this.safeNavigate(pathname))
-        return false
-      
-      case progressStatus.INIT:
       default:
+        this.confirmStopGame(this.safeNavigate(pathname))
         return false
     }
   }
@@ -297,6 +309,12 @@ class GameProgress extends Component {
       return r;
   }
 
+  formatMilisecond = milisecond => ({
+    min: this.formatNumber(Math.round(milisecond / 1000 / 60), 2),
+    sec: this.formatNumber(Math.round(milisecond / 1000) % 60, 2),
+    ms: this.formatNumber(Math.round((milisecond % 1000) / elapsedTimeInterval), 2)
+  })
+
   render() {
     const { shots } = this.state
     const lastShot =
@@ -317,10 +335,9 @@ class GameProgress extends Component {
     const fails = total - goals
     const accuracy = total > 0 ? Round(goals * 100 / total) : 0
 
-    const { time } = this.state
-    const min = this.formatNumber(Math.round(time / 1000 / 60), 2)
-    const sec = this.formatNumber(Math.round(time / 1000) % 60, 2)
-    const ms = this.formatNumber(Math.round((time % 1000) / elapsedTimeInterval), 1)
+    const { totalElapsedTime, currentElapsedTime } = this.state
+    const totalTime = this.formatMilisecond(totalElapsedTime)
+    const delayTime = this.formatMilisecond(currentElapsedTime)
 
     const circularColor = accuracy >= 90 ? '#188e28'
       : accuracy >=75 ? '#e0ab26'
@@ -348,11 +365,15 @@ class GameProgress extends Component {
                 </Row>
                 <Row>
                   <Col>Accuracy</Col>
-                  <Col>{ accuracy }<small>%</small></Col>
+                  <Col>{ accuracy }&nbsp;<small>%</small></Col>
                 </Row>
                 <Row>
                   <Col>Elapsed Time</Col>
-                  <Col>{ min }:{ sec }&nbsp;{ ms }</Col>
+                  <Col>{ totalTime.min }:{ totalTime.sec }&nbsp;<small>{ totalTime.ms }</small></Col>
+                </Row>
+                <Row>
+                  <Col>Delay</Col>
+                  <Col>{ delayTime.min }:{ delayTime.sec }&nbsp;<small>{ delayTime.ms }</small></Col>
                 </Row>
               </Col>
               <Col className='last-try col-12 col-sm-6 col-md-12'>
@@ -430,7 +451,7 @@ class GameProgress extends Component {
               </Col>
               { (this.state.progress === progressStatus.GOING ||
                 this.state.progress === progressStatus.PAUSED) &&
-                this.state.shots.length > process.env.REACT_APP_MINIMUM_TRIES_A_GAME && (
+                this.state.shots.length >= process.env.REACT_APP_MINIMUM_TRIES_A_GAME && (
                 <Col className='col-8 offset-2'>
                   <Button color="primary" className='game-control-button' onClick={this.handleFinishClick}>
                     Finish
