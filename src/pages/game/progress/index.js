@@ -366,7 +366,7 @@ class GameProgress extends Component {
             <Row>
               <Col className={cx(
                 'col-8 offset-2',
-                { 'col-md-6 offset-md-3 col-xl-4 offset-xl-4': progressStatus.OCCUPIED }
+                { 'col-md-6 offset-md-3 col-xl-4 offset-xl-4': this.state.progress === progressStatus.OCCUPIED }
               )}>
                 <Button
                   color="primary"
@@ -378,7 +378,7 @@ class GameProgress extends Component {
               </Col>
               <Col className={cx(
                 'col-8 offset-2',
-                { 'col-md-6 offset-md-3 col-xl-4 offset-xl-4': progressStatus.OCCUPIED }
+                { 'col-md-6 offset-md-3 col-xl-4 offset-xl-4': this.state.progress === progressStatus.OCCUPIED }
               )}>
                 <Button color="primary" className='game-control-button' onClick={this.handleStopClick}>
                   { this.getStopButtonText() }
