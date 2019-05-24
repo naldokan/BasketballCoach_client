@@ -152,7 +152,7 @@ class GameProgress extends Component {
     this.props.throwRequest()
     switch (this.state.progress) {
       case progressStatus.FREE:
-        return this.props.startGame('FREE_THROW')
+        return this.props.startGame(this.props.mode)
 
       case progressStatus.OCCUPIED:
         return this.props.checkGame()
@@ -169,7 +169,7 @@ class GameProgress extends Component {
 
       case progressStatus.REVIEW:
       default:
-        return this.props.history.push('/game/detail')
+        return this.setState({ progress: progressStatus.REVIEW_DETAIL })
     }
   }
 
@@ -192,8 +192,11 @@ class GameProgress extends Component {
         return 'Review'
 
       case progressStatus.REVIEW:
-      default:
         return 'Detail'
+
+      case progressStatus.REVIEW_DETAIL:
+      default:
+        return 'Summary'
     }
   }
 
@@ -211,10 +214,11 @@ class GameProgress extends Component {
       case progressStatus.PAUSED:
       case progressStatus.COMPLETE:
       case progressStatus.REVIEW:
+      case progressStatus.REVIEW_DETAIL:
+      default:
         this.props.throwRequest()
         return this.props.checkGame()
 
-      default:
     }
   }
 
@@ -244,6 +248,7 @@ class GameProgress extends Component {
       case progressStatus.FREE:
       case progressStatus.COMPLETE:
       case progressStatus.REVIEW:
+      case progressStatus.REVIEW_DETAIL:
         this.props.disconnectGame()
         const navigate = this.safeNavigate(pathname)
         navigate()

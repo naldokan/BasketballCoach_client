@@ -73,7 +73,7 @@ class History extends Component {
                       <td>{ value.mode === 'FREE_THROW' ? 'Free Throw' : 'Drills' }</td>
                       <td>{ value['try_count'] }</td>
                       <td>{ value['score'] }</td>
-                      <td>{ value['try_count'] ? Round(value['score'] / value['try_count']) * 100 : '-' }</td>
+                      <td>{ value['try_count'] ? Round(value['score'] * 100 / value['try_count']) : '-' }</td>
                       <td>{ Round(value['release_angle']) }</td>
                       <td>{ Round(value['release_time']) }</td>
                       <td>{ Round(value['elbow_angle']) }</td>

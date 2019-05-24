@@ -36,7 +36,7 @@ export const LineChart = ({ data, dataKey, showXTick }) => (
 			<CartesianGrid strokeDasharray="3 3" />
 			<Tooltip />
 			<CartesianGrid stroke="#f5f5f5" />
-			<Area type="monotone_" dataKey={dataKey} stroke="#ff7300" fillOpacity={1} fill="url(#colorUv)" />
+			<Area dataKey={dataKey} stroke="#ff7300" fillOpacity={1} fill="url(#colorUv)" />
 		</AreaChart>
 	</ResponsiveContainer> 
 )

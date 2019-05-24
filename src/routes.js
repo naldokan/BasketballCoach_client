@@ -56,7 +56,8 @@ class Routes extends Component {
         <App>
           <Route path='/dashboard' render={this.view('dashboard')} />
           <Route path='/game' exact render={this.view('game')} />
-          <Route path='/game/progress' render={this.view('game/progress')} />
+          <Route path='/game/freethrow' render={this.view('game/freethrow')} />
+          <Route path='/game/drills' render={this.view('game/drills')} />
           <Route path='/statistics' render={this.view('statistics')} />
           <Route path='/history' render={this.view('history')} />
           <Route path='/leaderboard' render={this.view('leaderboard')} />

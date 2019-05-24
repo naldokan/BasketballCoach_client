@@ -15,7 +15,9 @@ class Game extends Component {
     this.state = { gameFree: true }
   }
   
-  handleThrowMode = () => this.props.history.push('/game/progress')
+  handleFreeThrowMode = () => this.props.history.push('/game/freethrow')
+  
+  handleDrillsMode = () => this.props.history.push('/game/drills')
 
   componentDidMount() {
     return
@@ -48,7 +50,7 @@ class Game extends Component {
                   color="primary"
                   disabled={!this.state.gameFree}
                   className="game-mode-button btn-block"
-                  onClick={this.handleThrowMode}
+                  onClick={this.handleFreeThrowMode}
                 >
                   Free Throw
                 </Button>
@@ -58,6 +60,7 @@ class Game extends Component {
                   color="success"
                   disabled={!this.state.gameFree}
                   className="game-mode-button btn-block"
+                  onClick={this.handleDrillsMode}
                 >
                   Drills</Button>
               </Col>
