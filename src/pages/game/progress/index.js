@@ -69,7 +69,7 @@ class GameProgress extends Component {
       this.setState({ progress: progressStatus.FREE })
     } else {
       this.setState({ progress: progressStatus.OCCUPIED, countDown: 30, user },
-        () => this.countTimer = setInterval(this.countDown, 1000))
+        () => this.countDownTimer = setInterval(this.countDown, 1000))
     }
   }
 
@@ -77,9 +77,11 @@ class GameProgress extends Component {
     if (this.state.countDown > 0) {
       this.setState({ countDown: this.state.countDown - 1 })
     } else {
-      clearInterval(this.countTimer)
+      clearInterval(this.countDownTimer)
     }
   }
+
+  countElapsedTime = () => this.setState({ time: this.state.time + 10 })
 
   updateLastShot = data => this.setState({ shots: this.state.shots.concat(data) })
 
@@ -89,11 +91,16 @@ class GameProgress extends Component {
     this.props.finishRequest()
     switch (this.state.progress) {
       case progressStatus.FREE:
+        this.elapsedTimer = setInterval(this.countElapsedTime, 100)
         return this.setState({ progress: progressStatus.GOING })
+
       case progressStatus.GOING:
+        clearInterval(this.elapsedTimer)
         return this.setState({ progress: progressStatus.PAUSED})
+
       case progressStatus.PAUSED:
       default:
+        this.elapsedTimer = setInterval(this.countElapsedTime, 100)
         return this.setState({ progress: progressStatus.GOING})
     }
   }
@@ -102,6 +109,7 @@ class GameProgress extends Component {
 
   socketError = () => {
     const { remote } = electron
+    this.props.finishRequest()
     remote.dialog.showMessageBox(
       remote.getCurrentWindow(), {
         buttons: ['OK'],
@@ -113,8 +121,11 @@ class GameProgress extends Component {
     )
   }
 
-  handleFinishClick = () =>
-    this.setState({ progress: progressStatus.COMPLETE }) && this.props.finishGame()
+  handleFinishClick = () => {
+    clearInterval(this.elapsedTimer)
+    this.setState({ progress: progressStatus.COMPLETE })
+    this.props.finishGame()
+  }
   
   handleStartClick = () => {
     this.props.throwRequest()
@@ -124,6 +135,7 @@ class GameProgress extends Component {
         return this.props.startGame()
 
       case progressStatus.GOING:
+        clearInterval(this.elapsedTimer)    
         return this.props.pauseGame()
 
       case progressStatus.PAUSED:
@@ -167,12 +179,15 @@ class GameProgress extends Component {
       case progressStatus.FREE:
       case progressStatus.OCCUPIED:
         this.props.disconnectGame()
+        clearInterval(this.countDownTimer)
         return this.props.history.push('/game')
 
-      case progressStatus.PAUSED:
       case progressStatus.GOING:
+        clearInterval(this.elapsedTimer)
+      case progressStatus.PAUSED:
       case progressStatus.COMPLETE:
       case progressStatus.REVIEW:
+        this.setState({ time: 0 })
         this.props.throwRequest()
         return this.props.stopGame()
     }
@@ -233,7 +248,7 @@ class GameProgress extends Component {
         type: 'warning',
         message: 'You are in progress now. Really stop this game?',
       },
-      response => response === 0 && this.props.disconnectGame() && onYes()
+      response => response === 0 && clearInterval(this.elapsedTimer) && this.props.disconnectGame() && onYes()
     )
   }
 
@@ -259,7 +274,12 @@ class GameProgress extends Component {
     const goals = shots.filter(val => val.success).length
     const fails = total - goals
     const accuracy = total > 0 ? Round(goals * 100 / total) : 0
+
     const { time } = this.state
+    const min = Math.round(time / 1000 / 60)
+    const sec = Math.round(time / 1000) % 60
+    const ms = Math.round(time % 1000)
+
     const circularColor = accuracy >= 90 ? '#188e28'
       : accuracy >=75 ? '#e0ab26'
       : accuracy >= 50 ? '#e05d25'
@@ -268,7 +288,8 @@ class GameProgress extends Component {
     return (
       <>
         <Prompt
-          when={this.state.progress !== progressStatus.INIT}
+          when={this.state.progress === progressStatus.GOING ||
+            this.state.progress === progressStatus.PAUSED}
           message={this.handleNavigateAway}
         />
         <Row className='d-flex align-items-center game-progress-container'>
@@ -290,7 +311,7 @@ class GameProgress extends Component {
                 </Row>
                 <Row>
                   <Col>Elapsed Time</Col>
-                  <Col>{ time }</Col>
+                  <Col>{ min }&nbsp;:&nbsp;{ sec }&nbsp;{ ms }</Col>
                 </Row>
               </Col>
               <Col className='last-try col-12 col-sm-6 col-md-12'>
@@ -336,7 +357,7 @@ class GameProgress extends Component {
                     value={accuracy}
                     strokeWidth={1}
                     counterClockwise={true}
-                    text={total}
+                    text={`${total}`}
                     styles={{ path: { stroke: circularColor } }}
                   />
                 )}
