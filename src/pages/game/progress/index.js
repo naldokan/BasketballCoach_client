@@ -49,6 +49,7 @@ class GameProgress extends Component {
   componentDidMount() {
     window.onbeforeunload = this.handleCloseWindow
     this.props.throwRequest()
+    console.log('a')
     this.props.connectGame({
       showGameStatus:   this.showGameStatus,
       updateLastShot:   this.updateLastShot,
@@ -107,7 +108,7 @@ class GameProgress extends Component {
 
   finishGame = () => this.setState({ progress: progressStatus.COMPLETE })
 
-  socketError = () => {
+  socketError = e => {
     const { remote } = electron
     this.props.finishRequest()
     remote.dialog.showMessageBox(

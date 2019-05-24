@@ -17,7 +17,7 @@ export const createChannel = function (socket) {
     }
 
     socket.onerror = e => {
-      emit(actions.socketError(e.reason))
+      emit(actions.socketError(e))
     }
 
     socket.onmessage = e => {

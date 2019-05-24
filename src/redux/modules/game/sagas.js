@@ -7,9 +7,7 @@ const disconnectGame = function* (action, channel) {
   channel.close()
 }
 
-export default function* rootSaga() {
-  const connect = yield take(types.CONNECT_GAME)
-
+const connect = function* ({ payload }) {
   const {
     showGameStatus,
     updateLastShot,
@@ -17,7 +15,7 @@ export default function* rootSaga() {
     controlSuccess,
     finishGame,
     socketError
-  } = connect.payload
+  } = payload
 
   const socket = yield call(websocket.connect)
   
@@ -59,9 +57,15 @@ export default function* rootSaga() {
         default:
           yield call(socketError, payload)
           channel.close()
+          return
       }
     } catch(err) {
       channel.close()
+      return
     }
   }
+}
+
+export default function* rootSaga() {
+  yield takeLatest(types.CONNECT_GAME, connect)
 }
