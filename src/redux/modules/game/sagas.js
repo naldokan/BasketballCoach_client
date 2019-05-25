@@ -4,7 +4,7 @@ import { types } from './actions'
 
 
 const disconnectGame = function* (channel, action) {
-  channel.close()
+  channel.close(1000)
 }
 
 const connect = function* ({ payload }) {
