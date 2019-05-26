@@ -36,6 +36,8 @@ class Register extends Component {
     const password = this.passwordRef.value
     const passwordConfirm = this.passwordConfirmRef.value
 
+    clearTimeout(this.timer)
+
     if (email.length === 0) {
       this.emailRef.focus()
       this.showErrorText('Email is empty')
@@ -69,9 +71,12 @@ class Register extends Component {
 
   showErrorText = errorText => this.setState({ errorText }, this.autoEraseError)
 
-  autoEraseError = () => setTimeout(() => this.setState({ errorText: null }), 3000)
+  autoEraseError = () => this.timer = setTimeout(() => this.setState({ errorText: null }), 3000)
 
-  handleGobackClick = () => this.props.history.push('/login')
+  handleGobackClick = () => {
+    clearTimeout(this.timer)
+    this.props.history.push('/login')
+  }
 
   render() {
     return (

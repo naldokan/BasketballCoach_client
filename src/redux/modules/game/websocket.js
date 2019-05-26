@@ -2,6 +2,7 @@ import { eventChannel, END } from 'redux-saga'
 import { select, call } from 'redux-saga/effects'
 import { tokenSelector } from '../auth/selectors'
 import * as actions from './actions'
+import { Round } from 'utils'
 
 
 const gameAvailability = {
@@ -54,13 +55,13 @@ export const createChannel = function (socket) {
 
         case 'LAST_SHOT':
           const shot = {
-            releaseAngle: msg.value['release_angle'],
-            releaseTime: msg.value['release_time'],
-            legAngle: msg.value['leg_angle'],
-            elbowAngle: msg.value['elbow_angle'],
+            releaseAngle: Round(msg.value['release_angle']),
+            releaseTime: Round(msg.value['release_time']),
+            legAngle: Round(msg.value['leg_angle']),
+            elbowAngle: Round(msg.value['elbow_angle']),
             success: msg.value['goal'],
-            x: msg.value['posX'],
-            y: msg.value['posY']
+            x: msg.value['posX'] * 1000,
+            y: msg.value['posY'] * 1000
           }
           emit(actions.updateLastShot(shot))
           break

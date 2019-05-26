@@ -25,11 +25,16 @@ class Login extends Component {
   
   getPasswordRef = ref => this.passwordRef = ref
 
-  handleSignupClick = () => this.props.history.push('/register')
+  handleSignupClick = () => {
+    clearTimeout(this.timer)
+    this.props.history.push('/register')
+  }
 
   handleSigninClick = () => {
     const email = this.emailRef.value
     const password = this.passwordRef.value
+    
+    clearTimeout(this.timer)
     
     if (email.length === 0) {
       this.emailRef.focus()
@@ -55,7 +60,7 @@ class Login extends Component {
 
   showErrorText = errorText => this.setState({ errorText }, this.autoEraseError)
 
-  autoEraseError = () => setTimeout(() => this.setState({ errorText: null }), 3000)
+  autoEraseError = () => this.timer = setTimeout(() => this.setState({ errorText: null }), 3000)
 
   handleInputKeyPress = ({ which }) => which === 13 && this.handleSigninClick()
 

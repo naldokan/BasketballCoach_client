@@ -78,10 +78,10 @@ class GameProgress extends Component {
     const shots = this.props.shots
     const lastShot =
       this.props.progress === progressStatus.REVIEW ? {
-        releaseAngle: fp.meanBy('releaseAngle')(shots),
-        releaseTime: fp.meanBy('releaseTime')(shots),
-        elbowAngle: fp.meanBy('elbowAngle')(shots),
-        legAngle: fp.meanBy('legAngle')(shots),
+        releaseAngle: Round(fp.meanBy('releaseAngle')(shots)),
+        releaseTime: Round(fp.meanBy('releaseTime')(shots)),
+        elbowAngle: Round(fp.meanBy('elbowAngle')(shots)),
+        legAngle: Round(fp.meanBy('legAngle')(shots)),
       } : shots.length > 0 ? shots[shots.length - 1]
         : {
         releaseAngle: 0,
@@ -105,10 +105,10 @@ class GameProgress extends Component {
 
     return (
       <Row className='d-flex align-items-center game-progress-container'>
-        { this.props.progress === progressStatus.REVIEW && (
+        { (this.props.progress === progressStatus.REVIEW || 
+          this.props.progress === progressStatus.COMPLETE ) && (
           <Col className='col-12 text-center mb-4'>
             <p className='text-game-finished text-success'><b>GAME FINISHED</b></p>
-            <p>You can see game result below. Click [View detail] button to see detailed result.</p>
           </Col>
         )}
         { this.props.progress >= progressStatus.GOING &&
