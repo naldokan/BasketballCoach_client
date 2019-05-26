@@ -14,4 +14,8 @@
   background-image:
     linear-gradient(to right, $background-color, #c4dbefff 40%, #c4dbefff 60%, $background-color),
     linear-gradient(#c4dbef, $background-color);
+
+  small {
+    font-size: 0.6em;
+  }
 }

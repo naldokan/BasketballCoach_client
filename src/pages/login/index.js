@@ -19,26 +19,36 @@ class Login extends Component {
   constructor(props) {
     super(props)
     this.state = { errorText: null }
-
-    this.email = this.password = ''
   }
   
+  getEmailRef = ref => this.emailRef = ref
+  
+  getPasswordRef = ref => this.passwordRef = ref
+
   handleSignupClick = () => this.props.history.push('/register')
 
   handleSigninClick = () => {
-    if (this.email.length === 0) {
+    const email = this.emailRef.value
+    const password = this.passwordRef.value
+    
+    if (email.length === 0) {
+      this.emailRef.focus()
       this.showErrorText('Email is empty')
-    } else if (this.password.length === 0) {
+    } else if (password.length === 0) {
+      this.passwordRef.focus()
       this.showErrorText('Password is empty')
     } else {
       this.props.tryAuth({
-        email: this.email,
-        password: this.password,
+        email,
+        password,
         onSuccess: () => this.props.history.push('/dashboard'),
-        onFailed: (data, status) => this.showErrorText(
+        onFailed: (data, status) => {
+          this.passwordRef.focus()
+          this.showErrorText(
           status === 422 ? 'Invalid credential'
             : (data.errors && data.errors.email && data.errors.email) || 'Unknown error'
-        )
+          )
+        }
       })
     }
   }
@@ -47,15 +57,7 @@ class Login extends Component {
 
   autoEraseError = () => setTimeout(() => this.setState({ errorText: null }), 3000)
 
-  handleEmailChange = e => {
-    this.email = e.target.value
-    e.which === 13 && this.handleSigninClick()
-  }
-
-  handlePasswordChange = e => {
-    this.password = e.target.value
-    e.which === 13 && this.handleSigninClick()
-  }
+  handleInputKeyPress = ({ which }) => which === 13 && this.handleSigninClick()
 
   render() {
     return (
@@ -78,14 +80,16 @@ class Login extends Component {
                 name="email"
                 placeholder="Email"
                 required
-                onKeyUp={this.handleEmailChange}
+                onKeyUp={this.handleInputKeyPress}
+                innerRef={this.getEmailRef}
               />
             </FormGroup>
             <FormGroup>
               <Input
                 type="password"
                 placeholder="Password"
-                onKeyUp={this.handlePasswordChange}
+                onKeyUp={this.handleInputKeyPress}
+                innerRef={this.getPasswordRef}
                 required
               />
             </FormGroup>

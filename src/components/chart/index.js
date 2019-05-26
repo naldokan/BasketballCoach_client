@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import cx from 'classnames';
 import {
   ResponsiveContainer,
@@ -6,13 +6,16 @@ import {
 	ScatterChart,
 	Area,
 	Scatter,
+	Cell,
   CartesianGrid,
   Tooltip,
 	XAxis,
 	YAxis,
-	ZAxis,
 } from 'recharts';
+import sizeMe  from 'react-sizeme'
+import playground from 'playground.png';
 import './styles.scss'
+
 
 export const LineChart = ({ data, dataKey, showXTick }) => (
 	<ResponsiveContainer
@@ -24,7 +27,7 @@ export const LineChart = ({ data, dataKey, showXTick }) => (
 			width={400}
 			height={150}
 			data={data}
-		>
+			margin={{ top: 0, bottom: 0, left: 0, bottom: 0}}>
 			<defs>
 				<linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
 					<stop offset="5%" stopColor="#ff7300" stopOpacity={0.6}/>
@@ -41,20 +44,61 @@ export const LineChart = ({ data, dataKey, showXTick }) => (
 	</ResponsiveContainer> 
 )
 
-export const GoalMap = ({ success, fail }) => (
-	<ResponsiveContainer
-		className={'chart-box'}
-		height={500}
-		width='100%'
-	>
-		<ScatterChart width={1000} height={1000}
-			margin={{ top: 20, right: 20, bottom: 10, left: 10 }}>
-			<CartesianGrid strokeDasharray="3 3" />
-			<XAxis dataKey="x" range={[0, 1000]} />
-			<YAxis dataKey="y" range={[0, 1000]} unit="kg" />
-			<ZAxis dataKey="z" range={[0, 1]} />
-			<Scatter name="A school" data={success} fill="#8884d8" />
-			<Scatter name="B school" data={fail} fill="#82ca9d" />
-		</ScatterChart>
-	</ResponsiveContainer> 
-)
+
+const PlayField = sizeMe({ monitorHeight: true })(({ children }) => <div>{ children }</div>)
+
+export class GoalMap extends Component {
+	constructor(props) {
+		super(props)
+		this.state = { }
+	}
+
+	onSize = ({ height }) => this.setState({ height })
+
+	render() {
+		const { positions, active } = this.props
+		const data = positions.map(({ x, y }) => ({ x, y, z: 4 }))
+		const successColor = '#5be569'
+		const failColor = '#d64a4a'
+		const successActiveColor = successColor // '#cdf2d1'
+		const failActiveColor = failColor // '#efb3b3'
+		const strokeWidth = 15
+
+		return (
+			<div className='goal-map'>
+				<ResponsiveContainer
+					className='position-absolute'
+					height={this.state.height}
+					width='100%'
+					margin={{ top: 0, bottom: 0, left: 0, bottom: 0}}>
+					<ScatterChart width={500} height={500}>
+						<XAxis dataKey="x" hide={true} domain={[0, 1000]} type='number' />
+						<YAxis dataKey="y" hide={true} domain={[0, 1000]} type='number' />
+						<Scatter name="Success" data={data} fill="#1ab229">
+							{ positions.map((val, index) => val.success ? (
+								<Cell
+									key={index}
+									fill={successColor}
+									stroke={successActiveColor}
+									strokeWidth={active === index ? strokeWidth : 5}
+									className={cx({ 'active-position success-position': active === index })}
+								/>
+							) : (
+								<Cell
+									key={index}
+									fill={failColor}
+									stroke={failActiveColor}
+									strokeWidth={active === index ? strokeWidth : 5}
+									className={cx({ 'active-position fail-position': active === index })}
+								/>
+							)) }
+						</Scatter>
+					</ScatterChart>
+				</ResponsiveContainer>
+				<PlayField onSize={this.onSize}>
+					<img className='w-100' src={playground} />
+				</PlayField>
+			</div>
+		)
+	}
+}

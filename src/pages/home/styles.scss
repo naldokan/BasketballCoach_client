@@ -31,10 +31,10 @@ button {
       outline: 0;
 
       &:hover {
-        background-color: #e5f3fe;
+        background-color: $hover-color;
       }
       &:active {
-        background-color: #d1e5f5;
+        background-color: $active-color;
       }
     }
   }

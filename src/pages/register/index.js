@@ -18,40 +18,38 @@ class Register extends Component {
   constructor(props) {
     super(props)
     this.state = { errorText: null }
-
-    this.email = this.password = this.passwordConfirm = this.name = ''
   }
 
-  handleNameChange = e => {
-    this.name = e.target.value
-    e.which === 13 && this.handleRegisterClick()
-  }
+  getEmailRef = ref => this.emailRef = ref
 
-  handleEmailChange = e => {
-    this.email = e.target.value
-    e.which === 13 && this.handleRegisterClick()
-  }
+  getNameRef = ref => this.nameRef = ref
 
-  handlePasswordChange = e => {
-    this.password = e.target.value
-    e.which === 13 && this.handleRegisterClick()
-  }
+  getPasswordRef = ref => this.passwordRef = ref
 
-  handlePasswordConfirmChange = e => {
-    this.passwordConfirm = e.target.value
-    e.which === 13 && this.handleRegisterClick()
-  }
+  getPasswordConfirmRef = ref => this.passwordConfirmRef = ref
+
+  handleInputKeyPress = ({ which }) => which === 13 && this.handleRegisterClick()
 
   handleRegisterClick = () => {
-    if (this.email.length === 0) {
+    const email = this.emailRef.value
+    const name = this.nameRef.value
+    const password = this.passwordRef.value
+    const passwordConfirm = this.passwordConfirmRef.value
+
+    if (email.length === 0) {
+      this.emailRef.focus()
       this.showErrorText('Email is empty')
-    } else if (this.name.length === 0) {
+    } else if (name.length === 0) {
+      this.nameRef.focus()
       this.showErrorText('Name is empty')
-    } else if (this.password.length === 0) {
+    } else if (password.length === 0) {
+      this.passwordRef.focus()
       this.showErrorText('Password is empty')
-    } else if (this.password.length < 8) {
+    } else if (password.length < 8) {
+      this.passwordRef.focus()
       this.showErrorText('Password should be more than 8 letters')
-    } else if (this.password !== this.passwordConfirm) {
+    } else if (password !== passwordConfirm) {
+      this.passwordRef.focus()
       this.showErrorText('Password doesn\'t match')
     } else {
       this.props.register({
@@ -59,9 +57,12 @@ class Register extends Component {
         email: this.email,
         password: this.password,
         onSuccess: () => this.props.history.push('/dashboard'),
-        onFailed: data => this.showErrorText(
-          (data.errors && data.errors.email && data.errors.email) || 'Unknown error'
-        )
+        onFailed: data => {
+          this.passwordRef.focus()
+          this.showErrorText(
+            (data.errors && data.errors.email && data.errors.email) || 'Unknown error'
+          )
+        }
       })
     }
   }
@@ -93,28 +94,32 @@ class Register extends Component {
                 type="email"
                 name="email"
                 placeholder="Email"
-                onKeyUp={this.handleEmailChange}
+                innerRef={this.getEmailRef}
+                onKeyUp={this.handleInputKeyPress}
               />
             </FormGroup>
             <FormGroup>
               <Input
                 name="name"
                 placeholder="Your name"
-                onKeyUp={this.handleNameChange}
+                innerRef={this.getNameRef}
+                onKeyUp={this.handleInputKeyPress}
               />
             </FormGroup>
             <FormGroup>
               <Input
                 type="password"
                 placeholder="Password"
-                onKeyUp={this.handlePasswordChange}
+                innerRef={this.getPasswordRef}
+                onKeyUp={this.handleInputKeyPress}
               />
             </FormGroup>
             <FormGroup>
               <Input
                 type="password"
                 placeholder="Confirm password"
-                onKeyUp={this.handlePasswordConfirmChange}
+                innerRef={this.getPasswordConfirmRef}
+                onKeyUp={this.handleInputKeyPress}
               />
             </FormGroup>
             <FormGroup>

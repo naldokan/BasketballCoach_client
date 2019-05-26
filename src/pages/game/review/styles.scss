@@ -15,4 +15,21 @@
       font-size: 1em;
     }
   }
+
+  table {
+    tbody {
+      tr {
+        transition: background-color .5s ease;
+
+        &.selected {
+          background-color: $active-color;
+        }
+
+        &:hover {
+          cursor: pointer;
+          background-color: $hover-color;
+        }
+      }
+    }
+  }
 }

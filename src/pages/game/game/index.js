@@ -43,7 +43,23 @@ class Game extends Component {
       progress: progressStatus.INIT,
       totalElapsedTime: 0,
       currentElapsedTime: 0,
-      shots: [],
+      // shots: [{
+      //   releaseTime: 0,
+      //   releaseAngle: 0,
+      //   legAngle: 0,
+      //   elbowAngle: 0,
+      //   x: 100,
+      //   y: 200,
+      //   success: 1,
+      // }, {
+      //   releaseTime: 0,
+      //   releaseAngle: 10,
+      //   legAngle: 20,
+      //   elbowAngle: 0,
+      //   x: 300,
+      //   y: 400,
+      //   success: 0,
+      // }],
     }
   }
 

@@ -6,8 +6,8 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import fp from 'lodash/fp'
 
 import { Round } from 'utils'
+import { GoalMap } from 'components/chart'
 import { progressStatus, elapsedTimeInterval } from '../game'
-import playground from 'playground.png';
 
 import 'react-circular-progressbar/dist/styles.css';
 import './styles.scss';
@@ -226,9 +226,14 @@ class GameProgress extends Component {
           </Row>
         </Col>
         { this.props.progress >= progressStatus.GOING &&
-        <Col className='col-md-3 col-12 col-sm-8 offset-md-1 offset-sm-2 order-3'>
-          <img className='w-100' src={playground} />
-        </Col> }
+          <Col className={cx(
+            'col-12',
+            'col-md-3  offset-md-1',
+            'col-sm-8 offset-sm-2',
+            'order-3'
+          )}>
+            <GoalMap positions={shots} />
+          </Col> }
       </Row>
     );
   }

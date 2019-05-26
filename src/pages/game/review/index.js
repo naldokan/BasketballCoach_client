@@ -7,6 +7,7 @@ import { Row, Col, Button, Table } from 'reactstrap';
 import { LineChart } from 'components/chart';
 import fp from 'lodash/fp';
 
+import { GoalMap } from 'components/chart'
 import { Round } from 'utils';
 import playground from 'playground.png';
 import './styles.scss';
@@ -20,6 +21,10 @@ const graphInfo = [
 ]
 
 class GameDetail extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { }
+  }
 
   getGraphData = (caption, source) => {
     const { shots } = this.props
@@ -27,6 +32,8 @@ class GameDetail extends Component {
       name: value['created_at'], [caption]: value[source]
     }))
   }
+
+  handleTryClick = selected => () => this.setState({ selected })
 
   render() {
     const { shots } = this.props
@@ -39,9 +46,7 @@ class GameDetail extends Component {
             'col-md-6 offset-md-3',
             'col-xl-3 offset-xl-1',
             'd-flex align-items-center')}>
-            <div>
-              <img className='w-100' src={playground} />
-            </div>
+            <GoalMap positions={shots} active={this.state.selected} />
           </Col>
           <Col className={cx(
             'd-xl-none',
@@ -82,7 +87,14 @@ class GameDetail extends Component {
               </thead>
               <tbody>
               {this.props.shots.map((val, key) => (
-                <tr key={ key } className={ cx({ 'text-danger' : !val.success }) }>
+                <tr
+                  key={ key }
+                  className={cx({
+                    'text-danger' : !val.success,
+                    'selected' : key === this.state.selected
+                  })}
+                  onClick={ this.handleTryClick(key) }
+                >
                   <td>{ key + 1 }</td>
                   <td>{ val.releaseAngle }</td>
                   <td>{ val.releaseTime }</td>

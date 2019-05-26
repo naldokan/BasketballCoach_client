@@ -61,17 +61,31 @@ class Dashboard extends Component {
         <Row className='dashboard-overall'>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
-              <FactTile score={totalGamePlays === undefined ? undefined : totalGamePlays} caption='Total game plays' size='1'/>
+              <FactTile caption='Total game plays' size='1'>
+                {totalGamePlays}
+              </FactTile>
             </FancyBox>
           </Col>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
-              <FactTile score={overallAccuracy === undefined ? undefined : overallAccuracy + '%'} caption='Overall accuracy' size='1'/>
+              <FactTile caption='Overall accuracy' size='1'>
+                {overallAccuracy === undefined ? undefined : (
+                  <>
+                    {overallAccuracy}<small>%</small>
+                  </>
+                )}
+              </FactTile>
             </FancyBox>
           </Col>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
-              <FactTile score={overallAccuracy === undefined ? undefined : recentAccuracy + '%'} caption='Recent accuracy' size='1'/>
+              <FactTile caption='Recent accuracy' size='1'>
+                {recentAccuracy === undefined ? undefined : (
+                  <>
+                    {recentAccuracy}<small>%</small>
+                  </>
+                )}
+              </FactTile>
             </FancyBox>
           </Col>
         </Row>

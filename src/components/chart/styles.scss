@@ -1,8 +1,94 @@
+@import '../../pages/variables';
+
+
+@mixin keyframes($animationName) {
+  @-webkit-keyframes #{$animationName} {
+    @content;
+  }
+  @-moz-keyframes #{$animationName} {
+    @content;
+  }
+  @-o-keyframes #{$animationName} {
+    @content;
+  }
+  @keyframes #{$animationName} {
+    @content;
+  }
+}
+
+@mixin animate($name, $duration, $iteration, $direction) {
+  -webkit-animation-duration: $duration;
+     -moz-animation-duration: $duration;
+       -o-animation-duration: $duration;
+          animation-duration: $duration;
+  -webkit-animation-iteration-count: $iteration;
+     -moz-animation-iteration-count: $iteration;
+       -o-animation-iteration-count: $iteration;
+          animation-iteration-count: $iteration;
+  -webkit-animation-name: $name;
+     -moz-animation-name: $name;
+       -o-animation-name: $name;
+          animation-name: $name;
+  -webkit-animation-direction: $direction;
+     -moz-animation-direction: $direction;
+       -o-animation-direction: $direction;
+          animation-direction: $direction;
+}
+
+@include keyframes(success-position) {
+  to {
+    fill: #5be569;
+    stroke: #5be569;
+  }
+  from {
+    fill: white;
+    stroke: white;
+  }
+}
+
+@include keyframes(fail-position) {
+  to {
+    fill: #d64a4a;
+    stroke: #d64a4a;
+  }
+  from {
+    fill: white;
+    stroke: white;
+  }
+}
+
+@mixin success-position {
+  @include animate(success-position, .3s, 9, alternate);
+}
+
+@mixin fail-position {
+  @include animate(fail-position, .3s, 9, alternate);
+}
+
+
 .line-chart-box {
   &.hide-x-tick {
     .xAxis {
       text {
         display: none;
+      }
+    }
+  }
+}
+
+.goal-map {
+  position: relative;
+
+  .recharts-wrapper {
+    z-index: 1;
+
+    .active-position {
+      &.success-position {
+        @include success-position;
+      }
+
+      &.fail-position {
+        @include fail-position;
       }
     }
   }
