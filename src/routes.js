@@ -28,7 +28,7 @@ class Routes extends Component {
     const window = electron.remote.getCurrentWindow()
 
     if (location.pathname === '/login' || location.pathname === '/register') {
-      if (this.lastPath !== '/login' && this.lastPath != '/register') {
+      if (this.lastPath !== '/login' && this.lastPath !== '/register') {
         window.setSize(minimumSize.width, minimumSize.height)
       }
       window.setMaximizable(false)

@@ -27,7 +27,7 @@ export const LineChart = ({ data, dataKey, showXTick }) => (
 			width={400}
 			height={150}
 			data={data}
-			margin={{ top: 0, bottom: 0, left: 0, bottom: 0}}>
+			margin={{ top: 0, bottom: 0, left: 0, right: 0}}>
 			<defs>
 				<linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
 					<stop offset="5%" stopColor="#ff7300" stopOpacity={0.6}/>
@@ -58,7 +58,7 @@ export const GoalMap = ({ positions, active }) => {
 			<ResponsiveContainer
 				className='position-absolute'
 				width='100%'
-				margin={{ top: 0, bottom: 0, left: 0, bottom: 0}}>
+				margin={{ top: 0, bottom: 0, left: 0, right: 0}}>
 				<ScatterChart width={500} height={500}>
 					<XAxis dataKey="x" hide={true} domain={[0, 1000]} type='number' />
 					<YAxis dataKey="y" hide={true} domain={[0, 1000]} type='number' />
