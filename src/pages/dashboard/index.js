@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux'
 
 import { Row, Col } from 'reactstrap';
+import cx from 'classnames';
 import FancyBox from 'components/fancybox';
 import FactTile from 'components/facttile';
 import { LineChart, GoalMap } from 'components/chart';
@@ -104,7 +105,11 @@ class Dashboard extends Component {
               </Row>
             ))}
           </Col>
-          <Col className='col-12 col-lg-4 px-5 order-1 order-lg-2'>
+          <Col className={cx(
+            'col-12 px-5 order-1',
+            'col-sm-8 offset-sm-2',
+            'col-lg-4 offset-lg-0 order-lg-2'
+          )}>
             <img className='w-100 img-thumbnail rounded mb-5' src={playground} />
             {/* <GoalMap
               success={this.state.positions &&
