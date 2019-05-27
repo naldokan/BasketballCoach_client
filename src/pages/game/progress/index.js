@@ -5,7 +5,7 @@ import { Row, Col, Button } from 'reactstrap';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import fp from 'lodash/fp'
 
-import { Round } from 'utils'
+import { Round, accuracyColor } from 'utils'
 import { GoalMap } from 'components/chart'
 import { progressStatus, elapsedTimeInterval } from '../game'
 
@@ -99,11 +99,6 @@ class GameProgress extends Component {
     const totalTime = this.formatMilisecond(totalElapsedTime)
     const delayTime = this.formatMilisecond(currentElapsedTime)
 
-    const circularColor = accuracy >= 90 ? '#188e28'
-      : accuracy >=75 ? '#e0ab26'
-      : accuracy >= 50 ? '#e05d25'
-      : '#960000'
-
     return (
       <Row className='d-flex align-items-center game-progress-container'>
         { (this.props.progress === progressStatus.REVIEW || 
@@ -181,7 +176,7 @@ class GameProgress extends Component {
                   strokeWidth={1}
                   counterClockwise={true}
                   text={`${total}`}
-                  styles={{ path: { stroke: circularColor } }}
+                  styles={{ path: { stroke: accuracyColor(accuracy) } }}
                 />
               )}
             </Col>

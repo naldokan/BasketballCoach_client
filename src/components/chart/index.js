@@ -12,6 +12,7 @@ import {
 	XAxis,
 	YAxis,
 } from 'recharts';
+import { accuracyColor, Round } from 'utils'
 import playground from 'playground.png';
 import './styles.scss'
 
@@ -44,55 +45,81 @@ export const LineChart = ({ data, dataKey, showXTick }) => (
 )
 
 
-export class GoalMap extends Component {
-	constructor(props) {
-		super(props)
-		this.state = { }
-	}
+export const GoalMap = ({ positions, active }) => {
+	const data = positions.map(({ x, y }) => ({ x, y: 1000 - y, z: 4 }))
+	const successColor = '#5be569'
+	const failColor = '#d64a4a'
+	const successActiveColor = successColor // '#cdf2d1'
+	const failActiveColor = failColor // '#efb3b3'
+	const strokeWidth = 15
 
-	onSize = ({ height }) => this.setState({ height })
+	return (
+		<div className='goal-map'>
+			<ResponsiveContainer
+				className='position-absolute'
+				width='100%'
+				margin={{ top: 0, bottom: 0, left: 0, bottom: 0}}>
+				<ScatterChart width={500} height={500}>
+					<XAxis dataKey="x" hide={true} domain={[0, 1000]} type='number' />
+					<YAxis dataKey="y" hide={true} domain={[0, 1000]} type='number' />
+					<Scatter name="Success" data={data} fill="#1ab229">
+						{ positions.map((val, index) => val.success ? (
+							<Cell
+								key={index}
+								fill={successColor}
+								stroke={successActiveColor}
+								strokeWidth={active === index ? strokeWidth : 5}
+								className={cx({ 'active-position success-position': active === index })}
+							/>
+						) : (
+							<Cell
+								key={index}
+								fill={failColor}
+								stroke={failActiveColor}
+								strokeWidth={active === index ? strokeWidth : 5}
+								className={cx({ 'active-position fail-position': active === index })}
+							/>
+						)) }
+					</Scatter>
+				</ScatterChart>
+			</ResponsiveContainer>
+			<img className='w-100' src={playground} />
+		</div>
+	)
+}
 
-	render() {
-		const { positions, active } = this.props
-		const data = positions.map(({ x, y }) => ({ x, y: 1000 - y, z: 4 }))
-		const successColor = '#5be569'
-		const failColor = '#d64a4a'
-		const successActiveColor = successColor // '#cdf2d1'
-		const failActiveColor = failColor // '#efb3b3'
-		const strokeWidth = 15
+export const GoalColorMap = ({ positions }) => {
+	const xsplit = 5
+	const ysplit = 5
+	const accuracy = Array(xsplit * ysplit).fill(0).map(() => ({ success: 0, total: 0 }))
 
-		return (
-			<div className='goal-map'>
-				<ResponsiveContainer
-					className='position-absolute'
-					width='100%'
-					margin={{ top: 0, bottom: 0, left: 0, bottom: 0}}>
-					<ScatterChart width={500} height={500}>
-						<XAxis dataKey="x" hide={true} domain={[0, 1000]} type='number' />
-						<YAxis dataKey="y" hide={true} domain={[0, 1000]} type='number' />
-						<Scatter name="Success" data={data} fill="#1ab229">
-							{ positions.map((val, index) => val.success ? (
-								<Cell
-									key={index}
-									fill={successColor}
-									stroke={successActiveColor}
-									strokeWidth={active === index ? strokeWidth : 5}
-									className={cx({ 'active-position success-position': active === index })}
-								/>
-							) : (
-								<Cell
-									key={index}
-									fill={failColor}
-									stroke={failActiveColor}
-									strokeWidth={active === index ? strokeWidth : 5}
-									className={cx({ 'active-position fail-position': active === index })}
-								/>
-							)) }
-						</Scatter>
-					</ScatterChart>
-				</ResponsiveContainer>
-				<img className='w-100' src={playground} />
+	positions && positions.forEach(({ x, y, success }) => {
+		const xi = Math.round(Math.min(x, 999) * xsplit / 1000)
+		const yi = Math.round(Math.min(y, 999) * ysplit / 1000)
+		const i = xsplit * yi + xi
+
+		accuracy[i].total = accuracy[i].total + 1
+		if (success) {
+			accuracy[i].success = accuracy[i].success + 1
+		}	
+	})
+
+	return (
+		<div className='goal-color-map'>
+			<div className='color-map'>
+				{accuracy.map(({ success, total }, key) => (
+					<div
+						key={key}
+						title={total && `${Round(success * 100 / total)}%`}
+						style={{
+							width: `${100 / xsplit}%`,
+							height: `${Math.round(100 / ysplit)}%`,
+							backgroundColor: total ? accuracyColor(success * 100 / total) : '#ffffff00'
+						}}>
+					</div>
+				))}
 			</div>
-		)
-	}
+			<img className='w-100' src={playground} />
+		</div>
+	)
 }

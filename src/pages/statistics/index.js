@@ -7,12 +7,11 @@ import { Row, Col, Button } from 'reactstrap';
 import cx from 'classnames'
 import fp from 'lodash/fp'
 
-import { LineChart } from 'components/chart';
+import { LineChart, GoalColorMap } from 'components/chart';
 
 import { throwRequest } from 'redux/modules/api/actions'
 import { Round } from 'utils'
 
-import playground from 'playground.png';
 import './styles.scss';
 
 
@@ -78,7 +77,7 @@ class Statistics extends Component {
     this.setState({ mode: 'days', period: value }, this.requestStatistics )
 
   render() {
-    const { history } = this.state
+    const { history, positions } = this.state
 
     return (
       <Row className='statistics-page'>
@@ -92,9 +91,8 @@ class Statistics extends Component {
               'offset-lg-2 col-lg-8',
               'offset-sm-3 col-sm-6',
               'order-md-2'
-              // 'offset-'
             )}>
-              <img className='w-100' src={playground} />
+              <GoalColorMap positions={positions}/>
             </Col>
           </Row>
           <Row className='mb-5'>

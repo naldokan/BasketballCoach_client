@@ -7,11 +7,10 @@ import { Row, Col } from 'reactstrap';
 import cx from 'classnames';
 import FancyBox from 'components/fancybox';
 import FactTile from 'components/facttile';
-import { LineChart, GoalMap } from 'components/chart';
+import { LineChart, GoalColorMap } from 'components/chart';
 import fp from 'lodash/fp';
 import { throwRequest } from 'redux/modules/api/actions'
 import { Round } from 'utils'
-import playground from 'playground.png';
 import './styles.scss';
 
 
@@ -90,7 +89,7 @@ class Dashboard extends Component {
             </FancyBox>
           </Col>
         </Row>
-        <p className='headline'>Performance of recent 10 performances</p>
+        <p className='headline'>Performance of recent 10 games</p>
         <Row>
           <Col className='col-12 col-lg-4 px-5 order-2 order-lg-1'>
             { graphInfo.left.map(({ caption, source }, key) => (
@@ -106,19 +105,11 @@ class Dashboard extends Component {
             ))}
           </Col>
           <Col className={cx(
-            'col-12 px-5 order-1',
+            'col-12 px-5 order-1 mb-5 mb-lg-0',
             'col-sm-8 offset-sm-2',
             'col-lg-4 offset-lg-0 order-lg-2'
           )}>
-            <img className='w-100 img-thumbnail rounded mb-5' src={playground} />
-            {/* <GoalMap
-              success={this.state.positions &&
-                this.state.positions.filter(goal => goal.success)
-                  .map(({ x, y }) => ({x, y, z: 1}))}
-              fail={this.state.positions &&
-                this.state.positions.filter(goal => !goal.success)
-                  .map(({ x, y }) => ({x, y, z: 1}))} 
-            /> */}
+            <GoalColorMap positions={positions} />
           </Col>
           <Col className='col-12 col-lg-4 px-5 order-3 order-lg-3'>
             { graphInfo.right.map(({ caption, source }, key) => (
