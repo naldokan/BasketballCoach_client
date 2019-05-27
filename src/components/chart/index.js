@@ -12,7 +12,6 @@ import {
 	XAxis,
 	YAxis,
 } from 'recharts';
-import sizeMe  from 'react-sizeme'
 import playground from 'playground.png';
 import './styles.scss'
 
@@ -45,8 +44,6 @@ export const LineChart = ({ data, dataKey, showXTick }) => (
 )
 
 
-const PlayField = sizeMe({ monitorHeight: true })(({ children }) => <div>{ children }</div>)
-
 export class GoalMap extends Component {
 	constructor(props) {
 		super(props)
@@ -57,7 +54,7 @@ export class GoalMap extends Component {
 
 	render() {
 		const { positions, active } = this.props
-		const data = positions.map(({ x, y }) => ({ x, y, z: 4 }))
+		const data = positions.map(({ x, y }) => ({ x, y: 1000 - y, z: 4 }))
 		const successColor = '#5be569'
 		const failColor = '#d64a4a'
 		const successActiveColor = successColor // '#cdf2d1'
@@ -68,7 +65,6 @@ export class GoalMap extends Component {
 			<div className='goal-map'>
 				<ResponsiveContainer
 					className='position-absolute'
-					height={this.state.height}
 					width='100%'
 					margin={{ top: 0, bottom: 0, left: 0, bottom: 0}}>
 					<ScatterChart width={500} height={500}>
@@ -95,9 +91,7 @@ export class GoalMap extends Component {
 						</Scatter>
 					</ScatterChart>
 				</ResponsiveContainer>
-				<PlayField onSize={this.onSize}>
-					<img className='w-100' src={playground} />
-				</PlayField>
+				<img className='w-100' src={playground} />
 			</div>
 		)
 	}

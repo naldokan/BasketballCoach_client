@@ -51,7 +51,15 @@ class Game extends Component {
       //   releaseAngle: 0,
       //   legAngle: 0,
       //   elbowAngle: 0,
-      //   x: 100,
+      //   x: 1000,
+      //   y: 0,
+      //   success: 1,
+      // }, {
+      //   releaseTime: 0,
+      //   releaseAngle: 0,
+      //   legAngle: 0,
+      //   elbowAngle: 0,
+      //   x: 1000,
       //   y: 200,
       //   success: 1,
       // }, {
@@ -59,8 +67,32 @@ class Game extends Component {
       //   releaseAngle: 10,
       //   legAngle: 20,
       //   elbowAngle: 0,
-      //   x: 300,
+      //   x: 1000,
       //   y: 400,
+      //   success: 0,
+      // }, {
+      //   releaseTime: 0,
+      //   releaseAngle: 10,
+      //   legAngle: 20,
+      //   elbowAngle: 0,
+      //   x: 1000,
+      //   y: 600,
+      //   success: 0,
+      // }, {
+      //   releaseTime: 0,
+      //   releaseAngle: 10,
+      //   legAngle: 20,
+      //   elbowAngle: 0,
+      //   x: 1000,
+      //   y: 800,
+      //   success: 0,
+      // }, {
+      //   releaseTime: 0,
+      //   releaseAngle: 10,
+      //   legAngle: 20,
+      //   elbowAngle: 0,
+      //   x: 1000,
+      //   y: 1000,
       //   success: 0,
       // }],
     }
@@ -318,7 +350,7 @@ class Game extends Component {
           when={this.state.progress !== progressStatus.INIT}
           message={this.handleNavigateAway}
         />
-          <Fade when={true || !!(this.state.shotNotice || this.state.finishNotice)}>
+          <Fade when={!!(this.state.shotNotice || this.state.finishNotice)}>
             <p className={cx(
               'text-game-notice',
               this.state.shotNotice ? success ? 'text-success' : 'text-danger' : 'text-success'

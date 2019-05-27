@@ -79,16 +79,25 @@
 .goal-map {
   position: relative;
 
-  .recharts-wrapper {
-    z-index: 1;
+  img {
+    border: 1px solid lightgray;
+  }
 
-    .active-position {
-      &.success-position {
-        @include success-position;
-      }
+  .recharts-responsive-container {
+    margin-top: 11.5%;
+    height: 88.5% !important;
 
-      &.fail-position {
-        @include fail-position;
+    .recharts-wrapper {
+      z-index: 1;
+      
+      .active-position {
+        &.success-position {
+          @include success-position;
+        }
+        
+        &.fail-position {
+          @include fail-position;
+        }
       }
     }
   }

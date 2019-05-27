@@ -16,11 +16,11 @@ import playground from 'playground.png';
 import './styles.scss';
 
 
-const recentTries = [
-  { text: 'Recent 10 tries', value: 10},
-  { text: 'Recent 20 tries', value: 20},
-  { text: 'Recent 50 tries', value: 50},
-  { text: 'Recent 100 tries', value: 100},
+const recentGames = [
+  { text: 'Recent 10 games', value: 10},
+  { text: 'Recent 20 games', value: 20},
+  { text: 'Recent 50 games', value: 50},
+  { text: 'Recent 100 games', value: 100},
   { text: 'All', value: 0}
 ]
 
@@ -71,7 +71,7 @@ class Statistics extends Component {
     }))
   }
 
-  handleRecentTries = value => () =>
+  handleRecentGames = value => () =>
     this.setState({ mode: recentMode.TRIES, period: value }, this.requestStatistics )
 
   handleRecentDays = value => () =>
@@ -104,12 +104,12 @@ class Statistics extends Component {
               'col-lg-3 offset-lg-0',
               'col-xl-2')
             }>
-              {recentTries.map(({ value, text }, key) => (
+              {recentGames.map(({ value, text }, key) => (
                 <Row key={key} className='my-2 my-lg-4'>
                   <Col>
                     <Button
                       className='btn-block'
-                      onClick={this.handleRecentTries(value)}
+                      onClick={this.handleRecentGames(value)}
                       color={
                         this.state.mode === recentMode.TRIES &&
                         value === this.state.period ? 'success' : 'primary'
