@@ -30,7 +30,6 @@ export const types = {
   STOP_GAME,
   UPDATE_TIME,
   UPDATE_LAST_SHOT,
-  FINISH_GAME,
   SOCKET_ERROR
 }
 
