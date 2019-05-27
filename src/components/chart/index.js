@@ -110,7 +110,7 @@ export const GoalColorMap = ({ positions }) => {
 				{accuracy.map(({ success, total }, key) => (
 					<div
 						key={key}
-						title={total && `${Round(success * 100 / total)}%`}
+						title={total ? `${Round(success * 100 / total)}%` : 'No data'}
 						style={{
 							width: `${100 / xsplit}%`,
 							height: `${Math.round(100 / ysplit)}%`,
