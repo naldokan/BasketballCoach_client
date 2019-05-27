@@ -94,10 +94,11 @@ export const GoalColorMap = ({ positions }) => {
 	const accuracy = Array(xsplit * ysplit).fill(0).map(() => ({ success: 0, total: 0 }))
 
 	positions && positions.forEach(({ x, y, success }) => {
-		const xi = Math.round(Math.min(x, 999) * xsplit / 1000)
-		const yi = Math.round(Math.min(y, 999) * ysplit / 1000)
+		const xi = Math.floor(Math.min(x, 999) * xsplit / 1000)
+		const yi = Math.floor(Math.min(y, 999) * ysplit / 1000)
 		const i = xsplit * yi + xi
 
+		console.log(x, y, xi, yi, i)
 		accuracy[i].total = accuracy[i].total + 1
 		if (success) {
 			accuracy[i].success = accuracy[i].success + 1
