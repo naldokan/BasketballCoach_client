@@ -1,0 +1,24 @@
+@import "../../variables";
+
+.text-game-notice {
+  @include media-breakpoint-only(xl) {
+    font-size: 7em;
+  }
+
+  @include media-breakpoint-only(lg) {
+    font-size: 5em;
+  }
+
+  @include media-breakpoint-down(md) {
+    font-size: 4em;
+  }
+  
+  position: fixed;
+  padding: 0 0.5em;
+  line-height: 1.2;
+  width: 100%;
+  left: 0;
+  text-align: center;
+  z-index: 9;
+  top: 45%;
+}

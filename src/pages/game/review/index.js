@@ -9,7 +9,6 @@ import fp from 'lodash/fp';
 
 import { GoalMap } from 'components/chart'
 import { Round } from 'utils';
-import playground from 'playground.png';
 import './styles.scss';
 
 

@@ -3,6 +3,8 @@ import { withRouter, Prompt } from "react-router";
 import { connect } from 'react-redux';
 import { compose } from 'redux'
 
+import cx from 'classnames'
+import Fade from 'react-reveal/Fade';
 import GameProgress from 'pages/game/progress'
 import GameReview from 'pages/game/review'
 import {
@@ -88,6 +90,8 @@ class Game extends Component {
         progress: progressStatus.FREE,
         currentElapsedTime: 0,
         totalElapsedTime: 0,
+        shotNotice: false,
+        finishNotice: false,
         shots: []
       })
     } else {
@@ -95,6 +99,8 @@ class Game extends Component {
         progress: progressStatus.OCCUPIED,
         currentElapsedTime: 0,
         totalElapsedTime: 0,
+        shotNotice: false,
+        finishNotice: false,
         countDown: 30,
         shots: [],
         user
@@ -116,7 +122,20 @@ class Game extends Component {
     currentElapsedTime: this.state.currentElapsedTime + elapsedTimeInterval
   })
 
-  updateLastShot = data => this.setState({ shots: this.state.shots.concat(data), currentElapsedTime: 0 })
+  updateLastShot = data => {
+    clearTimeout(this.shotNoticeTimer)
+    this.shotNoticeTimer = setTimeout(this.clearShotNoticeTimer, 2000)
+    this.setState({
+      shots: this.state.shots.concat(data),
+      currentElapsedTime: 0,
+      shotNotice: true
+    })
+  }
+
+  clearShotNoticeTimer = () => {
+    clearTimeout(this.shotNoticeTimer)
+    this.setState({ shotNotice: false })
+  }
 
   updateTime = data => this.setState({ totalElapsedTime: Round(data) })
 
@@ -156,10 +175,17 @@ class Game extends Component {
 
   handleFinishClick = () => {
     clearInterval(this.elapsedTimer)
-    this.setState({ progress: progressStatus.COMPLETE })
+    clearTimeout(this.shotNoticeTimer)
+    this.finishNoticeTimer = setTimeout(this.clearFinishNoticeTimer, 2000)
+    this.setState({ progress: progressStatus.COMPLETE, shotNotice: false, finishNotice: true })
     this.props.finishGame()
   }
-  
+
+  clearFinishNoticeTimer = () => {
+    this.setState({ finishNotice: false })
+    clearTimeout(this.finishNoticeTimer)
+  }
+
   handleStartClick = () => {
     switch (this.state.progress) {
       case progressStatus.FREE:
@@ -180,7 +206,8 @@ class Game extends Component {
         return this.props.resumeGame()
 
       case progressStatus.COMPLETE:
-        return this.setState({ progress: progressStatus.REVIEW })
+        clearTimeout(this.finishNoticeTimer)
+        return this.setState({ progress: progressStatus.REVIEW, finishNotice: false })
 
       case progressStatus.REVIEW:
         return this.setState({ progress: progressStatus.REVIEW_DETAIL })
@@ -201,12 +228,14 @@ class Game extends Component {
         return navigate()
 
       case progressStatus.GOING:
-        clearInterval(this.elapsedTimer)
       case progressStatus.PAUSED:
       case progressStatus.COMPLETE:
       case progressStatus.REVIEW:
       case progressStatus.REVIEW_DETAIL:
       default:
+        clearInterval(this.elapsedTimer)
+        clearTimeout(this.shotNoticeTimer)
+        clearTimeout(this.finishNoticeTimer)
         this.props.throwRequest()
         return this.props.checkGame()
 
@@ -222,6 +251,7 @@ class Game extends Component {
       case progressStatus.COMPLETE:
       case progressStatus.REVIEW:
       case progressStatus.REVIEW_DETAIL:
+        clearTimeout(this.finishNoticeTimer)
         this.props.disconnectGame()
         const navigate = this.safeNavigate(pathname)
         navigate()
@@ -269,6 +299,8 @@ class Game extends Component {
       response => {
         if (response === 0) {
           clearInterval(this.elapsedTimer)
+          clearTimeout(this.shotNoticeTimer)
+          clearTimeout(this.successFinishTimer)
           this.props.disconnectGame()
           onYes()
         }
@@ -277,31 +309,42 @@ class Game extends Component {
   }
 
   render() {
+    const { shots } = this.state
+    const success = shots.length > 0 ? shots[shots.length - 1].success : undefined
+
     return (
       <>
         <Prompt
           when={this.state.progress !== progressStatus.INIT}
           message={this.handleNavigateAway}
         />
-        { this.state.progress !== progressStatus.REVIEW_DETAIL ? (
-          <GameProgress
-            progress={this.state.progress}
-            shots={this.state.shots}
-            startClick={this.handleStartClick}
-            stopClick={this.handleStopClick}
-            finishClick={this.handleFinishClick}
-            countDown={this.state.countDown}
-            totalElapsedTime={this.state.totalElapsedTime}
-            currentElapsedTime={this.state.currentElapsedTime}
-            user={this.state.user}
-          />
-        ) : (
-          <GameReview
-            shots={this.state.shots}
-            summaryClick={this.handleStartClick}
-            replayClick={this.handleStopClick}
-          />  
-        )}
+          <Fade when={true || !!(this.state.shotNotice || this.state.finishNotice)}>
+            <p className={cx(
+              'text-game-notice',
+              this.state.shotNotice ? success ? 'text-success' : 'text-danger' : 'text-success'
+            )}>
+              <b>{this.state.shotNotice ? success ? 'SUCCESS' : 'FAILED' : 'GAME FINISHED'}</b>
+            </p>
+          </Fade>
+          { this.state.progress !== progressStatus.REVIEW_DETAIL ? (
+            <GameProgress
+              progress={this.state.progress}
+              shots={this.state.shots}
+              startClick={this.handleStartClick}
+              stopClick={this.handleStopClick}
+              finishClick={this.handleFinishClick}
+              countDown={this.state.countDown}
+              totalElapsedTime={this.state.totalElapsedTime}
+              currentElapsedTime={this.state.currentElapsedTime}
+              user={this.state.user}
+            />
+          ) : (
+            <GameReview
+              shots={this.state.shots}
+              summaryClick={this.handleStartClick}
+              replayClick={this.handleStopClick}
+            />  
+          )}
       </>
     );
   }

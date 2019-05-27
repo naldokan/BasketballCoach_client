@@ -77,12 +77,13 @@ class GameProgress extends Component {
   render() {
     const shots = this.props.shots
     const lastShot =
+      shots.length > 0 ? 
       this.props.progress === progressStatus.REVIEW ? {
         releaseAngle: Round(fp.meanBy('releaseAngle')(shots)),
         releaseTime: Round(fp.meanBy('releaseTime')(shots)),
         elbowAngle: Round(fp.meanBy('elbowAngle')(shots)),
         legAngle: Round(fp.meanBy('legAngle')(shots)),
-      } : shots.length > 0 ? shots[shots.length - 1]
+      } : shots[shots.length - 1]
         : {
         releaseAngle: 0,
         releaseTime: 0,
@@ -232,7 +233,7 @@ class GameProgress extends Component {
             'col-sm-8 offset-sm-2',
             'order-3'
           )}>
-            <GoalMap positions={shots} />
+            <GoalMap positions={shots}/>
           </Col> }
       </Row>
     );
