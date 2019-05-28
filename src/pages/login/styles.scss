@@ -4,7 +4,8 @@
   align-content: center;
   text-align: center;
   height: 100vh;
-  background-image: url('../../images/login.jpg');
+  background-image: linear-gradient(to right, #161677 0%, #5014336b 100%), url('../../images/login.jpg');
+  background-blend-mode: hard-light;
   background-size: cover;
 
   .logo {

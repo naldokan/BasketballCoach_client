@@ -32,10 +32,10 @@ const recentDays = [
 ]
 
 const graphInfo = [
-  { caption: 'Release Angle', source: 'release_angle' },
-  { caption: 'Release Time', source: 'release_time' },
-  { caption: 'Elbow Angle', source: 'elbow_angle' },
-  { caption: 'Leg Angle', source: 'leg_angle' }
+  { caption: 'Release Angle', source: 'release_angle', color: '#ff7300' },
+  { caption: 'Release Time', source: 'release_time', color: '#00e1ff' },
+  { caption: 'Elbow Angle', source: 'elbow_angle', color: '#d400ff' },
+  { caption: 'Leg Angle', source: 'leg_angle', color: '#ff3200' }
 ]
 
 const recentMode = { DAYS: 'days', TRIES: 'tries'}
@@ -143,14 +143,18 @@ class Statistics extends Component {
               ))}
             </Col>
           </Row>
-          {graphInfo.map(({ caption, source }) => (
+          {graphInfo.map(({ caption, source, color }) => (
             <Row key={source}>
               <Col className='col-12 d-flex justify-content-between'>
                 <p>{ caption }</p>
                 <p>{ history && history.length > 0 && Round(fp.meanBy(source)(history))}</p>
               </Col>
               <Col className='col-12'>
-                <LineChart data={this.getGraphData(caption, source)} dataKey={caption}/>
+                <LineChart
+                  data={this.getGraphData(caption, source)}
+                  color={color}
+                  dataKey={caption}
+                />
               </Col>
             </Row>
           ))}

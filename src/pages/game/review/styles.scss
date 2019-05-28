@@ -22,12 +22,12 @@
         transition: background-color .5s ease;
 
         &.selected {
-          background-color: $active-color;
+          background-color: $active-color !important;
         }
 
         &:hover {
           cursor: pointer;
-          background-color: $hover-color;
+          background-color: $hover-color !important;
         }
       }
     }

@@ -58,11 +58,11 @@
 }
 
 @mixin success-position {
-  @include animate(success-position, .3s, 9, alternate);
+  @include animate(success-position, .3s, infinite, alternate);
 }
 
 @mixin fail-position {
-  @include animate(fail-position, .3s, 9, alternate);
+  @include animate(fail-position, .3s, infinite, alternate);
 }
 
 

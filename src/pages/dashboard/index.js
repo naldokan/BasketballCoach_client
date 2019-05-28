@@ -16,12 +16,12 @@ import './styles.scss';
 
 const graphInfo = {
   left: [
-    { caption: 'Release Angle', source: 'release_angle' },
-    { caption: 'Release Time', source: 'release_time' }
+    { caption: 'Release Angle', source: 'release_angle', color: '#ff7300' },
+    { caption: 'Release Time', source: 'release_time', color: '#00e1ff' }
   ],
   right: [
-    { caption: 'Elbow Angle', source: 'elbow_angle' },
-    { caption: 'Leg Angle', source: 'leg_angle' }
+    { caption: 'Elbow Angle', source: 'elbow_angle', color: '#d400ff' },
+    { caption: 'Leg Angle', source: 'leg_angle', color: '#ff3200' }
   ]
 }
 
@@ -92,14 +92,18 @@ class Dashboard extends Component {
         <p className='headline'>Performance of recent 10 games</p>
         <Row>
           <Col className='col-12 col-lg-4 px-5 order-2 order-lg-1'>
-            { graphInfo.left.map(({ caption, source }, key) => (
+            { graphInfo.left.map(({ caption, source, color }, key) => (
               <Row key={key} className='mb-4'>
                 <Col className='col-12 d-flex justify-content-between'>
                   <p>{ caption }</p>
                   <p>{ history && history.length > 0 && Round(fp.meanBy(source)(history))}</p>
                 </Col>
                 <Col className='col-12'>
-                  <LineChart data={this.getGraphData(caption, source)} dataKey={caption} />
+                  <LineChart
+                    data={this.getGraphData(caption, source)}
+                    dataKey={caption}
+                    color={color}
+                  />
                 </Col>
               </Row>
             ))}
@@ -112,14 +116,18 @@ class Dashboard extends Component {
             <GoalColorMap positions={positions} />
           </Col>
           <Col className='col-12 col-lg-4 px-5 order-3 order-lg-3'>
-            { graphInfo.right.map(({ caption, source }, key) => (
+            { graphInfo.right.map(({ caption, source, color }, key) => (
               <Row key={key} className='mb-4'>
                 <Col className='col-12 d-flex justify-content-between'>
                   <p>{ caption }</p>
                   <p>{ history && history.length > 0 && Round(fp.meanBy(source)(history))}</p>
                 </Col>
                 <Col className='col-12'>
-                  <LineChart data={this.getGraphData(caption, source)} dataKey={caption} />
+                  <LineChart
+                    data={this.getGraphData(caption, source)}
+                    dataKey={caption}
+                    color={color}
+                  />
                 </Col>
               </Row>
               ))}

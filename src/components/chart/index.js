@@ -17,32 +17,35 @@ import playground from 'images/playground.png';
 import './styles.scss'
 
 
-export const LineChart = ({ data, dataKey, showXTick }) => (
-	<ResponsiveContainer
-		className={cx('line-chart-box', {'hide-x-tick': !showXTick})}
-		height={200}
-		width='100%'
-	>
-		<AreaChart
-			width={400}
-			height={150}
-			data={data}
-			margin={{ top: 0, bottom: 0, left: 0, right: 0}}>
-			<defs>
-				<linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-					<stop offset="5%" stopColor="#ff7300" stopOpacity={0.6}/>
-					<stop offset="95%" stopColor="#ff7300" stopOpacity={0}/>
-				</linearGradient>
-			</defs>
-			<XAxis dataKey="name" />
-			<YAxis/>
-			<CartesianGrid strokeDasharray="3 3" />
-			<Tooltip />
-			<CartesianGrid stroke="#f5f5f5" />
-			<Area dataKey={dataKey} stroke="#ff7300" fillOpacity={1} fill="url(#colorUv)" />
-		</AreaChart>
-	</ResponsiveContainer> 
-)
+export const LineChart = ({ data, dataKey, color, showXTick }) => {
+	const colorKey = dataKey.replace(' ', '-')
+	return (
+		<ResponsiveContainer
+			className={cx('line-chart-box', {'hide-x-tick': !showXTick})}
+			height={200}
+			width='100%'
+		>
+			<AreaChart
+				width={400}
+				height={150}
+				data={data}
+				margin={{ top: 0, bottom: 0, left: 0, right: 0}}>
+				<defs>
+					<linearGradient id={`colorUv-${colorKey}`} x1="0" y1="0" x2="0" y2="1">
+						<stop offset="5%" stopColor={ color } stopOpacity={0.6}/>
+						<stop offset="95%" stopColor={ color } stopOpacity={0}/>
+					</linearGradient>
+				</defs>
+				<XAxis dataKey="name" />
+				<YAxis/>
+				<CartesianGrid strokeDasharray="3 3" />
+				<Tooltip />
+				<CartesianGrid stroke={ color } />
+				<Area dataKey={dataKey} stroke={ color } fillOpacity={1} fill={`url(#colorUv-${colorKey})`} />
+			</AreaChart>
+		</ResponsiveContainer>
+	)
+}
 
 
 export const GoalMap = ({ positions, active }) => {

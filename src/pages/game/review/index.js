@@ -13,10 +13,10 @@ import './styles.scss';
 
 
 const graphInfo = [
-  { caption: 'Release Angle', source: 'releaseAngle' },
-  { caption: 'Release Time', source: 'releaseTime' },
-  { caption: 'Elbow Angle', source: 'elbowAngle' },
-  { caption: 'Leg Angle', source: 'legAngle' }
+  { caption: 'Release Angle', source: 'releaseAngle', color: '#ff7300' },
+  { caption: 'Release Time', source: 'releaseTime', color: '#00e1ff' },
+  { caption: 'Elbow Angle', source: 'elbowAngle', color: '#d400ff' },
+  { caption: 'Leg Angle', source: 'legAngle', color: '#ff3200' }
 ]
 
 class GameDetail extends Component {
@@ -130,14 +130,18 @@ class GameDetail extends Component {
         </Row>
         <Row className='order-3'>
           <Col className='col-12'>
-          {graphInfo.map(({ caption, source }) => (
+          {graphInfo.map(({ caption, source, color }) => (
             <Row key={source}>
               <Col className='col-12 d-flex justify-content-between'>
                 <p>{ caption }</p>
                 <p>{ shots && shots.length > 0 && Round(fp.meanBy(source)(shots))}</p>
               </Col>
               <Col className='col-12'>
-                <LineChart data={this.getGraphData(caption, source)} dataKey={caption}/>
+                <LineChart
+                  data={this.getGraphData(caption, source)}
+                  dataKey={caption}
+                  color={color}
+                />
               </Col>
             </Row>
           ))}

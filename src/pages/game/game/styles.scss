@@ -19,6 +19,9 @@
   width: 100%;
   left: 0;
   text-align: center;
-  z-index: 9;
   top: 45%;
+
+  &.bring-to-top {
+    z-index: 9;
+  }
 }

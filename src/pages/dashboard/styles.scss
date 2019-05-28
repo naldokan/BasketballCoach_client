@@ -12,8 +12,12 @@
   margin: -$spacer * 2;
   padding: $spacer * 3 0 $spacer * 4;
   background-image:
-    linear-gradient(to right, $background-color, #c4dbefff 40%, #c4dbefff 60%, $background-color),
-    linear-gradient(#c4dbef, $background-color);
+    linear-gradient(to right, $background-color, #c4dbef0f 40%, #c4dbef0f 60%, $background-color),
+    linear-gradient(#c4dbef0f, $background-color);
+
+  .fancy-box {
+    background-color: #38b4702c;
+  }
 
   small {
     font-size: 0.6em;

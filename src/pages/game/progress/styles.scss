@@ -32,6 +32,10 @@
     svg {
       margin-bottom: 2em;
       font-size: 1.3em;
+
+      .CircularProgressbar-trail {
+        stroke: #ffffff14;
+      }
     }
 
     .busy-game-text {
@@ -57,7 +61,7 @@
   
         .col:first-child {
           margin-top: 2%;
-          color: gray;
+          color: $font-color-secondary;
           text-align: right;
         }
   

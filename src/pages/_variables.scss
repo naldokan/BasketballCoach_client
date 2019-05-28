@@ -8,9 +8,19 @@
 //   @include button-variant($primary-color, darken($primary-color, 7.5%), darken($primary-color, 10%), lighten($primary-color,5%), lighten($primary-color, 10%), darken($primary-color,30%));
 // }
 
-$navbar-height: 4em;
-$background-color: #f3faff;
+
+// $font-color-normal: #79b0c9;
+$font-color-normal: #ff9d2e;
+$font-color-secondary: darken($font-color-normal, 25%);
+
+$background-color: #0a1023;
+$background-color-secondary: lighten($background-color, 5%);
 $login-background-color: #1b4877;
-$hover-color: #e5f3fe;
-$active-color: #d1e5f5;
+
+$navbar-background-color: darken($background-color, 2%);
+$navbar-height: 4em;
+
+$hover-color: #10172b;
+$active-color: lighten($hover-color, 3%);
+
 $playfield-top-margin: 11.5%;

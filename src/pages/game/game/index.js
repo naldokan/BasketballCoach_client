@@ -42,7 +42,7 @@ class Game extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      progress: progressStatus.INIT,
+      progress: progressStatus.GOING,
       totalElapsedTime: 0,
       currentElapsedTime: 0,
       shots: []
@@ -343,6 +343,7 @@ class Game extends Component {
   render() {
     const { shots } = this.state
     const success = shots.length > 0 ? shots[shots.length - 1].success : undefined
+    const showNotice = !!(this.state.shotNotice || this.state.finishNotice)
 
     return (
       <>
@@ -350,9 +351,10 @@ class Game extends Component {
           when={this.state.progress !== progressStatus.INIT}
           message={this.handleNavigateAway}
         />
-          <Fade when={!!(this.state.shotNotice || this.state.finishNotice)}>
+          <Fade when={showNotice}>
             <p className={cx(
               'text-game-notice',
+              { 'bring-to-top': showNotice },
               this.state.shotNotice ? success ? 'text-success' : 'text-danger' : 'text-success'
             )}>
               <b>{this.state.shotNotice ? success ? 'SUCCESS' : 'FAILED' : 'GAME FINISHED'}</b>

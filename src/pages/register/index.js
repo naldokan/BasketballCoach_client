@@ -130,7 +130,7 @@ class Register extends Component {
                 Sign up
               </Button>
             </FormGroup>
-            <p className='text-danger'>
+            <p className='text-warning'>
               &nbsp;{ this.state.errorText }&nbsp;
             </p>
             <a

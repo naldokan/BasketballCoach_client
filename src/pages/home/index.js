@@ -74,7 +74,7 @@ class Home extends Component {
     return (
       <div className="home-container">
         <Loader loading={this.props.loading} />
-        <Navbar color="white" light expand="md" className="py-md-0">
+        <Navbar dark expand="md" className="py-md-0">
           <NavbarBrand>
           </NavbarBrand>
           <NavbarToggler className='navbar-toggler' onClick={this.handleToggleClick} />
@@ -99,7 +99,11 @@ class Home extends Component {
             </Nav>
           </Collapse>
         </Navbar>
-        <div className={ cx('home-body', { 'home-body-vertical-middle': verticalCenterView }) }>
+        <div className={cx(
+          'home-body',
+          { 'home-body-vertical-middle': verticalCenterView },
+          this.props.view.replace('/', '-')
+        )}>
           {child}
         </div>
       </div>
