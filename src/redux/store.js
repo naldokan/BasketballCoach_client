@@ -1,5 +1,5 @@
 import createSagaMiddleware from 'redux-saga';
-import { createBrowserHistory } from 'history';
+import { createHashHistory } from 'history';
 import { createStore, compose, applyMiddleware, combineReducers } from 'redux';
 import { routerMiddleware } from 'react-router-redux';
 
@@ -7,7 +7,7 @@ import * as reducers from './modules';
 import sagas from './modules/sagas';
 
 // Create a history of your choosing (we're using a browser history in this case)
-export const history = createBrowserHistory();
+export const history = createHashHistory();
 
 // Build the middleware for intercepting and dispatching navigation actions
 const middleware = routerMiddleware(history);

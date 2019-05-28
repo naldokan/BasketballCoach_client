@@ -69,9 +69,10 @@ class Login extends Component {
           loading={this.props.loading}
           bottom
         />
+        <div className='logo'/>
         <Col className='col-6 pr-5'>
           <Form>
-            <h4 className="text-white-50 mb-5">Login</h4>
+            <h4 className="text-white mb-5">Login</h4>
             <FormGroup>
               <Input
                 type="email"
