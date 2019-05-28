@@ -1,9 +1,11 @@
 .login-form, .register-form {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-content: center;
   text-align: center;
   height: 100vh;
+  background-image: url('../../images/login.jpg');
+  background-size: contain;
 
   input {
     transition: background-color 0.5s ease;
@@ -11,6 +13,17 @@
 
     &:focus {
       background-color: rgba(255, 255, 255, 1);
+    }
+  }
+
+  .link {
+    padding: 3px 15px;
+    border-radius: 20px;
+    background-color: #00000066;
+    transition: background-color .5s ease;
+
+    &:hover {
+      background-color: #00000033;
     }
   }
 

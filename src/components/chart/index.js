@@ -13,7 +13,7 @@ import {
 	YAxis,
 } from 'recharts';
 import { accuracyColor, Round } from 'utils'
-import playground from 'playground.png';
+import playground from 'images/playground.png';
 import './styles.scss'
 
 

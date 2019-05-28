@@ -5,8 +5,6 @@ import { compose } from 'redux'
 import { createStructuredSelector } from 'reselect';
 
 import { Row, Col, Form, FormGroup, Input, Button } from 'reactstrap'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBasketballBall } from '@fortawesome/free-solid-svg-icons'
 
 import Loader from 'components/loader'
 import { loadingSelector } from 'redux/modules/api/selectors'
@@ -71,14 +69,9 @@ class Login extends Component {
           loading={this.props.loading}
           bottom
         />
-        <Col xs='8' sm='6' md='5' lg='4' xl='3'>
+        <Col className='col-6 pr-5'>
           <Form>
-            <FontAwesomeIcon
-              icon={faBasketballBall}
-              size='10x'
-              color='lightgray'
-              className="mb-5"
-            />
+            <h4 className="text-white-50 mb-5">Login</h4>
             <FormGroup>
               <Input
                 type="email"
@@ -107,15 +100,15 @@ class Login extends Component {
                 Sign in
               </Button>
             </FormGroup>
-            <p className='text-warning'>
+            <p className='text-white'>
               &nbsp;{ this.state.errorText }&nbsp;
             </p>
-            <p className="text-alert text-white-50">
-              <nobr>Haven't account?</nobr>
+            <p className="text-alert text-white">
+              <nobr className='mr-3'>Haven't account?</nobr>
               &nbsp;
               <a 
                 onClick={this.handleSignupClick}
-                className="text-info"
+                className="text-white-50 link"
                 style={{cursor: 'pointer'}}
               >
                 <nobr>Now sign up!</nobr>
