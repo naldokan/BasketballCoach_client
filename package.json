@@ -1,8 +1,8 @@
 {
-  "name": "cra-electron",
-  "description": "CRA + Electron sitting in a tree",
-  "author": "Kitze",
-  "version": "0.2.7",
+  "name": "Fro-G-Performance",
+  "description": "Fro.G Performance - Basketball Couch",
+  "author": "Eugene Mathew",
+  "version": "0.9.0",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.18",
@@ -14,6 +14,7 @@
     "cross-env": "5.2.0",
     "electron-is-dev": "0.3.0",
     "electron-log": "^2.2.6",
+    "jquery": "^3.4.1",
     "lodash": "^4.17.11",
     "react": "16.8.6",
     "react-calendar": "^2.19.0",
@@ -57,7 +58,7 @@
     "react-test": "react-scripts test --env=jsdom",
     "react-eject": "react-scripts eject",
     "electron-build": "electron-builder",
-    "release": "yarn react-build && electron-builder --publish=always",
+    "release": "yarn react-build && electron-builder --publish=never",
     "build": "yarn react-build && yarn electron-build",
     "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
   },
