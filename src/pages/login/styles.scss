@@ -18,6 +18,13 @@
     background-repeat: no-repeat;
   }
 
+  .copyright {
+    position: fixed;
+    top: 450px;
+    left: 30px;
+    color: white;
+  }
+
   input {
     transition: background-color 0.5s ease;
     background-color: rgba(255, 255, 255, 0.7);

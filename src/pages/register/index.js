@@ -84,7 +84,8 @@ class Register extends Component {
           bottom
         />
         <div className='logo'/>
-        <Col className='col-6 pr-5'>
+        <div className='copyright'>2019 © Fro.G</div>
+        <Col className='col-6 px-5'>
           <Form>
             <h4 className="text-white mb-5">Register your account</h4>
             <FormGroup>

@@ -5,7 +5,7 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const isDev = require("electron-is-dev");
 
-const loginSize = { width: 750, height: 500 }
+const loginSize = { width: 750, height: 530 }
 let mainWindow;
 
 require("update-electron-app")({
@@ -22,7 +22,7 @@ function createWindow() {
     maximizable: false,
     resizable: false,
     webPreferences: {
-      devTools: false,
+      // devTools: false,
       nodeIntegration: true
     }
   });
