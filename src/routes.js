@@ -10,7 +10,7 @@ import Home from 'pages/home';
 import Login from 'pages/login';
 import Register from 'pages/register';
 
-import { electron, minimumSize, normalSize } from 'my-electron';
+import { electron, minimumSize, loginSize, normalSize } from 'my-electron';
 
 class Routes extends Component {
  
@@ -29,20 +29,22 @@ class Routes extends Component {
 
     if (location.pathname === '/login' || location.pathname === '/register') {
       if (this.lastPath !== '/login' && this.lastPath !== '/register') {
-        window.setSize(minimumSize.width, minimumSize.height)
+        window.setMinimumSize(loginSize.width, loginSize.height)
+        window.setMaximumSize(loginSize.width, loginSize.height)
+        window.setSize(loginSize.width, loginSize.height)
+        window.setMaximizable(false)
+        // window.setResizable(false)
+        document.body.classList.add('login')
       }
-      window.setMaximizable(false)
-      window.setResizable(false)
-      document.body.classList.add('login')
-    } else {
+    } else if (this.lastPath === '/login' || this.lastPath === '/register') {
       window.setResizable(true)
-      if (this.lastPath === '/login' || this.lastPath === '/register') {
-        window.setSize(normalSize.width, normalSize.height)
-      }
+      window.setMaximumSize(3000, 3000)
+      window.setSize(normalSize.width, normalSize.height)
       window.setMaximizable(true)
       window.setMinimumSize(minimumSize.width, minimumSize.height)
       document.body.classList.remove('login')
     }
+    
     this.lastPath = location.pathname
   }
 

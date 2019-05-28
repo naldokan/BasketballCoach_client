@@ -128,7 +128,7 @@ class Register extends Component {
                 Sign up
               </Button>
             </FormGroup>
-            <p className='text-white'>
+            <p className='text-danger'>
               &nbsp;{ this.state.errorText }&nbsp;
             </p>
             <a

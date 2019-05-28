@@ -5,7 +5,7 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const isDev = require("electron-is-dev");
 
-const { minimumSize } = require("../src/my-electron");
+const { loginSize } = require("../src/my-electron");
 let mainWindow;
 
 require("update-electron-app")({
@@ -15,10 +15,10 @@ require("update-electron-app")({
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: minimumSize.width,
-    height: minimumSize.height,
-    minWidth: minimumSize.width,
-    minHeight: minimumSize.height,
+    width: loginSize.width,
+    height: loginSize.height,
+    minWidth: loginSize.width,
+    minHeight: loginSize.height,
     maximizable: false,
     resizable: false,
     webPreferences: {

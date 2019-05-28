@@ -100,10 +100,10 @@ class Login extends Component {
                 Sign in
               </Button>
             </FormGroup>
-            <p className='text-white'>
+            <p className='text-danger'>
               &nbsp;{ this.state.errorText }&nbsp;
             </p>
-            <p className="text-alert text-white">
+            <p className="text-alert text-black">
               <nobr className='mr-3'>Haven't account?</nobr>
               &nbsp;
               <a 
