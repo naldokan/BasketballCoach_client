@@ -29,6 +29,7 @@ class Routes extends Component {
 
     if (location.pathname === '/login' || location.pathname === '/register') {
       if (this.lastPath !== '/login' && this.lastPath !== '/register') {
+        window.setFullScreen(false)
         window.setMinimumSize(loginSize.width, loginSize.height)
         window.setMaximumSize(loginSize.width, loginSize.height)
         window.setSize(loginSize.width, loginSize.height)

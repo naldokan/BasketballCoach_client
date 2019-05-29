@@ -42,7 +42,7 @@ class Game extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      progress: progressStatus.GOING,
+      progress: progressStatus.INIT,
       totalElapsedTime: 0,
       currentElapsedTime: 0,
       shots: []
@@ -189,7 +189,7 @@ class Game extends Component {
     }
   }
 
-  finishGame = () => this.setState({ progress: progressStatus.COMPLETE })
+  finishGame = () => this.setState({ progress: progressStatus.REVIEW })
 
   socketError = message => {
     const { remote } = electron
@@ -209,7 +209,7 @@ class Game extends Component {
     clearInterval(this.elapsedTimer)
     clearTimeout(this.shotNoticeTimer)
     this.finishNoticeTimer = setTimeout(this.clearFinishNoticeTimer, 2000)
-    this.setState({ progress: progressStatus.COMPLETE, shotNotice: false, finishNotice: true })
+    this.setState({ progress: progressStatus.REVIEW, shotNotice: false, finishNotice: true })
     this.props.finishGame()
   }
 

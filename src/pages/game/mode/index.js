@@ -58,7 +58,7 @@ class Game extends Component {
               <Col className='col-12'>
                 <Button
                   color="success"
-                  disabled={!this.state.gameFree}
+                  disabled={true}
                   className="game-mode-button btn-block"
                   onClick={this.handleDrillsMode}
                 >

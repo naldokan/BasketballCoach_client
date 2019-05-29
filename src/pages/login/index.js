@@ -105,16 +105,14 @@ class Login extends Component {
             <p className='text-warning semi-transparent-text'>
               &nbsp;{ this.state.errorText }&nbsp;
             </p>
-            <p className="text-alert text-white-50">
-              <p className='my-1'>Haven't account?</p>
-              <a 
-                onClick={this.handleSignupClick}
-                className='text-info'
-                style={{cursor: 'pointer'}}
-              >
-                <nobr>Now sign up!</nobr>
-              </a>
-            </p>
+            <p className='my-1 text-white-50'>Haven't account?</p>
+            <a 
+              onClick={this.handleSignupClick}
+              className='text-info'
+              style={{cursor: 'pointer'}}
+            >
+              <nobr>Now sign up!</nobr>
+            </a>
           </Form>
         </Col>
       </Row>
