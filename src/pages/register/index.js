@@ -85,9 +85,9 @@ class Register extends Component {
         />
         <div className='logo'/>
         <div className='copyright'>2019 © Fro.G</div>
-        <Col className='col-6 px-5'>
+        <Col className='col-10'>
           <Form>
-            <h4 className="text-white mb-5">Register your account</h4>
+            <h4 className="text-white-50 mb-4">Register your account</h4>
             <FormGroup>
               <Input
                 type="email"
@@ -130,15 +130,15 @@ class Register extends Component {
                 Sign up
               </Button>
             </FormGroup>
-            <p className='text-warning'>
+            <p className='text-warning semi-transparent-text'>
               &nbsp;{ this.state.errorText }&nbsp;
             </p>
             <a
               onClick={this.handleGobackClick}
-              className="text-white-50 link"
+              className="text-info"
               style={{cursor: 'pointer'}}
             >
-              <nobr>Cancel and go back</nobr>
+              Cancel and go back
             </a>
           </Form>
         </Col>

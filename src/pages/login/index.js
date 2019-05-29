@@ -71,9 +71,9 @@ class Login extends Component {
         />
         <div className='logo'/>
         <div className='copyright'>2019 © Fro.G</div>
-        <Col className='col-6 px-5'>
+        <Col className='col-10'>
           <Form>
-            <h4 className="text-white mb-5">Login</h4>
+            <h4 className="text-white-50 mb-4">Login</h4>
             <FormGroup>
               <Input
                 type="email"
@@ -102,15 +102,14 @@ class Login extends Component {
                 Sign in
               </Button>
             </FormGroup>
-            <p className='text-warning'>
+            <p className='text-warning semi-transparent-text'>
               &nbsp;{ this.state.errorText }&nbsp;
             </p>
             <p className="text-alert text-white-50">
-              <nobr className='mr-3'>Haven't account?</nobr>
-              &nbsp;
+              <p className='my-1'>Haven't account?</p>
               <a 
                 onClick={this.handleSignupClick}
-                className="text-white-50 link"
+                className='text-info'
                 style={{cursor: 'pointer'}}
               >
                 <nobr>Now sign up!</nobr>

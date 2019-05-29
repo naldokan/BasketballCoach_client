@@ -12,6 +12,13 @@ body {
   }
 }
 
+.watermark-text {
+  opacity: .1;
+  text-align: center;
+  line-height: 1;
+  font-size: 6em;
+}
+
 table {
   tr {
     color: $font-color-normal !important;
@@ -55,7 +62,7 @@ button {
   .nav-pills {
     .nav-link {
       cursor: pointer;
-      background-color: lighten($background-color-secondary, 20%);
+      background-image: linear-gradient(lighten($background-color-secondary, 20%), $background-color);
       transition: background-color, 1s ease;
       border: 2px solid rgb(51, 71, 109);
       border-radius: 1em 1em 0 0;
@@ -71,11 +78,13 @@ button {
       }
 
       &:hover {
-        background-color: $hover-color;
+        background-color: lighten($hover-color, 10%);
+        background-image: none;
       }
 
       &.active {
         background-color: $background-color;
+        background-image: none;
         color: #7b84b5;
       }
     }
@@ -94,6 +103,13 @@ button {
       background-size: 1000px;
       background-position: right bottom;
       background-image: url('../../images/image1.jpg');
+    }
+
+    &.dashboard {
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: bottom;
+      background-image: url('../../images/image2.jpg');
     }
       
     @include media-breakpoint-down(sm) {

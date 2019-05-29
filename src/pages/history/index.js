@@ -49,7 +49,7 @@ class History extends Component {
             />
           </Col>
           <Col className='col-12 col-xl-9'>
-            { !historyExist ? <p className='headline'>No Game</p> : (
+            { !historyExist ? <p className='watermark-text mt-5'>:) No Game</p> : (
               <Table striped borderless>
                 <thead>
                   <tr>

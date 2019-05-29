@@ -11,12 +11,12 @@
   justify-content: center;
   margin: -$spacer * 2;
   padding: $spacer * 3 0 $spacer * 4;
-  background-image:
-    linear-gradient(to right, $background-color, #c4dbef0f 40%, #c4dbef0f 60%, $background-color),
-    linear-gradient(#c4dbef0f, $background-color);
+  // background-image:
+  //   linear-gradient(to right, $background-color, #c4dbef0f 40%, #c4dbef0f 60%, $background-color),
+  //   linear-gradient(#c4dbef0f, $background-color);
 
   .fancy-box {
-    background-color: #38b4702c;
+    background-color: #38b4700d;
   }
 
   small {
