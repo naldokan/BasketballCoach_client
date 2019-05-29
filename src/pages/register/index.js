@@ -53,9 +53,9 @@ class Register extends Component {
       this.showErrorText('Password doesn\'t match')
     } else {
       this.props.register({
-        name: this.name,
-        email: this.email,
-        password: this.password,
+        name,
+        email,
+        password,
         onSuccess: () => this.props.history.push('/dashboard'),
         onFailed: data => {
           this.passwordRef.focus()

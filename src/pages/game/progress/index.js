@@ -69,8 +69,8 @@ class GameProgress extends Component {
   }
 
   formatMilisecond = milisecond => ({
-    min: this.formatNumber(Math.round(milisecond / 1000 / 60), 2),
-    sec: this.formatNumber(Math.round(milisecond / 1000) % 60, 2),
+    min: this.formatNumber(Math.floor(milisecond / 1000 / 60), 2),
+    sec: this.formatNumber(Math.floor(milisecond / 1000) % 60, 2),
     ms: this.formatNumber(Math.round((milisecond % 1000) / elapsedTimeInterval), 2)
   })
 
@@ -107,7 +107,7 @@ class GameProgress extends Component {
             <p className='text-game-finished text-success'><b>GAME FINISHED</b></p>
           </Col>
         )}
-        { (true || this.props.progress >= progressStatus.GOING) &&
+        { this.props.progress >= progressStatus.GOING &&
         <Col className='game-detail col-md-5 col-12 order-2 order-md-1 mb-5 mb-md-0'>
           <Row>
             <Col className='overall col-12 col-sm-6 col-md-12 mb-4'>
@@ -157,8 +157,8 @@ class GameProgress extends Component {
           'text-center',
           'order-1 order-md-2',
           'col-12',
-          // (this.props.progress === progressStatus.INIT ||
-          //   this.props.progress === progressStatus.FREE) ? 'col-sm-6 offset-sm-3 col-md-4 offset-md-4' :
+          (this.props.progress === progressStatus.INIT ||
+            this.props.progress === progressStatus.FREE) ? 'col-sm-6 offset-sm-3 col-md-4 offset-md-4' :
             this.props.progress === progressStatus.OCCUPIED ? 'col-sm-8 offset-sm-2'
             : 'col-sm-6 offset-sm-3 col-md-3 offset-md-0'
         )}>
@@ -221,7 +221,7 @@ class GameProgress extends Component {
               </Col> )}
           </Row>
         </Col>
-        { (true || this.props.progress >= progressStatus.GOING) &&
+        { this.props.progress >= progressStatus.GOING &&
           <Col className={cx(
             'col-12',
             'col-md-3  offset-md-1',
