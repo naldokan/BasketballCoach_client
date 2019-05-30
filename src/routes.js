@@ -61,7 +61,9 @@ class Routes extends Component {
   redirect = () => <Redirect to='/login' />
 
   logOut = () => {
-    this.props.signout()
+    this.props.signout({
+      onSuccess: this.props.history.push('/login')
+    })
     return this.redirect()
   }
 

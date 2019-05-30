@@ -42,7 +42,7 @@ class Game extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      progress: progressStatus.GOING,
+      progress: progressStatus.INIT,
       totalElapsedTime: 0,
       currentElapsedTime: 0,
       shots: []
@@ -100,7 +100,6 @@ class Game extends Component {
 
   componentDidMount() {
     window.onbeforeunload = this.handleCloseWindow
-    return
     this.props.throwRequest()
     this.props.connectGame({
       showGameStatus:   this.showGameStatus,

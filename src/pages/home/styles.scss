@@ -83,9 +83,13 @@ button {
       }
 
       &.active {
-        background-color: $background-color;
-        background-image: none;
-        color: #7b84b5;
+        background-color: #41485d;
+        background-image: linear-gradient(#a2bdff, #14212f);
+        color: #ffffff;
+
+        // background-color: $background-color;
+        // background-image: none;
+        // color: #7b84b5;
       }
     }
   }
