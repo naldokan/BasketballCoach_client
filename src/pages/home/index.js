@@ -52,9 +52,7 @@ class Home extends Component {
 
   handleNavigatorClick = link => () => this.props.history.push(link)
 
-  handleSignoutClick = () => this.props.signout({
-    onSuccess: () => this.props.history.push('/login'),
-  })
+  handleSignoutClick = () => this.props.history.push('/logout')
 
   render() {
 

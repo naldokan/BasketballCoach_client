@@ -4,6 +4,7 @@ import { compose } from 'redux'
 import { Router, Route, Redirect } from 'react-router-dom';
 
 import { disconnectGame } from 'redux/modules/game/actions'
+import { signout } from 'redux/modules/auth/actions'
 
 import App from './App';
 import Home from 'pages/home';
@@ -18,6 +19,7 @@ class Routes extends Component {
     this.lastPath = '/login'
     document.body.classList.add('login')
     this.unlisten = this.props.history.listen(this.handleRouteChange)
+    electron.remote.getCurrentWindow().setFullScreenable(false)
   }
 
   componentWillUnmount() {
@@ -29,20 +31,25 @@ class Routes extends Component {
 
     if (location.pathname === '/login' || location.pathname === '/register') {
       if (this.lastPath !== '/login' && this.lastPath !== '/register') {
-        window.setFullScreen(false)
+        window.setFullScreen(false);
+        window.setFullScreenable(false)
         window.setMinimumSize(loginSize.width, loginSize.height)
         window.setMaximumSize(loginSize.width, loginSize.height)
+        window.center()
         window.setSize(loginSize.width, loginSize.height)
+        window.center()
         window.setMaximizable(false)
-        // window.setResizable(false)
         document.body.classList.add('login')
       }
     } else if (this.lastPath === '/login' || this.lastPath === '/register') {
+      window.center()
+      window.setFullScreenable(true)
       window.setResizable(true)
       window.setMaximumSize(3000, 3000)
       window.setSize(normalSize.width, normalSize.height)
       window.setMaximizable(true)
       window.setMinimumSize(minimumSize.width, minimumSize.height)
+      window.center()
       document.body.classList.remove('login')
     }
     
@@ -52,6 +59,11 @@ class Routes extends Component {
   view = mode => () => <Home view={mode} />
 
   redirect = () => <Redirect to='/login' />
+
+  logOut = () => {
+    this.props.signout()
+    return this.redirect()
+  }
 
   render() {
     return (
@@ -66,6 +78,7 @@ class Routes extends Component {
           <Route path='/leaderboard' render={this.view('leaderboard')} />
           <Route path='/login' component={Login} />
           <Route path='/register' component={Register} />
+          <Route path='/logout' component={this.logOut} />
           <Route path='/' exact render={this.redirect} />
         </App>
       </Router>
@@ -74,6 +87,7 @@ class Routes extends Component {
 }
 
 const actions = {
+  signout,
   disconnectGame
 }
 
