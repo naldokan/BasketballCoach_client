@@ -7,15 +7,9 @@
 
   @include media-breakpoint-only(xl) {
     font-size: 1.8em;
-    .game-detail {
-      justify-content: center;
-    }
   }
   @include media-breakpoint-only(lg) {
     font-size: 1.5em;
-    .game-detail {
-      justify-content: center;
-    }
   }
   @include media-breakpoint-only(md) {
     font-size: 1.2em;
@@ -28,6 +22,13 @@
     font-size: 0.7em;
   }
   
+  .goal-map-pane {
+    @include media-breakpoint-up(lg) {
+      margin-bottom: 0;
+      margin-top: 4rem !important;
+    }
+  }
+
   svg {
     font-size: 1.3em;
 
@@ -36,25 +37,39 @@
     }
 
     .CircularProgressbar-text {
-      font-size: 0.8em !important;
+      @include media-breakpoint-only(xl) {
+        font-size: 1.5em;
+      }
+      @include media-breakpoint-only(lg) {
+        font-size: 1.7em;
+      }
+      @include media-breakpoint-only(md) {
+        font-size: 2em;
+      }
+      @include media-breakpoint-only(sm) {
+        font-size: 2.2em;
+      }
+      @include media-breakpoint-only(xs) {
+        font-size: 2.5em;
+      }
       font-weight: lighter;
       transform: translate(0, 5%);
     }
   }
 
   .goal-box {
-    color: #207b20;
+    color: #3fbb3f;
     
     .title {
-      color: darken(#207b20, 13%);
+      color: darken(#3fbb3f, 13%);
     }
   }
 
   .fail-box {
-    color: #8d2a2a;
+    color: #d14444;
     
     .title {
-      color: darken(#8d2a2a, 13%);
+      color: darken(#d14444, 13%);
     }
   }
 
@@ -79,17 +94,17 @@
     box-shadow: none;
   }
 
-  .overall, .last-try {
+  .last-try {
     .row {
       align-items: center;
 
-      .col:first-child {
+      .field-title {
         margin-top: 2%;
         color: $font-color-secondary;
         text-align: right;
       }
-
-      .col:last-child {
+      
+      .field-value {
         font-size: 2em;
       }
     }

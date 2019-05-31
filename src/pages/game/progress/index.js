@@ -150,64 +150,56 @@ class GameProgress extends Component {
             </Row>
             <Row className='game-detail order-2 order-lg-1 my-lg-5'>
               <Col className={cx(
-                'overall mb-5 order-lg-1',
-                'col-12',
-                'col-sm-6',
-                'col-lg-4'
-              )}>
-                <Row className='justify-content-center my-3'>
-                  <Col className='col-8 col-sm-6 col-lg-5 mt-0'>
-                    <CircularProgressbar
-                      value={accuracy}
-                      strokeWidth={1}
-                      counterClockwise={true}
-                      text={`${total}`}
-                      styles={{ path: { stroke: accuracyColor(accuracy) } }}
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>Accuracy</Col>
-                  <Col>{ accuracy }&nbsp;<small>%</small></Col>
-                </Row>
-              </Col>
-              <Col className={cx(
-                'last-try mb-5 mb-lg-0 order-lg-3',
-                'col-12',
-                'col-sm-6',
-                'col-lg-4'
-              )}>
-                <Row>
-                  <Col>Release Angle</Col>
-                  <Col>{ lastShot.releaseAngle }</Col>
-                </Row>
-                <Row>
-                  <Col>Release Time</Col>
-                  <Col>{ lastShot.releaseTime }</Col>
-                </Row>
-                <Row>
-                  <Col>Elbow Angle</Col>
-                  <Col>{ lastShot.elbowAngle }</Col>
-                </Row>
-                <Row>
-                  <Col>Leg Angle</Col>
-                  <Col>{ lastShot.legAngle }</Col>
-                </Row>
-              </Col>
-              <Col className={cx(
+                'last-try',
                 'order-lg-2',
                 'col-12',
+                'col-lg-6',
+                'col-xl-4'
+              )}>
+                <Row>
+                  <Col className='col-6 col-sm-3 col-lg-6 field-title'>Accuracy</Col>
+                  <Col className='col-6 col-sm-3 col-lg-6 field-value'>{ accuracy }&nbsp;<small>%</small></Col>
+                  <Col className='col-6 col-sm-3 col-lg-6 field-title'>Release Angle</Col>
+                  <Col className='col-6 col-sm-3 col-lg-6 field-value'>{ lastShot.releaseAngle }</Col>
+                  <Col className='col-6 col-sm-3 col-lg-6 field-title'>Release Time</Col>
+                  <Col className='col-6 col-sm-3 col-lg-6 field-value'>{ lastShot.releaseTime }</Col>
+                  <Col className='col-6 col-sm-3 col-lg-6 field-title'>Elbow Angle</Col>
+                  <Col className='col-6 col-sm-3 col-lg-6 field-value'>{ lastShot.elbowAngle }</Col>
+                  <Col className='col-6 col-sm-3 col-lg-6 field-title'>Leg Angle</Col>
+                  <Col className='col-6 col-sm-3 col-lg-6 field-value'>{ lastShot.legAngle }</Col>
+                </Row>
+              </Col>
+              <Col className={cx(
+                'order-lg-1',
+                'col-10 offset-1 my-3',
                 'col-sm-8 offset-sm-2',
                 'col-md-6 offset-md-3',
-                'col-lg-4 offset-lg-0',
-                'col-xl-3'
+                'col-lg-3 offset-lg-0 mt-5 mb-0',
+                'col-xl-2 offset-xl-2'
+              )}>
+                <CircularProgressbar
+                  value={accuracy}
+                  strokeWidth={1}
+                  counterClockwise={true}
+                  text={`${total}`}
+                  styles={{ path: { stroke: accuracyColor(accuracy) } }}
+                />
+              </Col>
+              <Col className={cx(
+                'goal-map-pane',
+                'order-lg-3',
+                'col-10 offset-1 my-3',
+                'col-sm-8 offset-sm-2',
+                'col-md-6 offset-md-3',
+                'col-lg-3 offset-lg-0',
+                'col-xl-2'
               )}>
                 <GoalMap positions={shots}/>
               </Col>
             </Row>
           </>
         )}
-        <Row className='my-4 mt-xl-5 mb-lg-0 order-1 order-lg-2'>
+        <Row className='my-4 mt-xl-5 mb-lg-0 order-1 order-lg-3'>
           <Col className={cx(
             'col-sm-4 offset-sm-2',
             'col-md-3 offset-md-3',
