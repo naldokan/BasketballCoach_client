@@ -72,7 +72,7 @@ class Home extends Component {
     return (
       <div className="home-container">
         <Loader loading={this.props.loading} />
-        <Navbar dark expand="md" className="py-md-0">
+        <Navbar dark expand="md" className="py-md-0 main-navbar">
           <NavbarBrand>
           </NavbarBrand>
           <NavbarToggler className='navbar-toggler' onClick={this.handleToggleClick} />

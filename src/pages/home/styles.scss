@@ -38,7 +38,7 @@ button {
 .home-container {
   margin: 0 -15px;
 
-  nav {
+  nav.main-navbar {
     box-shadow: 0px 2px 30px -4px rgba(139, 199, 248, 0.281);
     min-height: $navbar-height;
     align-items: flex-end;
@@ -57,39 +57,39 @@ button {
         background-color: $active-color;
       }
     }
-  }
 
-  .nav-pills {
-    .nav-link {
-      cursor: pointer;
-      background-image: linear-gradient(lighten($background-color-secondary, 20%), $background-color);
-      transition: background-color, 1s ease;
-      border: 2px solid rgb(51, 71, 109);
-      border-radius: 1em 1em 0 0;
-      margin: 0 0.3em;
-
-      @include media-breakpoint-up(md) {
-        border-bottom: 0;
-      }
-
-      @include media-breakpoint-down(sm) {
-        border-radius: 2em;
-        margin-bottom: 0.2em;
-      }
-
-      &:hover {
-        background-color: lighten($hover-color, 10%);
-        background-image: none;
-      }
-
-      &.active {
-        background-color: #41485d;
-        background-image: linear-gradient(#a2bdff, #14212f);
-        color: #ffffff;
-
-        // background-color: $background-color;
-        // background-image: none;
-        // color: #7b84b5;
+    .nav-pills {
+      .nav-link {
+        cursor: pointer;
+        background-image: linear-gradient(lighten($background-color-secondary, 20%), $background-color);
+        transition: background-color, 1s ease;
+        border: 2px solid rgb(51, 71, 109);
+        border-radius: 1em 1em 0 0;
+        margin: 0 0.3em;
+  
+        @include media-breakpoint-up(md) {
+          border-bottom: 0;
+        }
+  
+        @include media-breakpoint-down(sm) {
+          border-radius: 2em;
+          margin-bottom: 0.2em;
+        }
+  
+        &:hover {
+          background-color: lighten($hover-color, 10%);
+          background-image: none;
+        }
+  
+        &.active {
+          background-color: #41485d;
+          background-image: linear-gradient(#a2bdff, #14212f);
+          color: #ffffff;
+  
+          // background-color: $background-color;
+          // background-image: none;
+          // color: #7b84b5;
+        }
       }
     }
   }

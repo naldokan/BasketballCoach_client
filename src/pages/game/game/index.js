@@ -5,6 +5,7 @@ import { compose } from 'redux'
 
 import cx from 'classnames'
 import Fade from 'react-reveal/Fade';
+import { Row, Col } from 'reactstrap';
 import GameProgress from 'pages/game/progress'
 import GameReview from 'pages/game/review'
 import {
@@ -42,11 +43,11 @@ class Game extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      progress: progressStatus.INIT,
+      progress: progressStatus.REVIEW_DETAIL,
       totalElapsedTime: 0,
       currentElapsedTime: 0,
       shots: []
-      // shots: [{
+      // shots: Array(53).fill(0).map(v =>({
       //   releaseTime: 0,
       //   releaseAngle: 0,
       //   legAngle: 0,
@@ -54,47 +55,7 @@ class Game extends Component {
       //   x: 1000,
       //   y: 0,
       //   success: 1,
-      // }, {
-      //   releaseTime: 0,
-      //   releaseAngle: 0,
-      //   legAngle: 0,
-      //   elbowAngle: 0,
-      //   x: 1000,
-      //   y: 200,
-      //   success: 1,
-      // }, {
-      //   releaseTime: 0,
-      //   releaseAngle: 10,
-      //   legAngle: 20,
-      //   elbowAngle: 0,
-      //   x: 1000,
-      //   y: 400,
-      //   success: 0,
-      // }, {
-      //   releaseTime: 0,
-      //   releaseAngle: 10,
-      //   legAngle: 20,
-      //   elbowAngle: 0,
-      //   x: 1000,
-      //   y: 600,
-      //   success: 0,
-      // }, {
-      //   releaseTime: 0,
-      //   releaseAngle: 10,
-      //   legAngle: 20,
-      //   elbowAngle: 0,
-      //   x: 1000,
-      //   y: 800,
-      //   success: 0,
-      // }, {
-      //   releaseTime: 0,
-      //   releaseAngle: 10,
-      //   legAngle: 20,
-      //   elbowAngle: 0,
-      //   x: 1000,
-      //   y: 1000,
-      //   success: 0,
-      // }],
+      // })),
     }
   }
 
@@ -341,14 +302,14 @@ class Game extends Component {
   }
 
   render() {
-    const { shots } = this.state
+    const { shots, progress } = this.state
     const success = shots.length > 0 ? shots[shots.length - 1].success : undefined
     const showNotice = !!(this.state.shotNotice || this.state.finishNotice)
 
     return (
-      <>
+      <div className='game-panel'>
         <Prompt
-          when={this.state.progress !== progressStatus.INIT}
+          when={progress !== progressStatus.INIT}
           message={this.handleNavigateAway}
         />
           <Fade when={showNotice}>
@@ -360,9 +321,24 @@ class Game extends Component {
               <b>{this.state.shotNotice ? success ? 'SUCCESS' : 'FAILED' : 'GAME FINISHED'}</b>
             </p>
           </Fade>
-          { this.state.progress !== progressStatus.REVIEW_DETAIL ? (
+          { progress === progressStatus.COMPLETE ? (
+              <Row>
+                <Col className='col-12 text-center mb-4'>
+                  <p className='text-game-finished text-success'><b>GAME FINISHED</b></p>
+                </Col>
+              </Row>
+            ) : (progress === progressStatus.REVIEW_DETAIL ||
+                progress === progressStatus.REVIEW) && (
+              <Row>
+                <Col className='col-12 text-center mb-4'>
+                  <p className='text-game-finished text-success'><b>GAME RESULT</b></p>
+                </Col>
+              </Row>
+            )
+          }
+          { progress !== progressStatus.REVIEW_DETAIL ? (
             <GameProgress
-              progress={this.state.progress}
+              progress={progress}
               shots={this.state.shots}
               startClick={this.handleStartClick}
               stopClick={this.handleStopClick}
@@ -379,7 +355,7 @@ class Game extends Component {
               replayClick={this.handleStopClick}
             />  
           )}
-      </>
+      </div>
     );
   }
 }

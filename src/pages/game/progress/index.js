@@ -123,14 +123,6 @@ class GameProgress extends Component {
           </Row>
         ) : (
           <>
-            { (this.props.progress === progressStatus.REVIEW || 
-              this.props.progress === progressStatus.COMPLETE ) && (
-              <Row>
-                <Col className='col-12 text-center mb-4'>
-                  <p className='text-game-finished text-success'><b>GAME FINISHED</b></p>
-                </Col>
-              </Row>
-            )}
             <Row>
               <Col className={cx(
                 'col-6',

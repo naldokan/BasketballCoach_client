@@ -1,27 +1,44 @@
 @import "../../variables";
 
-.text-game-notice {
+.game-panel {
   @include media-breakpoint-only(xl) {
-    font-size: 7em;
+    .text-game-notice {
+      font-size: 7em;
+    }
+    .text-game-finished {
+      font-size: 4em;
+    }
   }
 
   @include media-breakpoint-only(lg) {
-    font-size: 5em;
+    .text-game-notice {
+      font-size: 5em;
+    }
+    .text-game-finished {
+      font-size: 3em;
+    }
   }
 
   @include media-breakpoint-down(md) {
-    font-size: 4em;
+    .text-game-notice {
+      font-size: 4em;
+    }
+    .text-game-finished {
+      font-size: 2em;
+    }
   }
-  
-  position: fixed;
-  padding: 0 0.5em;
-  line-height: 1.2;
-  width: 100%;
-  left: 0;
-  text-align: center;
-  top: 45%;
+    
+  .text-game-notice {
+    position: fixed;
+    padding: 0 0.5em;
+    line-height: 1.2;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    top: 45%;
 
-  &.bring-to-top {
-    z-index: 9;
+    &.bring-to-top {
+      z-index: 9;
+    }
   }
 }

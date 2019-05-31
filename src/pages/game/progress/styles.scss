@@ -1,10 +1,5 @@
 @import "../../variables";
 
-.CircularProgressbar-text {
-  font-size: 4em !important;
-  font-weight: lighter;
-  transform: translate(0, 5%);
-}
 
 .game-progress-container {
   display: flex;
@@ -29,10 +24,6 @@
     font-size: 1.2em;
   }
 
-  .text-game-finished {
-    font-size: 2em;
-  }
-
   small {
     font-size: 0.7em;
   }
@@ -47,6 +38,12 @@
     .CircularProgressbar-text {
       font-size: 2em !important;
     }
+  }
+
+  .CircularProgressbar-text {
+    font-size: 4em !important;
+    font-weight: lighter;
+    transform: translate(0, 5%);
   }
 
   .busy-game-text {
