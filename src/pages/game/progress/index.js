@@ -6,6 +6,8 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import fp from 'lodash/fp'
 
 import { Round, accuracyColor } from 'utils'
+import FancyBox  from 'components/fancybox'
+import FactTile  from 'components/facttile'
 import { GoalMap } from 'components/chart'
 import { progressStatus, elapsedTimeInterval } from '../game'
 
@@ -99,139 +101,176 @@ class GameProgress extends Component {
     const totalTime = this.formatMilisecond(totalElapsedTime)
     const delayTime = this.formatMilisecond(currentElapsedTime)
 
+    // <CircularProgressbar
+    //   value={accuracy}
+    //   strokeWidth={1}
+    //   counterClockwise={true}
+    //   text={`${total}`}
+    //   styles={{ path: { stroke: accuracyColor(accuracy) } }}
+    // />
+
     return (
-      <Row className='d-flex align-items-center game-progress-container'>
-        { (this.props.progress === progressStatus.REVIEW || 
-          this.props.progress === progressStatus.COMPLETE ) && (
-          <Col className='col-12 text-center mb-4'>
-            <p className='text-game-finished text-success'><b>GAME FINISHED</b></p>
-          </Col>
-        )}
-        { this.props.progress >= progressStatus.GOING &&
-        <Col className='game-detail col-md-5 col-12 order-2 order-md-1 mb-5 mb-md-0'>
-          <Row>
-            <Col className='overall col-12 col-sm-6 col-md-12 mb-4'>
-              <Row>
-                <Col>Goals</Col>
-                <Col>{ goals }</Col>
-              </Row>
-              <Row>
-                <Col>Fails</Col>
-                <Col>{ fails }</Col>
-              </Row>
-              <Row>
-                <Col>Accuracy</Col>
-                <Col>{ accuracy }&nbsp;<small>%</small></Col>
-              </Row>
-              <Row>
-                <Col>Elapsed Time</Col>
-                <Col>{ totalTime.min }:{ totalTime.sec }&nbsp;<small>{ totalTime.ms }</small></Col>
-              </Row>
-              <Row>
-                <Col>Delay</Col>
-                <Col>{ delayTime.min }:{ delayTime.sec }&nbsp;<small>{ delayTime.ms }</small></Col>
-              </Row>
-            </Col>
-            <Col className='last-try col-12 col-sm-6 col-md-12'>
-              <Row>
-                <Col>Release Angle</Col>
-                <Col>{ lastShot.releaseAngle }</Col>
-              </Row>
-              <Row>
-                <Col>Release Time</Col>
-                <Col>{ lastShot.releaseTime }</Col>
-              </Row>
-              <Row>
-                <Col>Elbow Angle</Col>
-                <Col>{ lastShot.elbowAngle }</Col>
-              </Row>
-              <Row>
-                <Col>Leg Angle</Col>
-                <Col>{ lastShot.legAngle }</Col>
-              </Row>
-            </Col>
-          </Row>
-        </Col> }
-        <Col className={cx(
-          'game-control-pane',
-          'text-center',
-          'order-1 order-md-2',
-          'col-12',
-          (this.props.progress === progressStatus.INIT ||
-            this.props.progress === progressStatus.FREE) ? 'col-sm-6 offset-sm-3 col-md-4 offset-md-4' :
-            this.props.progress === progressStatus.OCCUPIED ? 'col-sm-8 offset-sm-2'
-            : 'col-sm-6 offset-sm-3 col-md-3 offset-md-0'
-        )}>
+      <div className='game-progress-container'>
+        { this.props.progress === progressStatus.OCCUPIED ? (
           <Row>
             <Col>
-              { this.props.progress === progressStatus.OCCUPIED ? (
-                <p className='busy-game-text my-5'>
-                  Sorry, {this.capitalizeFirstLetter(this.props.user)} is now playing.<br/>
-                  { this.props.countDown > 0 ? 'Please try again after ' + this.props.countDown + ' seconds.'
-                      : 'Please wait for a while until he finishes and try again.'}
-                </p>
-              ) : (
-                <CircularProgressbar
-                  value={accuracy}
-                  strokeWidth={1}
-                  counterClockwise={true}
-                  text={`${total}`}
-                  styles={{ path: { stroke: accuracyColor(accuracy) } }}
-                />
-              )}
+              <p className='busy-game-text my-5'>
+                Sorry, {this.capitalizeFirstLetter(this.props.user)} is now playing.<br/>
+                { this.props.countDown > 0 ? 'Please try again after ' + this.props.countDown + ' seconds.'
+                    : 'Please wait for a while until he finishes and try again.'}
+              </p>
             </Col>
           </Row>
-          <Row>
-            <Col className={cx(
-              'col-10 offset-1',
-              this.props.progress === progressStatus.OCCUPIED ? 'col-md-6 offset-md-3 col-xl-4 offset-xl-4'
-                : 'col-xl-8 offset-xl-2'
-            )}>
-              <Button
-                color="primary"
-                className='game-control-button'
-                onClick={this.props.startClick}
-                disabled={this.props.progress === progressStatus.OCCUPIED && this.props.countDown > 0}>
-                { this.getStartButtonText() }
-              </Button>
-            </Col>
-            <Col className={cx(
-              'col-10 offset-1',
-              this.props.progress === progressStatus.OCCUPIED ? 'col-md-6 offset-md-3 col-xl-4 offset-xl-4'
-                : 'col-xl-8 offset-xl-2'
-            )}>
-              { this.props.progress !== progressStatus.GOING &&
-                this.props.progress !== progressStatus.PAUSED && (
-                <Button
-                  className='game-control-button'
-                  onClick={this.props.stopClick}
-                  color="primary"
-                >
-                  { this.getStopButtonText() }
-                </Button>
-              )}
-            </Col>
-            { (this.props.progress === progressStatus.GOING ||
-              this.props.progress === progressStatus.PAUSED) &&
-              this.props.shots.length >= process.env.REACT_APP_MINIMUM_TRIES_A_GAME && (
-              <Col className='col-10 offset-1 col-xl-8 offset-xl-2'>
-                <Button color="primary" className='game-control-button' onClick={this.props.finishClick}>
-                  Finish
-                </Button>
-              </Col> )}
-          </Row>
-        </Col>
-        { this.props.progress >= progressStatus.GOING &&
+        ) : (
+          <>
+            { (this.props.progress === progressStatus.REVIEW || 
+              this.props.progress === progressStatus.COMPLETE ) && (
+              <Row>
+                <Col className='col-12 text-center mb-4'>
+                  <p className='text-game-finished text-success'><b>GAME FINISHED</b></p>
+                </Col>
+              </Row>
+            )}
+            <Row>
+              <Col className={cx(
+                'col-6',
+                'col-sm-4 offset-sm-2 order-md-1',
+                'col-md-3 offset-md-1',
+                'col-xl-2 offset-xl-2'
+              )}>
+                <FancyBox>
+                  <FactTile caption='Goals' titleFontSize='2' contentFontSize='5'>
+                    { goals }
+                  </FactTile>
+                </FancyBox>
+              </Col>
+              <Col className={cx(
+                'col-6',
+                'col-sm-4 order-md-3',
+                'col-md-3',
+                'col-xl-2'
+              )}>
+                <FancyBox>
+                  <FactTile caption='Misses' titleFontSize='2' contentFontSize='5'>
+                    { fails }
+                  </FactTile>
+                </FancyBox>
+              </Col>
+              <Col className='col-12 col-md-4 order-md-2'>
+                <FancyBox className='elapsed-time'>
+                  <FactTile caption='Elapsed Time' titleFontSize='2' contentFontSize='5'>
+                    { totalTime.min }:{ totalTime.sec }&nbsp;<small>{ totalTime.ms }</small>
+                  </FactTile>
+                </FancyBox>
+              </Col>
+            </Row>
+            <Row className='game-detail order-2 order-lg-1 my-lg-5'>
+              <Col className={cx(
+                'overall mb-5 order-lg-1',
+                'col-12',
+                'col-sm-6',
+                'col-lg-4'
+              )}>
+                <Row>
+                  <Col>Shots</Col>
+                  <Col>{ total }&nbsp;<small>%</small></Col>
+                </Row>
+                <Row>
+                  <Col>Accuracy</Col>
+                  <Col>{ accuracy }&nbsp;<small>%</small></Col>
+                </Row>
+                <Row>
+                  <Col>Delay</Col>
+                  <Col>{ delayTime.min }:{ delayTime.sec }&nbsp;<small>{ delayTime.ms }</small></Col>
+                </Row>
+              </Col>
+              <Col className={cx(
+                'last-try mb-5 order-lg-3',
+                'col-12',
+                'col-sm-6',
+                'col-lg-4'
+              )}>
+                <Row>
+                  <Col>Release Angle</Col>
+                  <Col>{ lastShot.releaseAngle }</Col>
+                </Row>
+                <Row>
+                  <Col>Release Time</Col>
+                  <Col>{ lastShot.releaseTime }</Col>
+                </Row>
+                <Row>
+                  <Col>Elbow Angle</Col>
+                  <Col>{ lastShot.elbowAngle }</Col>
+                </Row>
+                <Row>
+                  <Col>Leg Angle</Col>
+                  <Col>{ lastShot.legAngle }</Col>
+                </Row>
+              </Col>
+              <Col className={cx(
+                'order-lg-2',
+                'col-12',
+                'col-sm-8 offset-sm-2',
+                'col-lg-4 offset-lg-0',
+                'col-xl-3'
+              )}>
+                <GoalMap positions={shots}/>
+              </Col>
+            </Row>
+          </>
+        )}
+        <Row className='my-4 my-xl-5 order-1 order-lg-2'>
           <Col className={cx(
-            'col-12',
-            'col-md-3  offset-md-1',
-            'col-sm-8 offset-sm-2',
-            'order-3'
+            'col-sm-4 offset-sm-2',
+            'col-md-3 offset-md-3',
+            'col-xl-2 offset-xl-4',
           )}>
-            <GoalMap positions={shots}/>
-          </Col> }
-      </Row>
-    );
+            <Button
+              color="primary"
+              className='game-control-button'
+              onClick={this.props.startClick}
+              disabled={
+                this.props.progress === progressStatus.OCCUPIED
+                && this.props.countDown > 0
+              }
+            >
+              { this.getStartButtonText() }
+            </Button>
+          </Col>
+            { this.props.progress !== progressStatus.GOING &&
+              this.props.progress !== progressStatus.PAUSED ? (
+                <Col className={cx(
+                  'col-sm-4',
+                  'col-md-3',
+                  'col-xl-2',
+                )}>
+                  <Button
+                    className='game-control-button'
+                    onClick={ this.props.stopClick }
+                    color="primary"
+                  >
+                    { this.getStopButtonText() }
+                  </Button>
+                </Col>
+              ) : this.props.shots.length >= process.env.REACT_APP_MINIMUM_TRIES_A_GAME && (
+                <Col className={cx(
+                  'col-sm-4',
+                  'col-md-3',
+                  'col-xl-2',
+                )}>
+                  <Button
+                    className='game-control-button'
+                    onClick={ this.props.finishClick }
+                    color="primary"
+                  >
+                    Finish
+                  </Button>
+                </Col>
+              )
+            }
+        </Row>
+      </div>
+    )
   }
 }
 
