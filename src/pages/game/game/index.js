@@ -46,22 +46,21 @@ class Game extends Component {
       progress: progressStatus.INIT,
       totalElapsedTime: 0,
       currentElapsedTime: 0,
-      // shots: []
-      shots: Array(53).fill(0).map(v =>({
-        releaseTime: 0,
-        releaseAngle: 0,
-        legAngle: 0,
-        elbowAngle: 0,
-        x: 1000,
-        y: 0,
-        success: 1,
-      })),
+      shots: []
+      // shots: Array(73).fill(0).map(v =>({
+      //   releaseTime: 0,
+      //   releaseAngle: 0,
+      //   legAngle: 0,
+      //   elbowAngle: 0,
+      //   x: 1000,
+      //   y: 1000,
+      //   success: 1,
+      // })),
     }
   }
 
   componentDidMount() {
     window.onbeforeunload = this.handleCloseWindow
-    return
     this.props.throwRequest()
     this.props.connectGame({
       showGameStatus:   this.showGameStatus,

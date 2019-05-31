@@ -79,7 +79,11 @@ class GameDetail extends Component {
             'col-md-6 offset-md-3',
             'col-xl-3 offset-xl-1',
             'd-flex')}>
-            <GoalMap positions={shots} active={this.state.selected} />
+            <Row>
+              <Col>
+                <GoalMap positions={shots} active={this.state.selected} />
+              </Col>
+            </Row>
           </Col>
           <Col className={cx(
             'd-xl-none my-3',
@@ -174,14 +178,14 @@ class GameDetail extends Component {
                     <PaginationItem>
                       <PaginationLink
                         next
-                        disabled={page >= paginationBarSize - 1}
+                        disabled={page >= pageCount - 1}
                         onClick={this.handlePageClick(page + 1)}
                       />
                     </PaginationItem>
                     <PaginationItem>
                       <PaginationLink
                         last
-                        disabled={page >= paginationBarSize - 1}
+                        disabled={page >= pageCount - 1}
                         onClick={this.handlePageClick(-1)}
                       />
                     </PaginationItem>
