@@ -43,7 +43,7 @@ class Game extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      progress: progressStatus.REVIEW_DETAIL,
+      progress: progressStatus.INIT,
       totalElapsedTime: 0,
       currentElapsedTime: 0,
       shots: []
