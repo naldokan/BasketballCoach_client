@@ -36,14 +36,26 @@
     }
 
     .CircularProgressbar-text {
-      font-size: 2em !important;
+      font-size: 0.8em !important;
+      font-weight: lighter;
+      transform: translate(0, 5%);
     }
   }
 
-  .CircularProgressbar-text {
-    font-size: 4em !important;
-    font-weight: lighter;
-    transform: translate(0, 5%);
+  .goal-box {
+    color: #207b20;
+    
+    .title {
+      color: darken(#207b20, 13%);
+    }
+  }
+
+  .fail-box {
+    color: #8d2a2a;
+    
+    .title {
+      color: darken(#8d2a2a, 13%);
+    }
   }
 
   .busy-game-text {

@@ -101,14 +101,6 @@ class GameProgress extends Component {
     const totalTime = this.formatMilisecond(totalElapsedTime)
     const delayTime = this.formatMilisecond(currentElapsedTime)
 
-    // <CircularProgressbar
-    //   value={accuracy}
-    //   strokeWidth={1}
-    //   counterClockwise={true}
-    //   text={`${total}`}
-    //   styles={{ path: { stroke: accuracyColor(accuracy) } }}
-    // />
-
     return (
       <div className='game-progress-container'>
         { this.props.progress === progressStatus.OCCUPIED ? (
@@ -130,7 +122,7 @@ class GameProgress extends Component {
                 'col-md-3 offset-md-1',
                 'col-xl-2 offset-xl-2'
               )}>
-                <FancyBox>
+                <FancyBox className='goal-box'>
                   <FactTile caption='Goals' titleFontSize='2' contentFontSize='5'>
                     { goals }
                   </FactTile>
@@ -142,7 +134,7 @@ class GameProgress extends Component {
                 'col-md-3',
                 'col-xl-2'
               )}>
-                <FancyBox>
+                <FancyBox className='fail-box'>
                   <FactTile caption='Misses' titleFontSize='2' contentFontSize='5'>
                     { fails }
                   </FactTile>
@@ -163,21 +155,24 @@ class GameProgress extends Component {
                 'col-sm-6',
                 'col-lg-4'
               )}>
-                <Row>
-                  <Col>Shots</Col>
-                  <Col>{ total }&nbsp;<small>%</small></Col>
+                <Row className='justify-content-center my-3'>
+                  <Col className='col-8 col-sm-6 col-lg-5 mt-0'>
+                    <CircularProgressbar
+                      value={accuracy}
+                      strokeWidth={1}
+                      counterClockwise={true}
+                      text={`${total}`}
+                      styles={{ path: { stroke: accuracyColor(accuracy) } }}
+                    />
+                  </Col>
                 </Row>
                 <Row>
                   <Col>Accuracy</Col>
                   <Col>{ accuracy }&nbsp;<small>%</small></Col>
                 </Row>
-                <Row>
-                  <Col>Delay</Col>
-                  <Col>{ delayTime.min }:{ delayTime.sec }&nbsp;<small>{ delayTime.ms }</small></Col>
-                </Row>
               </Col>
               <Col className={cx(
-                'last-try mb-5 order-lg-3',
+                'last-try mb-5 mb-lg-0 order-lg-3',
                 'col-12',
                 'col-sm-6',
                 'col-lg-4'
@@ -203,6 +198,7 @@ class GameProgress extends Component {
                 'order-lg-2',
                 'col-12',
                 'col-sm-8 offset-sm-2',
+                'col-md-6 offset-md-3',
                 'col-lg-4 offset-lg-0',
                 'col-xl-3'
               )}>
@@ -211,7 +207,7 @@ class GameProgress extends Component {
             </Row>
           </>
         )}
-        <Row className='my-4 my-xl-5 order-1 order-lg-2'>
+        <Row className='my-4 mt-xl-5 mb-lg-0 order-1 order-lg-2'>
           <Col className={cx(
             'col-sm-4 offset-sm-2',
             'col-md-3 offset-md-3',
