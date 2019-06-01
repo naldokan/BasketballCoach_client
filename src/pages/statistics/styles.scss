@@ -1,24 +1,27 @@
 @import "../variables";
 
 
-.statistics-filter {
-  @include media-breakpoint-up(lg) {
-    position: fixed;
-    padding: 2em;
-    top: 5em;
-    padding: 1em;
-
-    &:first-child {
-      left: 0;
+.statistics-page {
+  .mode-buttons, .date-nav-buttons {
+    @include media-breakpoint-up(lg) {
+      button { font-size: 2em; }
     }
 
-    &:last-child {
-      right: 20px;
+    @include media-breakpoint-only(md) {
+      button { font-size: 1.5em; }
     }
   }
-  
-  @include media-breakpoint-up(lg) {
-    .row { font-size: 1.5em; }
+
+  .date-nav-buttons {
+    button {
+      border-radius: 50%;
+      width: 3em;
+      height: 3em;
+    }
+  }
+
+  small {
+    font-size: .6em;
   }
   
   button {

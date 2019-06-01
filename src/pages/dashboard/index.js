@@ -61,14 +61,14 @@ class Dashboard extends Component {
         <Row className='dashboard-overall'>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
-              <FactTile caption='Total game plays' size='1'>
+              <FactTile caption='Total game plays'>
                 {totalGamePlays}
               </FactTile>
             </FancyBox>
           </Col>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
-              <FactTile caption='Overall accuracy' size='1'>
+              <FactTile caption='Overall accuracy'>
                 {overallAccuracy === undefined ? undefined : (
                   <>
                     {overallAccuracy}<small>%</small>
@@ -79,7 +79,7 @@ class Dashboard extends Component {
           </Col>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
-              <FactTile caption='Recent accuracy' size='1'>
+              <FactTile caption='Recent accuracy'>
                 {recentAccuracy === undefined ? undefined : (
                   <>
                     {recentAccuracy}<small>%</small>

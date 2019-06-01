@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import cx from 'classnames';
 import {
-  ResponsiveContainer,
+	ResponsiveContainer,
+	BarChart as BarRechart,
 	AreaChart,
 	ScatterChart,
 	Area,
+	Bar,
 	Scatter,
 	Cell,
   CartesianGrid,
@@ -22,6 +24,7 @@ export const LineChart = ({ data, dataKey, color, showXTick }) => {
 	return (
 		<ResponsiveContainer
 			className={cx('line-chart-box', {'hide-x-tick': !showXTick})}
+			margin={{ top: 0, bottom: 0, left: 0, right: 0}}
 			height={200}
 			width='100%'
 		>
@@ -37,15 +40,37 @@ export const LineChart = ({ data, dataKey, color, showXTick }) => {
 					</linearGradient>
 				</defs>
 				<XAxis dataKey="name" />
-				<YAxis/>
+				<YAxis width={40}/>
 				<CartesianGrid strokeDasharray="3 3" />
 				<Tooltip />
-				<CartesianGrid stroke={ color } />
 				<Area dataKey={dataKey} stroke={ color } fillOpacity={1} fill={`url(#colorUv-${colorKey})`} />
 			</AreaChart>
 		</ResponsiveContainer>
 	)
 }
+
+export const BarChart = ({ data, color, dataKey, showXTick }) => (
+	<ResponsiveContainer
+		className={cx('bar-chart-box', {'hide-x-tick': !showXTick})}
+		margin={{ top: 0, bottom: 0, left: 0, right: 0}}
+		height={200}
+		width='100%'
+	>
+		<BarRechart
+			width={400}
+			height={150}
+			data={data}
+			margin={{ top: 0, bottom: 0, left: 0, right: 0}}>
+			<XAxis dataKey="name" />
+			<YAxis width={40}/>
+			<CartesianGrid strokeDasharray="3 3" />
+			<Tooltip cursor={{fill: '#ffffff20'}}/>
+			{dataKey.map((val, key) => (
+				<Bar key={key} dataKey={val} stackId="a" fill={color[key]} />
+			))}
+		</BarRechart>
+	</ResponsiveContainer>
+)
 
 
 export const GoalMap = ({ positions, active }) => {
