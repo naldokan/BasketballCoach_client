@@ -137,7 +137,7 @@ class Statistics extends Component {
 
       case statisticsMode.YEARLY:
       default:
-        this.date.setMonth(this.date.getYear() + (direction ? 1 : -1))
+        this.date.setYear(this.date.getFullYear() + (direction ? 1 : -1))
         break;
     }
     this.requestStatistics()
@@ -263,7 +263,7 @@ class Statistics extends Component {
               <Row key={source}>
                 <Col className='col-12 d-flex justify-content-between'>
                   <p>{ caption }</p>
-                  <p>{ list && list.length > 0 ? 'Average: ' + average[source] : 'No data'}</p>
+                  <p>{ 'Average: ' + ((average && average[source]) || 'No data') }</p>
                 </Col>
                 <Col className='col-12'>
                   <LineChart
