@@ -97,7 +97,6 @@
 
   .color-map {
     position: absolute;
-    opacity: 0.6;
     margin-top: $playfield-top-margin;
     display: flex;
     flex-wrap: wrap;
@@ -107,6 +106,12 @@
 
     div {
       transition: background-color 1s ease;
+    }
+
+    .percent {
+      font-size: 1.5em;
+      font-weight: bolder;
+      color: white;
     }
   }
 

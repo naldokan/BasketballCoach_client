@@ -9,7 +9,6 @@ import {
 	Bar,
 	Scatter,
 	Cell,
-  CartesianGrid,
   Tooltip,
 	XAxis,
 	YAxis,
@@ -137,11 +136,13 @@ export const GoalColorMap = ({ positions }) => {
 					<div
 						key={key}
 						title={total ? `${Round(success * 100 / total)}%` : 'No data'}
+						className='d-flex align-items-center justify-content-center'
 						style={{
 							width: `${100 / xsplit}%`,
 							height: `${Math.round(100 / ysplit)}%`,
-							backgroundColor: total ? accuracyColor(success * 100 / total) : '#ffffff00'
+							backgroundColor: total ? accuracyColor(success * 100 / total) + '80' : '#ffffff00'
 						}}>
+							<div className='percent'>{total ? Round(success * 100 / total) : ''}</div>
 					</div>
 				))}
 			</div>

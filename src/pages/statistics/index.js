@@ -169,111 +169,129 @@ class Statistics extends Component {
       Accuracy: shots && Round(success * 100 / shots)
     }))
 
+    const weekStart = startOfWeek(this.date, { weekStartsOn: 1 })
+    const weekEnd = addDays(weekStart, 6) 
+
     return (
       <div className='statistics-page'>
-        <Row className='mode-buttons justify-content-center mb-4'>
-          <Col className='col-10 col-sm-4 col-md-3 col-xl-2 mb-3'>
+        <Row className='mode-buttons justify-content-center mb-sm-4'>
+          <Col className='col-12 col-sm-4 col-md-3 col-xl-2 mb-3'>
             <Button
               className='btn-block'
               onClick={this.handleStatisticsModeClick(statisticsMode.WEEKLY)}
               color={this.mode === statisticsMode.WEEKLY ? 'success' : 'primary'}
             >
-              Weekly</Button>
+              Weekly
+              <p className='m-0'><small>{format(weekStart, 'DD MMM')} - {format(weekEnd, 'DD MMM')}</small></p>
+            </Button>
           </Col>
-          <Col className='col-10 col-sm-4 col-md-3 col-xl-2 mb-3'>
+          <Col className='col-12 col-sm-4 col-md-3 col-xl-2 mb-3'>
             <Button
               className='btn-block'
               onClick={this.handleStatisticsModeClick(statisticsMode.MONTHLY)}
               color={this.mode === statisticsMode.MONTHLY ? 'success' : 'primary'}
             >
-              Montly</Button>
+              Montly
+              <p className='m-0'><small>{format(this.date, 'MMM YYYY')}</small></p>
+            </Button>
           </Col>
-          <Col className='col-10 col-sm-4 col-md-3 col-xl-2 mb-3'>
+          <Col className='col-12 col-sm-4 col-md-3 col-xl-2 mb-3'>
             <Button
               className='btn-block'
               onClick={this.handleStatisticsModeClick(statisticsMode.YEARLY)}
               color={this.mode === statisticsMode.YEARLY ? 'success' : 'primary'}
             >
-              Yearly</Button>
+              Yearly
+              <p className='m-0'><small>{format(this.date, 'YYYY')}</small></p>
+            </Button>
           </Col>
         </Row>
-        <Row className='mb-4 align-items-center'>
-          <Col className='col-6 col-sm-2 order-sm-1 date-nav-buttons mb-4'>
+        <Row>
+          <Col className={cx(
+            'date-nav-buttons left-direction',
+            'col-6 mb-5',
+            'col-sm-1 offset-sm-0 order-sm-1'
+          )}>
             <Button color='primary' onClick={this.handleNavigateDateClick(false)}>
               <FontAwesomeIcon icon={faArrowLeft} />
             </Button>
           </Col>
-          <Col className='col-6 col-sm-2 order-sm-3 text-right date-nav-buttons mb-4'>
+          <Col className={cx(
+            'date-nav-buttons right-direction',
+            'col-6 mb-3 mb-5',
+            'col-sm-1 order-sm-3'
+          )}>
             <Button color='primary' onClick={this.handleNavigateDateClick(true)}>
               <FontAwesomeIcon icon={faArrowRight} />
             </Button>
           </Col>
-          <Col className='col-12 col-sm-8 order-sm-2'>
-            <Row className='justify-content-center'>
+          <Col className='order-sm-2 col-12 col-sm-10 offset-sm-1'>
+            <Row className='mb-4 justify-content-center'>
+              <Col className='col-12 col-sm-4 col-md-3 mb-3'>
+                <FancyBox>
+                  <FactTile caption='Games'>{ games }</FactTile>
+                </FancyBox>
+              </Col>
               <Col className='col-12 col-sm-4 col-md-3 mb-3'>
                 <FancyBox>
                   <FactTile caption='Shots'>{ shots }</FactTile>
                 </FancyBox>
               </Col>
-              <Col className='col-12 col-sm-4  col-md-3 mb-3'>
-                <FancyBox>
-                  <FactTile caption='Games'>{ games }</FactTile>
-                </FancyBox>
-              </Col>
-              <Col className='col-12 col-sm-4  col-md-3 mb-3'>
+              <Col className='col-12 col-sm-4 col-md-3 mb-3'>
                 <FancyBox>
                   <FactTile caption='Accuracy'>{ accuracy }<small>%</small></FactTile>
                 </FancyBox>
               </Col>
             </Row>
-          </Col>
-        </Row>
-        <Row className='mb-4'>
-          <Col className='col-12 col-md-4'>
-            <p className='text-center'>Games</p>
-            <BarChart data={gameData} color={['#a83430']} dataKey={['Played']} showXTick />
-          </Col>
-          <Col className='col-12 col-md-4'>
-            <p className='text-center'>Shots</p>
-            <BarChart data={shotData} color={['#13a37c', '#8da212']} dataKey={['Goal', 'Miss']} showXTick />
-          </Col>
-          <Col className='col-12 col-md-4'>
-            <p className='text-center'>Accuracy</p>
-            <LineChart data={accuracyData} color={'#1489ad'} dataKey={'Accuracy'} showXTick />
-          </Col>
-        </Row>
-        <Row>
-          <Col className={cx(
-            'col-10 offset-1',
-            'col-sm-12 offset-sm-0',
-            'col-md-5 col-lg-4 col-xl-3')}>
-            <Row>
-              <Col className='col-12 col-sm-6 col-md-12 mb-5'>
+            <Row className='mb-4'>
+              <Col className='col-12 col-md-4'>
+                <p className='text-center'>Games</p>
+                <BarChart data={gameData} color={['#8da212']} dataKey={['Played']} showXTick />
+              </Col>
+              <Col className='col-12 col-md-4'>
+                <p className='text-center'>Shots</p>
+                <BarChart data={shotData} color={['#0d632e', '#691919']} dataKey={['Goal', 'Miss']} showXTick />
+              </Col>
+              <Col className='col-12 col-md-4'>
+                <p className='text-center'>Accuracy</p>
+                <LineChart data={accuracyData} color={'#1489ad'} dataKey={'Accuracy'} showXTick />
+              </Col>
+            </Row>
+            <Row className='mb-3'>
+              <Col className={cx(
+                'px-lg-5',
+                'col-10 offset-1 mb-5',
+                'col-md-5',
+                'col-xl-4 offset-xl-2'
+              )}>
                 <p>Area Accuracy</p>
                 <GoalColorMap positions={positions} />
               </Col>
-              <Col className='col-12 col-sm-6 col-md-12 mb-5'>
+              <Col className={cx(
+                'px-lg-5',
+                'col-10 offset-1 mb-5',
+                'col-md-5 offset-md-0',
+                'col-xl-4'
+              )}>
                 <p>Shot Distribution</p>
                 <GoalMap positions={positions} />
               </Col>
             </Row>
-          </Col>
-          <Col className='col-12 col-md-7 col-lg-8 col-xl-9'>
-            {graphInfo.map(({ caption, source, color }) => (
-              <Row key={source}>
-                <Col className='col-12 d-flex justify-content-between'>
+            <Row>
+            {graphInfo.map(({ caption, source, color }, key) => (
+              <Col key={source} className='col-12 col-lg-6 my-4 px-lg-5'>
+                <div className='d-flex justify-content-between'>
                   <p>{ caption }</p>
                   <p>{ 'Average: ' + ((average && average[source]) || 'No data') }</p>
-                </Col>
-                <Col className='col-12'>
-                  <LineChart
-                    data={this.getGraphData(caption, source)}
-                    color={color}
-                    dataKey={caption}
-                  />
-                </Col>
-              </Row>
+                </div>
+                <LineChart
+                  data={this.getGraphData(caption, source)}
+                  color={color}
+                  dataKey={caption}
+                />
+              </Col>
             ))}
+            </Row>
           </Col>
         </Row>
       </div>

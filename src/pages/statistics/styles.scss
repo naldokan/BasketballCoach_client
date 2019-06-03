@@ -13,10 +13,29 @@
   }
 
   .date-nav-buttons {
+    position: fixed;
+
+    @include media-breakpoint-only(xs) {
+      position: static;
+      
+      button {
+        width: 100%;
+      }
+    }
+    
+    &.left-direction {
+      top: 50%;
+      left: 0;
+    }
+
+    &.right-direction {
+      top: 50%;
+      text-align: right;
+      right: 20px;
+    }
+
     button {
       border-radius: 50%;
-      width: 3em;
-      height: 3em;
     }
   }
 

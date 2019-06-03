@@ -97,6 +97,7 @@ button {
   .home-body {
     height: calc(100vh - #{$navbar-height});
     position: absolute;
+    overflow-x: hidden;
     overflow-y: auto;
     width: 100vw;
     padding: $spacer * 2;
