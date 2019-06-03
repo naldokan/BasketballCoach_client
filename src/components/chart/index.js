@@ -23,7 +23,6 @@ export const LineChart = ({ data, dataKey, color, showXTick }) => {
 	const colorKey = dataKey.replace(' ', '-')
 	return (
 		<ResponsiveContainer
-			className={cx('line-chart-box', {'hide-x-tick': !showXTick})}
 			margin={{ top: 0, bottom: 0, left: 0, right: 0}}
 			height={200}
 			width='100%'
@@ -39,9 +38,9 @@ export const LineChart = ({ data, dataKey, color, showXTick }) => {
 						<stop offset="95%" stopColor={ color } stopOpacity={0}/>
 					</linearGradient>
 				</defs>
-				<XAxis dataKey="name" />
+				<XAxis dataKey="name" tick={!!showXTick} />
 				<YAxis width={40}/>
-				<CartesianGrid strokeDasharray="3 3" />
+				{/* <CartesianGrid strokeDasharray="3 3" /> */}
 				<Tooltip />
 				<Area dataKey={dataKey} stroke={ color } fillOpacity={1} fill={`url(#colorUv-${colorKey})`} />
 			</AreaChart>
@@ -51,7 +50,6 @@ export const LineChart = ({ data, dataKey, color, showXTick }) => {
 
 export const BarChart = ({ data, color, dataKey, showXTick }) => (
 	<ResponsiveContainer
-		className={cx('bar-chart-box', {'hide-x-tick': !showXTick})}
 		margin={{ top: 0, bottom: 0, left: 0, right: 0}}
 		height={200}
 		width='100%'
@@ -61,9 +59,9 @@ export const BarChart = ({ data, color, dataKey, showXTick }) => (
 			height={150}
 			data={data}
 			margin={{ top: 0, bottom: 0, left: 0, right: 0}}>
-			<XAxis dataKey="name" />
+			<XAxis dataKey="name" tick={!!showXTick} />
 			<YAxis width={40}/>
-			<CartesianGrid strokeDasharray="3 3" />
+			{/* <CartesianGrid strokeDasharray="3 3" vertical={false}/> */}
 			<Tooltip cursor={{fill: '#ffffff20'}}/>
 			{dataKey.map((val, key) => (
 				<Bar key={key} dataKey={val} stackId="a" fill={color[key]} />

@@ -7,6 +7,18 @@ import { Row, Col, Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight, faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import cx from 'classnames'
+import {
+  startOfWeek,
+  startOfMonth,
+  startOfYear,
+  getDaysInMonth,
+  addDays,
+  addMonths,
+  getISODay,
+  getDate,
+  getMonth,
+  format
+} from 'date-fns'
 import fp from 'lodash/fp'
 
 import FancyBox  from 'components/fancybox'
@@ -25,8 +37,6 @@ const graphInfo = [
   { caption: 'Elbow Angle', source: 'elbow_angle', color: '#d400ff' },
   { caption: 'Leg Angle', source: 'leg_angle', color: '#ff3200' }
 ]
-
-const recentMode = { DAYS: 'days', TRIES: 'tries'}
 
 const statisticsMode = {
   WEEKLY: 'weekly',
@@ -51,16 +61,63 @@ class Statistics extends Component {
     this.requestStatistics()
   }
 
+  getFullTimePeriod = (list, period) => {
+    const { length, startOf, formatString, add, getIndex } =
+      period === statisticsMode.WEEKLY ? {
+        length:       7,
+        startOf:      startOfWeek,
+        add:          addDays,
+        getIndex:     getISODay,
+        formatString: 'DD',
+      } : period === statisticsMode.MONTHLY ? {
+        length:       getDaysInMonth(this.date),
+        startOf:      startOfMonth,
+        add:          addDays,
+        getIndex:     getDate,
+        formatString: 'DD'
+      } : {
+        length:       12,
+        startOf:      startOfYear,
+        add:          addMonths,
+        getIndex:     getMonth,
+        formatString: 'MMM'
+      }
+
+    const start = startOf(this.date, { weekStartsOn: 1 })
+
+    const data = Array(length).fill(0)
+      .map((d, offset) => ({
+        elbow_angle: 0,
+        game_times: 0,
+        leg_angle: 0,
+        release_angle: 0,
+        release_time: 0,
+        shots: 0,
+        success: 0,
+        xkey: format(add(start, offset), formatString)
+      }))
+
+    list.forEach(value => {
+      const date = new Date(value.xkey + (period === statisticsMode.YEARLY ? '/01' : ''))
+      const index = getIndex(date) - (period === statisticsMode.YEARLY ? 0 : 1)
+      const { xkey } = data[index]
+      data[index] = { ...value, xkey }
+    })
+
+    return data
+  }
+
   requestStatistics = () =>  this.props.throwRequest({
     url: '/statistics',
     params: {
       mode: this.mode,
-      date: this.date.toJSON().slice(0, 10)
+      date: format(this.date, 'YYYY-MM-DD')
     },
-    onSuccess: ({ average, list, positions }) => {
-
-      this.setState({ average, list, positions })
-    }
+    onSuccess: ({ average, list, positions }) => this.setState({
+      average,
+      positions,
+      list: this.getFullTimePeriod(list, this.mode)
+    })
   })
 
   handleStatisticsModeClick = mode => () => {
@@ -101,15 +158,15 @@ class Statistics extends Component {
 
     const gameData = this.getGraphData('Played', 'game_times')
 
-    const shotData = list && list.map(val => ({
-      name: val['xkey'],
-      Goal: val['success'],
-      Miss: val['shots'] - val['success'],
+    const shotData = list && list.map(({ xkey, success, shots }) => ({
+      name: xkey,
+      Goal: success,
+      Miss: shots - success,
     }))
 
-    const accuracyData = list && list.map(val => ({
-      name: val['xkey'],
-      Accuracy: Round(val['success'] * 100 / val['shots'])
+    const accuracyData = list && list.map(({ xkey, shots, success }) => ({
+      name: xkey,
+      Accuracy: shots && Round(success * 100 / shots)
     }))
 
     return (
@@ -174,15 +231,15 @@ class Statistics extends Component {
         <Row className='mb-4'>
           <Col className='col-12 col-md-4'>
             <p className='text-center'>Games</p>
-            <BarChart data={gameData} color={['#a83430']} dataKey={['Played']}/>
+            <BarChart data={gameData} color={['#a83430']} dataKey={['Played']} showXTick />
           </Col>
           <Col className='col-12 col-md-4'>
             <p className='text-center'>Shots</p>
-            <BarChart data={shotData} color={['#13a37c', '#8da212']} dataKey={['Goal', 'Miss']}/>
+            <BarChart data={shotData} color={['#13a37c', '#8da212']} dataKey={['Goal', 'Miss']} showXTick />
           </Col>
           <Col className='col-12 col-md-4'>
             <p className='text-center'>Accuracy</p>
-            <LineChart data={accuracyData} color={'#1489ad'} dataKey={'Accuracy'}/>
+            <LineChart data={accuracyData} color={'#1489ad'} dataKey={'Accuracy'} showXTick />
           </Col>
         </Row>
         <Row>

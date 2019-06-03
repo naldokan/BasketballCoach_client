@@ -65,17 +65,6 @@
   @include animate(fail-position, .3s, infinite, alternate);
 }
 
-
-.line-chart-box, .bar-chart-box {
-  &.hide-x-tick {
-    .xAxis {
-      text {
-        display: none;
-      }
-    }
-  }
-}
-
 .goal-map {
   position: relative;
 
