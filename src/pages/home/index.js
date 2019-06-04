@@ -34,7 +34,7 @@ const navs = [
   { link: '/game', label: 'Game' },
   { link: '/statistics', label: 'Statistics' },
   { link: '/history', label: 'History' },
-  { link: '/leaderboard', label: 'Leaderboard' },
+  // { link: '/leaderboard', label: 'Leaderboard' },
 ]
 
 const verticalCenterViews = ['game']
