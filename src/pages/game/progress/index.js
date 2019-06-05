@@ -73,7 +73,7 @@ class GameProgress extends Component {
   formatMilisecond = milisecond => ({
     min: this.formatNumber(Math.floor(milisecond / 1000 / 60), 2),
     sec: this.formatNumber(Math.floor(milisecond / 1000) % 60, 2),
-    ms: this.formatNumber(Math.round((milisecond % 1000) / elapsedTimeInterval), 2)
+    ms: this.formatNumber(Math.floor((milisecond % 1000) / elapsedTimeInterval), 2)
   })
 
   render() {

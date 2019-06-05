@@ -38,12 +38,13 @@ class Dashboard extends Component {
       url: '/dashboard',
       onSuccess: data => {
         this.setState({
-          totalGamePlays: data.total_game_plays,
-          overallAccuracy: Round(data.overall_accuracy * 100),
-          recentAccuracy: Round(data.recent_accuracy * 100),
-          recentGoals: data.recent_goals,
-          history: data.history,
-          positions: data.positions
+          totalGamePlays:   data.total_game_plays,
+          overallGoals:     data.overall_goals,
+          overallAccuracy:  Round(data.overall_accuracy * 100),
+          recentAccuracy:   Round(data.recent_accuracy * 100),
+          recentGoals:      data.recent_goals,
+          history:          data.history,
+          positions:        data.positions
         })
       }
     })
@@ -61,6 +62,8 @@ class Dashboard extends Component {
       totalGamePlays,
       recentAccuracy,
       recentGoals,
+      overallAccuracy,
+      overallGoals,
       history,
       positions
     } = this.state
@@ -77,10 +80,10 @@ class Dashboard extends Component {
           </Col>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
-              <FactTile caption='Recent accuracy'>
-                {recentAccuracy === undefined ? undefined : (
+              <FactTile caption='Total Accuracy'>
+                {overallAccuracy === undefined ? undefined : (
                   <>
-                    {recentAccuracy}<small>%</small>
+                    {overallAccuracy}<small>%</small>
                   </>
                 )}
               </FactTile>
@@ -88,10 +91,10 @@ class Dashboard extends Component {
           </Col>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
-              <FactTile caption='Recent goals'>
-                {recentGoals === undefined ? undefined : (
+              <FactTile caption='Total Goals'>
+                {overallGoals === undefined ? undefined : (
                   <>
-                    {recentGoals}
+                    {overallGoals}
                   </>
                 )}
               </FactTile>

@@ -47,7 +47,9 @@ button {
 
     .navbar-brand {
       margin: auto 0;
-      color: $font-color-secondary;
+      font-size: 2em;
+      font-weight: bolder;
+      text-transform: capitalize;
     }
     
     .navbar-toggler {
