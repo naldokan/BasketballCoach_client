@@ -288,6 +288,7 @@ class Statistics extends Component {
                   data={this.getGraphData(caption, source)}
                   color={color}
                   dataKey={caption}
+                  showXTick
                 />
               </Col>
             ))}

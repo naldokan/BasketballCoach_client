@@ -36,13 +36,16 @@ class Dashboard extends Component {
   componentDidMount() {
     this.props.throwRequest({
       url: '/dashboard',
-      onSuccess: data => this.setState({
-        totalGamePlays: data.total_game_plays,
-        overallAccuracy: Round(data.overall_accuracy * 100),
-        recentAccuracy: Round(data.recent_accuracy * 100),
-        history: data.history,
-        positions: data.positions
-      })
+      onSuccess: data => {
+        this.setState({
+          totalGamePlays: data.total_game_plays,
+          overallAccuracy: Round(data.overall_accuracy * 100),
+          recentAccuracy: Round(data.recent_accuracy * 100),
+          recentGoals: data.recent_goals,
+          history: data.history,
+          positions: data.positions
+        })
+      }
     })
   }
 
@@ -54,7 +57,13 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { totalGamePlays, overallAccuracy, recentAccuracy, history, positions } = this.state
+    const {
+      totalGamePlays,
+      recentAccuracy,
+      recentGoals,
+      history,
+      positions
+    } = this.state
 
     return (
       <>
@@ -68,10 +77,10 @@ class Dashboard extends Component {
           </Col>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
-              <FactTile caption='Overall accuracy'>
-                {overallAccuracy === undefined ? undefined : (
+              <FactTile caption='Recent accuracy'>
+                {recentAccuracy === undefined ? undefined : (
                   <>
-                    {overallAccuracy}<small>%</small>
+                    {recentAccuracy}<small>%</small>
                   </>
                 )}
               </FactTile>
@@ -79,10 +88,10 @@ class Dashboard extends Component {
           </Col>
           <Col className='col-12 col-sm-3 col-lg-3 col-xl-2'>
             <FancyBox>
-              <FactTile caption='Recent accuracy'>
-                {recentAccuracy === undefined ? undefined : (
+              <FactTile caption='Recent goals'>
+                {recentGoals === undefined ? undefined : (
                   <>
-                    {recentAccuracy}<small>%</small>
+                    {recentGoals}
                   </>
                 )}
               </FactTile>

@@ -11,7 +11,8 @@ const tryAuth = function* ({ payload }) {
     url: '/login',
     params: { email, password },
     onSuccess: function* (data, status) {
-      yield put(actions.setAuth(data.token))
+      const { token, name } = data
+      yield put(actions.setAuth({ token, name }))
       yield call(onSuccess, data, status)
     },
     onFailed: function* (data, status) {
@@ -28,7 +29,8 @@ const register = function* ({ payload }) {
     url: '/register',
     params: { name, email, password },
     onSuccess: function* (data, status) {
-      yield put(actions.setAuth(data.token))
+      const { token, name } = data
+      yield put(actions.setAuth({ token, name }))
       yield call(onSuccess, data, status)
     },
     onFailed: function* (data, status) {

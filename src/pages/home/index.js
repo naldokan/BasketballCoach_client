@@ -24,7 +24,7 @@ import History from 'pages/history';
 
 import Loader from 'components/loader'
 import { loadingSelector } from 'redux/modules/api/selectors'
-import { tokenSelector } from 'redux/modules/auth/selectors'
+import { tokenSelector, userNameSelector } from 'redux/modules/auth/selectors'
 import { signout } from 'redux/modules/auth/actions'
 import './styles.scss';
 
@@ -44,7 +44,8 @@ class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      navbarExpand: false
+      navbarExpand: false,
+      userName: ''
     }
   }
 
@@ -74,6 +75,7 @@ class Home extends Component {
         <Loader loading={this.props.loading} />
         <Navbar dark expand="md" className="py-md-0 main-navbar">
           <NavbarBrand>
+            {this.props.userName}
           </NavbarBrand>
           <NavbarToggler className='navbar-toggler' onClick={this.handleToggleClick} />
           <Collapse isOpen={this.state.navbarExpand} navbar>
@@ -111,7 +113,8 @@ class Home extends Component {
 
 const selectors = createStructuredSelector({
   loading: loadingSelector,
-  token: tokenSelector
+  token: tokenSelector,
+  userName: userNameSelector
 });
 
 const actions = {

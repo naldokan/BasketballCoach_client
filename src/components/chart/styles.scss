@@ -65,6 +65,12 @@
   @include animate(fail-position, .3s, infinite, alternate);
 }
 
+.no-data-line-chart {
+  .recharts-area {
+    display: none;
+  }
+}
+
 .goal-map {
   position: relative;
 

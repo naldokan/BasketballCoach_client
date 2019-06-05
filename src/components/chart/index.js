@@ -20,6 +20,9 @@ import './styles.scss'
 
 export const LineChart = ({ data, dataKey, color, showXTick }) => {
 	const colorKey = dataKey.replace(' ', '-')
+	const noData = [{ name: 'No data', [dataKey]: 0 }]
+	const dataAvailable = !!(data && data.length)
+
 	return (
 		<ResponsiveContainer
 			margin={{ top: 0, bottom: 0, left: 0, right: 0}}
@@ -29,7 +32,8 @@ export const LineChart = ({ data, dataKey, color, showXTick }) => {
 			<AreaChart
 				width={400}
 				height={150}
-				data={data}
+				className={cx({ 'no-data-line-chart': !dataAvailable })}
+				data={dataAvailable ? data : noData}
 				margin={{ top: 0, bottom: 0, left: 0, right: 0}}>
 				<defs>
 					<linearGradient id={`colorUv-${colorKey}`} x1="0" y1="0" x2="0" y2="1">
@@ -40,7 +44,7 @@ export const LineChart = ({ data, dataKey, color, showXTick }) => {
 				<XAxis dataKey="name" tick={!!showXTick} />
 				<YAxis width={40}/>
 				{/* <CartesianGrid strokeDasharray="3 3" /> */}
-				<Tooltip />
+				{ dataAvailable && <Tooltip /> }
 				<Area dataKey={dataKey} stroke={ color } fillOpacity={1} fill={`url(#colorUv-${colorKey})`} />
 			</AreaChart>
 		</ResponsiveContainer>
