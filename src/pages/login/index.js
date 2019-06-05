@@ -78,7 +78,6 @@ class Login extends Component {
               <Input
                 type="email"
                 name="email"
-                value='asdf@gmail.com'
                 placeholder="Email"
                 required
                 onKeyUp={this.handleInputKeyPress}
@@ -88,7 +87,6 @@ class Login extends Component {
             <FormGroup>
               <Input
                 type="password"
-                value='asdfasdf'
                 placeholder="Password"
                 onKeyUp={this.handleInputKeyPress}
                 innerRef={this.getPasswordRef}
